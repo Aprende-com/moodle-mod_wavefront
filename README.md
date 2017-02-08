@@ -17,7 +17,7 @@ git clone git://github.com/iandavidwild/moodle-mod_wavefront.git mod/wavefront
 Then add mod/wavefront to your gitignore.
 
 ##Credits
-Based on the lightboxgallery module...
+Based on the lightboxgallery module
 
 Maintainer: Adam Olley (adam.olley@netspot.com.au)  
 Original plugin: Paul Holden (pholden[at]greenhead[dot]ac[dot]uk)  
