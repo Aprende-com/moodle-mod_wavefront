@@ -94,7 +94,9 @@ if ($mform->is_cancelled()){
     // save and relink embedded images and save attachments
     $model = file_postupdate_standard_editor($model, 'description', $descriptionoptions, $context, 'mod_wavefront', 'description', $model->id);
     $model = file_postupdate_standard_filemanager($model, 'model', $modeloptions, $context, 'mod_wavefront', 'model', $model->id);
-
+    
+    wavefront_check_for_zips($context, $cm, $model);
+    
     // store the updated value values
     $DB->update_record('wavefront_model', $model);
 
@@ -120,7 +122,7 @@ if ($mform->is_cancelled()){
             $completion->update_state($cm, COMPLETION_COMPLETE);
         }
     }
-
+    
     redirect("view.php?id=$cm->id&editing=1");
 }
 
