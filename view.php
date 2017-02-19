@@ -101,15 +101,15 @@ $PAGE->set_button($button);
 // The javascript this page requires
 // The code we are using is neat javascript so load each script one at a time
 //
-$PAGE->requires->js('/mod/wavefront/js/three.js', true);
-$PAGE->requires->js('/mod/wavefront/js/Detector.js', true);
-$PAGE->requires->js('/mod/wavefront/js/OrbitControls.js', true);
-$PAGE->requires->js('/mod/wavefront/js/OBJLoader.js', true);
-$PAGE->requires->js('/mod/wavefront/js/MTLLoader.js', true);
+$PAGE->requires->js('/mod/wavefront/thirdparty/three.js', true);
+$PAGE->requires->js('/mod/wavefront/thirdparty/Detector.js', true);
+$PAGE->requires->js('/mod/wavefront/thirdparty/OrbitControls.js', true);
+$PAGE->requires->js('/mod/wavefront/thirdparty/OBJLoader.js', true);
+$PAGE->requires->js('/mod/wavefront/thirdparty/MTLLoader.js', true);
 
 if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id))) {
     $fs = get_file_storage();
-    $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id);
+    $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
     
     // A Wavefront model contains three files
     $mtl_file = null;
@@ -133,74 +133,18 @@ if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefron
     
     $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(), $model->width, $model->height);
     
-    $PAGE->requires->js_call_amd('mod_wavefront/wavefront_renderer', 'init', $js_params);
+    $PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
 }
 
+$output = $PAGE->get_renderer('mod_wavefront');
 
+echo $output->header();
 
 $heading = get_string('displayingmodel', 'wavefront', $wavefront->name);
+echo $output->heading($heading);
 
-echo $OUTPUT->header();
+echo $output->display_model($wavefront, $editing);
+echo $output->display_comments($wavefront, $editing);
 
-echo $OUTPUT->heading($heading);
-
-if ($wavefront->intro && !$editing) {
-    echo $OUTPUT->box(format_module_intro('wavefront', $wavefront, $cm->id), 'generalbox', 'intro');
-}
-if ($wavefront->autoresize == AUTO_RESIZE_SCREEN || $wavefront->autoresize == AUTO_RESIZE_BOTH) {
-    $resizecss = ' autoresize';
-} else {
-    $resizecss = '';
-}
-echo $OUTPUT->box_start('generalbox wavefront clearfix'.$resizecss);
-
-$fs = get_file_storage();
-$storedfiles = $fs->get_area_files($context->id, 'mod_wavefront', 'wavefront_files');
-
-// TODO check to ensure we have all the files we need?
-
-
-// TODO OUTPUT THE MODEL HERE!!
-$html = '<div id="wavefront_stage"></div>';
-echo $html;
-
-
-
-// Add in edit link if necessary
-// TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
-if ($editing) {
-    $url = new moodle_url('/mod/wavefront/edit.php');
-    $html = '<form action="'. $url . '">'.
-                '<input type="hidden" name="id" value="'. $wavefront->id .'" />'.
-                '<input type="hidden" name="cmid" value="'.$cm->id.'" />'.
-                '<input type="hidden" name="page" value="0" />'.
-                '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.    
-            '</form>';
-    echo $html;
-}
-
-echo $OUTPUT->box_end();
-
-
-$options = array();
-
-
-if ($wavefront->comments && has_capability('mod/wavefront:addcomment', $context)) {
-    $opturl = new moodle_url('/mod/wavefront/comment.php', array('id' => $wavefront->id));
-    $options[] = html_writer::link($opturl, get_string('addcomment', 'wavefront'));
-}
-
-if (count($options) > 0) {
-    echo $OUTPUT->box(implode(' | ', $options), 'center');
-}
-
-if (!$editing && $wavefront->comments && has_capability('mod/wavefront:viewcomments', $context)) {
-    if ($comments = $DB->get_records('wavefront_comments', array('wavefrontid' => $wavefront->id), 'timemodified ASC')) {
-        foreach ($comments as $comment) {
-            wavefront_print_comment($comment, $context);
-        }
-    }
-}
-
-echo $OUTPUT->footer();
+echo $output->footer();
 
