@@ -41,15 +41,12 @@ $string['commentdelete'] = 'Confirm comment deletion?';
 
 $string['displayingmodel'] = 'Showing model: {$a}';
 
-$string['edit_thumbnail'] = 'Thumbnail';
-
 $string['errornofile'] = 'The requested file was not found: {$a}';
-$string['errornomodel'] = 'No images were found in this gallery';
+$string['errornomodel'] = 'No model files were found in this gallery';
 $string['erroruploadmodel'] = 'The files you upload must be a valid Wavefront model';
 $string['eventmodelcommentcreated'] = 'Comment created';
 $string['eventmodelupdated'] = 'Wavefront model updated';
 $string['eventviewed'] = 'Wavefront model viewed';
-$string['extendedinfo'] = 'Show extended model info';
 
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
