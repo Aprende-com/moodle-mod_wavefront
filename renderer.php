@@ -31,7 +31,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * @param object $wavefront The wavefront activity with which the model is associated
      * @param boolean $editing true if the current user can edit the model, else false.
      */
-    public function display_model($wavefront, $editing = false) {
+    public function display_model($wavefront, $editing = false, $modelerr = false) {
         $output = '';
         
         if ($wavefront->intro && !$editing) {
@@ -40,6 +40,9 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         
         $output .= $this->output->box_start('generalbox wavefront clearfix');
         $output .= '<div id="wavefront_stage"></div>';
+        if($modelerr) {
+            $output .= $this->output->heading(get_string("errornomodel", "wavefront"));
+        }
         
         // Add in edit link if necessary
         // TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
@@ -70,7 +73,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         
         $user = $DB->get_record('user', array('id' => $comment->userid));
     
-        $deleteurl = new moodle_url('/mod/model/comment.php', array('id' => $comment->model, 'delete' => $comment->id));
+        $deleteurl = new moodle_url('/mod/wavefront/comment.php', array('id' => $comment->wavefrontid, 'delete' => $comment->id));
     
         $output .= '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
                 '<tr class="header"><td class="picture left">'.$this->output->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
@@ -83,7 +86,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         '</td><td class="content" align="left">'.
         format_text($comment->commenttext, FORMAT_MOODLE).
         '<div class="commands">'.
-        (has_capability('mod/model:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
+        (has_capability('mod/wavefront:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
         '</div>'.
         '</td></tr></table>';
         
