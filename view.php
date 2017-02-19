@@ -107,6 +107,8 @@ $PAGE->requires->js('/mod/wavefront/thirdparty/OrbitControls.js', true);
 $PAGE->requires->js('/mod/wavefront/thirdparty/OBJLoader.js', true);
 $PAGE->requires->js('/mod/wavefront/thirdparty/MTLLoader.js', true);
 
+$modelerr = true;
+
 if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id))) {
     $fs = get_file_storage();
     $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
@@ -131,6 +133,10 @@ if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefron
         }   
     }
     
+    if($mtl_file != null && $obj_file != null) {
+        $modelerr = false;
+    }
+    
     $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(), $model->width, $model->height);
     
     $PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
@@ -143,7 +149,7 @@ echo $output->header();
 $heading = get_string('displayingmodel', 'wavefront', $wavefront->name);
 echo $output->heading($heading);
 
-echo $output->display_model($wavefront, $editing);
+echo $output->display_model($wavefront, $editing, $modelerr);
 echo $output->display_comments($wavefront, $editing);
 
 echo $output->footer();
