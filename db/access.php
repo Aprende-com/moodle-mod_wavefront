@@ -40,7 +40,7 @@
  *
  * The variable name for the capability definitions array is $capabilities
  *
- * @package   mod_model
+ * @package   mod_wavefront
  * @copyright 2017 Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
