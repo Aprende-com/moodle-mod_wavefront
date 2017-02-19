@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_wavefront attempt viewed event.
+ * The mod_wavefront viewed event.
  *
  * @package    mod_wavefront
  * @copyright  2017 Ian Wild
@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @property-read array $other {
  *      Extra information about event.
  *
- *      - int modelid: the id of the quiz.
+ *      - int wavefrontid: the id of the wavefront activity.
  * }
  *
  * @package    mod_wavefront
