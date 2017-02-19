@@ -97,19 +97,6 @@ function wavefront_update_instance($wavefront) {
 }
 
 /**
- * Given a model object from mod_form, determine the autoresize and resize params.
- *
- * @param object $model
- * @return void
- */
-function wavefront_set_sizing($wavefront) {
-    if (isset($wavefront->autoresizedisabled)) {
-        $wavefront->autoresize = 0;
-        $wavefront->resize = 0;
-    }
-}
-
-/**
  * Given an ID of an instance of this module,
  * this function will permanently delete the instance
  * and any data that depends on it.
@@ -138,6 +125,19 @@ function wavefront_delete_instance($id) {
     $DB->delete_records('wavefront', array('id' => $id));
 
     return true;
+}
+
+/**
+ * Given a model object from mod_form, determine the autoresize and resize params.
+ *
+ * @param object $model
+ * @return void
+ */
+function wavefront_set_sizing($wavefront) {
+    if (isset($wavefront->autoresizedisabled)) {
+        $wavefront->autoresize = 0;
+        $wavefront->resize = 0;
+    }
 }
 
 /**
@@ -331,7 +331,7 @@ function wavefront_get_post_actions() {
 }
 
 /**
- * Serves embedded images and other files.
+ * Serves model files.
  *
  * @param object $course
  * @param object $cm
@@ -430,32 +430,3 @@ function wavefront_resize_text($text, $length) {
     return core_text::strlen($text) > $length ? core_text::substr($text, 0, $length) . '...' : $text;
 }
 
-/**
- * Output the HTML for a comment in the given context.
- * @param object $comment The comment record to output
- * @param object $context The context from which this is being displayed
- */
-function wavefront_print_comment($comment, $context) {
-    global $DB, $CFG, $COURSE, $OUTPUT;
-
-    // TODO: Move to renderer!
-
-    $user = $DB->get_record('user', array('id' => $comment->userid));
-
-    $deleteurl = new moodle_url('/mod/model/comment.php', array('id' => $comment->model, 'delete' => $comment->id));
-
-    echo '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
-         '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
-         '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
-         '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
-         fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
-         '</div></td></tr>'.
-         '<tr><td class="left side">'.
-    // TODO: user_group picture?
-         '</td><td class="content" align="left">'.
-         format_text($comment->commenttext, FORMAT_MOODLE).
-         '<div class="commands">'.
-         (has_capability('mod/model:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
-         '</div>'.
-         '</td></tr></table>';
-}
