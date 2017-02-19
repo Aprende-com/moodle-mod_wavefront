@@ -18,31 +18,30 @@
 /**
  * Form for adding comments on a model
  *
- * @package   mod_model
+ * @package   mod_wavefront
  * @copyright 2017 Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once($CFG->libdir.'/formslib.php');
 
-class mod_model_comment_form extends moodleform {
+class mod_wavefront_comment_form extends moodleform {
 
     public function definition() {
 
         $mform =& $this->_form;
-        $model = $this->_customdata;
+        $wavefront = $this->_customdata;
 
-        $straddcomment = get_string('addcomment', 'model');
+        $straddcomment = get_string('addcomment', 'wavefront');
 
         $mform->addElement('editor', 'comment', $straddcomment, array('cols' => 85, 'rows' => 18));
         $mform->addRule('comment', get_string('required'), 'required', null, 'client');
         $mform->setType('comment', PARAM_RAW);
 
         $mform->addElement('hidden', 'id', 0);
-        $mform->setDefault('id', $model->id);
+        $mform->setDefault('id', $wavefront->id);
         $mform->setType('id', PARAM_INT);
 
         $this->add_action_buttons(true, $straddcomment);
-
     }
 }
