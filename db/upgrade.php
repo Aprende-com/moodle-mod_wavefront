@@ -25,7 +25,7 @@
  * it cannot do itself, it will tell you what you need to do.  The commands in
  * here will all be database-neutral, using the functions defined in DLL libraries.
  *
- * @package   mod_model
+ * @package   mod_wavefront
  * @copyright 2017 Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
