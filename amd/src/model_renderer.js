@@ -18,8 +18,8 @@
  *
  * Manages the UI while operations are occuring, including rendering and manipulating the model.
  *
- * @module     mod_wavefront/wavefront_renderer
- * @class      wavefront_renderer
+ * @module     mod_wavefront/model_renderer
+ * @class      model_renderer
  * @package    mod_wavefront
  * @copyright  2017 Ian Wild
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
