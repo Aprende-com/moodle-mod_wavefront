@@ -28,7 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(dirname(__FILE__).'/locallib.php');
+//require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_wavefront_mod_form extends moodleform_mod {
@@ -48,11 +48,7 @@ class mod_wavefront_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        if ($CFG->branch < 29) {
-            $this->add_intro_editor(true, get_string('description'));
-        } else {
-            $this->standard_intro_elements();
-        }
+        $this->standard_intro_elements();
         
         // Advanced options.
 
@@ -75,9 +71,6 @@ class mod_wavefront_mod_form extends moodleform_mod {
         $mform->addElement('select', 'ispublic', get_string('makepublic', 'wavefront'), $yesno);
         $mform->setType('ispublic', PARAM_INT);
 
-        $mform->addElement('select', 'extinfo', get_string('extendedinfo', 'wavefront'), $yesno);
-        $mform->setType('extinfo', PARAM_INT);
-
         // Module options.
         $features = array('groups' => false, 'groupings' => false, 'groupmembersonly' => false,
                           'outcomes' => false, 'gradecat' => false, 'idnumber' => false);
@@ -85,7 +78,6 @@ class mod_wavefront_mod_form extends moodleform_mod {
         $this->standard_coursemodule_elements($features);
 
         $this->add_action_buttons();
-
     }
 }
 
