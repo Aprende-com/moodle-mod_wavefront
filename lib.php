@@ -24,7 +24,7 @@
  * logic, should go to locallib.php. This will help to save some memory when
  * Moodle is performing actions across all modules.
  *
- * @package   mod_model
+ * @package   mod_wavefront
  * @copyright 2017 Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -64,7 +64,7 @@ function wavefront_supports($feature) {
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param object $model An object from the form in mod_form.php
+ * @param object $wavefront An object from the form in mod_form.php
  * @return int The id of the newly inserted newmodule record
  */
 function wavefront_add_instance($wavefront) {
@@ -82,7 +82,7 @@ function wavefront_add_instance($wavefront) {
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param object $model An object from the form in mod_form.php
+ * @param object $wavefront An object from the form in mod_form.php
  * @return boolean Success/Fail
  */
 function wavefront_update_instance($wavefront) {
@@ -130,7 +130,7 @@ function wavefront_delete_instance($id) {
 /**
  * Given a model object from mod_form, determine the autoresize and resize params.
  *
- * @param object $model
+ * @param object $wavefront
  * @return void
  */
 function wavefront_set_sizing($wavefront) {
@@ -152,19 +152,19 @@ function wavefront_user_complete($course, $user, $mod, $resource) {
 
     $sql = "SELECT c.*
               FROM {wavefront_comments} c
-                   JOIN {wavefront} l ON l.id = c.model
+                   JOIN {wavefront} l ON l.id = c.wavefrontid
                    JOIN {user}            u ON u.id = c.userid
              WHERE l.id = :mod AND u.id = :userid
           ORDER BY c.timemodified ASC";
     $params = array('mod' => $mod->instance, 'userid' => $user->id);
     if ($comments = $DB->get_records_sql($sql, $params)) {
-        $cm = get_coursemodule_from_id('model', $mod->id);
+        $cm = get_coursemodule_from_id('wavefront', $mod->id);
         $context = context_module::instance($cm->id);
         foreach ($comments as $comment) {
             wavefront_print_comment($comment, $context);
         }
     } else {
-        print_string('nocomments', 'model');
+        print_string('nocomments', 'wavefront');
     }
 }
 
@@ -193,8 +193,8 @@ function wavefront_get_recent_mod_activity(&$activities, &$index, $timestart, $c
     $userfields = user_picture::fields('u', null, 'userid');
     $userfieldsnoalias = user_picture::fields();
     $sql = "SELECT c.*, l.name, $userfields
-              FROM {model_comments} c
-                   JOIN {model} l ON l.id = c.model
+              FROM {wavefront_comments} c
+                   JOIN {wavefront} l ON l.id = c.wavefrontid
                    JOIN {user}            u ON u.id = c.userid
              WHERE c.timemodified > $timestart AND l.id = {$cm->instance}
                    " . ($userid ? "AND u.id = $userid" : '') . "
@@ -281,7 +281,7 @@ function wavefront_print_recent_activity($course, $viewfullnames, $timestart) {
         echo '<ul class="unlist">';
 
         foreach ($comments as $comment) {
-            $display = model_resize_text(trim(strip_tags($comment->commenttext)), MAX_COMMENT_PREVIEW);
+            $display = wavefront_resize_text(trim(strip_tags($comment->commenttext)), MAX_COMMENT_PREVIEW);
 
             $output = '<li>'.
                  ' <div class="head">'.
@@ -289,7 +289,7 @@ function wavefront_print_recent_activity($course, $viewfullnames, $timestart) {
                  '  <div class="name">'.fullname($comment, $viewfullnames).' - '.format_string($comment->name).'</div>'.
                  ' </div>'.
                  ' <div class="info">'.
-                 '  "<a href="'.$CFG->wwwroot.'/mod/wavefront/view.php?l='.$comment->model.'#c'.$comment->id.'">'.
+                 '  "<a href="'.$CFG->wwwroot.'/mod/wavefront/view.php?l='.$comment->wavefrontid.'#c'.$comment->id.'">'.
                  $display.'</a>"'.
                  ' </div>'.
                  '</li>';
@@ -313,13 +313,13 @@ function wavefront_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $newmoduleid ID of an instance of this module
  * @return boolean|array false if no participants, array of objects otherwise
  */
-function wavefront_get_participants($modelid) {
+function wavefront_get_participants($wavefrontid) {
     global $DB, $CFG;
 
     return $DB->get_records_sql("SELECT DISTINCT u.id, u.id
                                    FROM {user} u,
                                         {model_comments} c
-                                  WHERE c.model = $modelid AND u.id = c.userid");
+                                  WHERE c.wavefrontid = $wavefrontid AND u.id = c.userid");
 }
 
 function wavefront_get_view_actions() {
@@ -430,3 +430,32 @@ function wavefront_resize_text($text, $length) {
     return core_text::strlen($text) > $length ? core_text::substr($text, 0, $length) . '...' : $text;
 }
 
+/**
+ * Output the HTML for a comment in the given context.
+ * @param object $comment The comment record to output
+ * @param object $context The context from which this is being displayed
+ */
+function wavefront_print_comment($comment, $context) {
+    global $DB, $CFG, $COURSE, $OUTPUT;
+
+    // TODO: Move to renderer!
+
+    $user = $DB->get_record('user', array('id' => $comment->userid));
+
+    $deleteurl = new moodle_url('/mod/wavefront/comment.php', array('id' => $comment->wavefrontid, 'delete' => $comment->id));
+
+    echo '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
+            '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
+            '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
+            '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
+            fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
+            '</div></td></tr>'.
+            '<tr><td class="left side">'.
+            // TODO: user_group picture?
+    '</td><td class="content" align="left">'.
+    format_text($comment->commenttext, FORMAT_MOODLE).
+    '<div class="commands">'.
+    (has_capability('mod/wavefront:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
+    '</div>'.
+    '</td></tr></table>';
+}
