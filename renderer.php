@@ -35,25 +35,25 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $output = '';
         
         if ($wavefront->intro && !$editing) {
-            $output .= $OUTPUT->box(format_module_intro('wavefront', $wavefront, $cm->id), 'generalbox', 'intro');
+            $output .= $this->output->box(format_module_intro('wavefront', $wavefront, $this->page->cm->id), 'generalbox', 'intro');
         }
         
-        $output .= $OUTPUT->box_start('generalbox wavefront clearfix');
+        $output .= $this->output->box_start('generalbox wavefront clearfix');
         $output .= '<div id="wavefront_stage"></div>';
         
         // Add in edit link if necessary
         // TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
         if ($editing) {
-            $url = new moodle_url('/mod/wavefront/edit.php');
+            $url = new moodle_url('/mod/wavefront/edit_model.php');
             $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $wavefront->id .'" />'.
-                    '<input type="hidden" name="cmid" value="'.$cm->id.'" />'.
+                    '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
                     '<input type="hidden" name="page" value="0" />'.
                     '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
                     '</form>';
         }
         
-        $output .= $OUTPUT->box_end();
+        $output .= $this->output->box_end();
         
         return $output;
     }
@@ -64,7 +64,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * @param object $context The context from which this is being displayed
      */
     private function print_comment($comment, $context) {
-        global $DB, $CFG, $COURSE, $OUTPUT;
+        global $DB, $CFG, $COURSE;
     
         $output = '';
         
@@ -73,7 +73,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $deleteurl = new moodle_url('/mod/model/comment.php', array('id' => $comment->model, 'delete' => $comment->id));
     
         $output .= '<table cellspacing="0" width="50%" class="boxaligncenter datacomment forumpost">'.
-                '<tr class="header"><td class="picture left">'.$OUTPUT->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
+                '<tr class="header"><td class="picture left">'.$this->output->user_picture($user, array('courseid' => $COURSE->id)).'</td>'.
                 '<td class="topic starter" align="left"><a name="c'.$comment->id.'"></a><div class="author">'.
                 '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&amp;course='.$COURSE->id.'">'.
                 fullname($user, has_capability('moodle/site:viewfullnames', $context)).'</a> - '.userdate($comment->timemodified).
@@ -90,10 +90,14 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         return $output;
     }
 
-    public function display_comments($wavefront) {
+    public function display_comments($wavefront, $editing = false) {
+        global $DB;
+        
         $output = '';
         
         $options = array();
+        
+        $context = context_module::instance($this->page->cm->id);
         
         if ($wavefront->comments && has_capability('mod/wavefront:addcomment', $context)) {
             $opturl = new moodle_url('/mod/wavefront/comment.php', array('id' => $wavefront->id));
@@ -101,7 +105,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         }
         
         if (count($options) > 0) {
-            $output .= $OUTPUT->box(implode(' | ', $options), 'center');
+            $output .= $this->output->box(implode(' | ', $options), 'center');
         }
         
         if (!$editing && $wavefront->comments && has_capability('mod/wavefront:viewcomments', $context)) {
