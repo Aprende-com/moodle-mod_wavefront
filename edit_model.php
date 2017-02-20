@@ -42,7 +42,7 @@ if($model) {
     $model->id = null;
 }
 
-$maxfiles = 10;                // TODO: add some setting
+$maxfiles = 50;                // TODO: add some setting
 $maxbytes = $course->maxbytes; // TODO: add some setting
 
 $descriptionoptions = array('trusttext'=>true, 'maxfiles'=>$maxfiles, 'maxbytes'=>$maxbytes, 'context'=>$context,
