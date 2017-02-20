@@ -60,7 +60,7 @@ define([], function() {
 			
 			// Camera
 			var SCREEN_WIDTH = stage_width, SCREEN_HEIGHT = stage_height;
-			var VIEW_ANGLE = -45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 1000;
+			var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 1000;
 			camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 			scene.add(camera);
 			camera.position.set(0,-1,-50);	
@@ -88,9 +88,6 @@ define([], function() {
             mtlLoader.load(mtl_file, function (materials) {
 
                 materials.preload();
-
-                materials.materials.material0000.map.magFilter = THREE.NearestFilter;
-                materials.materials.material0000.map.minFilter = THREE.LinearFilter;
 
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setMaterials(materials);
