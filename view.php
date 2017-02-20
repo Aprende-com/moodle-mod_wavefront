@@ -128,9 +128,8 @@ if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefron
             $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
         } elseif ($ext === "obj") {
             $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-        } elseif ($ext === "png") {
-            $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');
-        }   
+            $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');  
+        }
     }
     
     if($mtl_file != null && $obj_file != null) {
