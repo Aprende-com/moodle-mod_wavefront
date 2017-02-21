@@ -29,13 +29,19 @@ class mod_wavefront_model_form extends moodleform {
         $mform->setType('description_editor', PARAM_RAW);
         $mform->addRule('description_editor', get_string('required'), 'required', null, 'client');
 
+        $descriptionposopts = array(
+                '0' => get_string('position_bottom', 'wavefront'),
+                '1' => get_string('position_top', 'wavefront'),
+                '2' => get_string('hide'),
+        );
+        $mform->addElement('select', 'descriptionpos', get_string('descriptionpos', 'wavefront'), $descriptionposopts);  
+        
         $mform->addElement('filemanager', 'model_filemanager', get_string('modelfiles', 'wavefront'), null, $modeloptions);
         $mform->addHelpButton('model_filemanager', 'modelfiles', 'wavefront');
         
-        // Advanced options
-        $mform->addElement('header', 'modeloptions', get_string('advanced'));
-        
         // Stage
+        $mform->addElement('header', 'stageoptions', get_string('stageheading', 'wavefront'));
+        
         $mform->addElement('text', 'stagewidth', get_string('stagewidth', 'wavefront'), 'maxlength="5" size="5"');
         $mform->setDefault('stagewidth', 400);
         $mform->setType('stagewidth', PARAM_INT);
@@ -45,6 +51,8 @@ class mod_wavefront_model_form extends moodleform {
         $mform->setType('stageheight', PARAM_INT);
         
         // Camera
+        $mform->addElement('header', 'cameraoptions', get_string('cameraheading', 'wavefront'));
+        
         $mform->addElement('text', 'cameraangle', get_string('cameraangle', 'wavefront'), 'maxlength="5" size="5"');
         $mform->setDefault('cameraangle', 45);
         $mform->setType('cameraangle', PARAM_INT);
