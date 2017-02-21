@@ -50,9 +50,8 @@ $string['eventviewed'] = 'Wavefront model viewed';
 
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
-$string['wavefront:viewcomments'] = 'View lightbox gallery comments';
+$string['wavefront:viewcomments'] = 'View model gallery comments';
 $string['makepublic'] = 'Make public';
-$string['metadata'] = 'Meta data';
 $string['modulename'] = 'Wavefront Renderer';
 $string['modulename_help'] = 'The Wavefront 3D Renderer resource module enables participants to view a Wavefront .OBJ file format compliant 3D model.
 
@@ -76,5 +75,12 @@ $string['modeldescription'] = 'Description';
 $string['modelfiles'] = 'Upload Wavefront files';
 $string['modelfiles_help'] = 'Either upload all model files individually or you can select a zip archive containing the model files, which will be extracted into the model directory after being uploaded.';
 $string['editmodel'] = 'Edit model';
-$string['width'] = 'Width';
-$string['height'] = 'Height';
+$string['stageheading'] = 'Stage configuration';
+$string['stagewidth'] = 'Width';
+$string['stageheight'] = 'Height';
+$string['cameraheading'] = 'Camera configuration';
+$string['camerax'] = 'X';
+$string['cameray'] = 'Y';
+$string['cameraz'] = 'Z';
+$string['cameraangle'] = 'View angle';
+$string['camerafar'] = 'Far';
