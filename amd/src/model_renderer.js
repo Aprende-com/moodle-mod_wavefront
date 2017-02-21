@@ -44,7 +44,7 @@ define([], function() {
     }
     
 	var t = {
-        init: function(stage, obj_file, mtl_file, baseurl, width, height) {
+        init: function(stage, obj_file, mtl_file, baseurl, width, height, cameraangle, camerafar, camerax, cameray, cameraz) {
 			if (!Detector.webgl) {
 			    Detector.addGetWebGLMessage();
 			}
@@ -60,10 +60,10 @@ define([], function() {
 			
 			// Camera
 			var SCREEN_WIDTH = stage_width, SCREEN_HEIGHT = stage_height;
-			var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 1000;
+			var VIEW_ANGLE = Number(cameraangle), ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = Number(camerafar);
 			camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 			scene.add(camera);
-			camera.position.set(0,-1,-50);	
+			camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 			
 			ambient = new THREE.AmbientLight(0xffffff, 1.0);	
 			scene.add(ambient);
