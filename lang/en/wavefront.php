@@ -38,7 +38,7 @@ $string['commentadded'] = 'Your comment has been posted to the gallery';
 $string['commentcount'] = '{$a} comments';
 $string['commentdelete'] = 'Confirm comment deletion?';
 
-$string['displayingmodel'] = 'Showing model: {$a}';
+$string['displayingmodel'] = '{$a}';
 
 $string['errornofile'] = 'The requested file was not found: {$a}';
 $string['errornomodel'] = 'No model files were found in this gallery';
