@@ -136,8 +136,10 @@ if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefron
         $modelerr = false;
     }
     
-    $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(), $model->width, $model->height);
-    
+    $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(), 
+            $model->stagewidth, $model->stageheight,
+            $model->cameraangle, $model->camerafar, $model->camerax, $model->cameray, $model->cameraz);
+       
     $PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
 }
 
