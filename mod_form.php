@@ -56,15 +56,6 @@ class mod_wavefront_mod_form extends moodleform_mod {
 
         $yesno = array(0 => get_string('no'), 1 => get_string('yes'));
 
-        $mform->addElement('select', 'captionfull', get_string('captionfull', 'wavefront'), $yesno);
-
-        $captionposopts = array(
-            '0' => get_string('position_bottom', 'wavefront'),
-            '1' => get_string('position_top', 'wavefront'),
-            '2' => get_string('hide'),
-        );
-        $mform->addElement('select', 'captionpos', get_string('captionpos', 'wavefront'), $captionposopts);
-
         $mform->addElement('select', 'comments', get_string('allowcomments', 'wavefront'), $yesno);
         $mform->setType('comments', PARAM_INT);
 
