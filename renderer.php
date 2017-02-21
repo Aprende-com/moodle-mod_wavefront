@@ -31,7 +31,9 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * @param object $wavefront The wavefront activity with which the model is associated
      * @param boolean $editing true if the current user can edit the model, else false.
      */
-    public function display_model($wavefront, $editing = false, $modelerr = false) {
+    public function display_model($wavefront, $editing = false, $modelerr=false) {
+        global $DB;
+        
         $output = '';
         
         if ($wavefront->intro && !$editing) {
@@ -39,9 +41,30 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         }
         
         $output .= $this->output->box_start('generalbox wavefront clearfix');
-        $output .= '<div id="wavefront_stage"></div>';
-        if($modelerr) {
+        
+        
+        $model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id));
+        
+        if(!$model || $modelerr) {
             $output .= $this->output->heading(get_string("errornomodel", "wavefront"));
+        } else {
+            $output .= '<div class="wavefront-model-container">'.
+                    '<div class="wavefront-model-wrapper">'.
+                    '<div class="wavefront-model-frame">';
+            $posclass = ($model->descriptionpos == 1) ? 'top' : 'bottom'; // doesn't matter if it's hidden
+            $captiondiv = html_writer::tag('div', $model->description, array('class' => "wavefront-model-caption $posclass"));
+            
+            if($model->descriptionpos == 1) {
+                $output .= $captiondiv;
+            }
+            
+            $output .= '<div id="wavefront_stage"></div>';
+             
+            if($model->descriptionpos == 0) {
+                $output .= $captiondiv;
+            }
+            
+            $output .= '</div></div></div>';
         }
         
         // Add in edit link if necessary
