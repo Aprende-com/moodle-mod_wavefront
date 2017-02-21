@@ -35,15 +35,35 @@ class mod_wavefront_model_form extends moodleform {
         // Advanced options
         $mform->addElement('header', 'modeloptions', get_string('advanced'));
         
-        // Width.
-        $mform->addElement('text', 'width', get_string('width', 'wavefront'), 'maxlength="5" size="5"');
-        $mform->setDefault('width', 400);
-        $mform->setType('width', PARAM_INT);
+        // Stage
+        $mform->addElement('text', 'stagewidth', get_string('stagewidth', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('stagewidth', 400);
+        $mform->setType('stagewidth', PARAM_INT);
         
-        // Height.
-        $mform->addElement('text', 'height', get_string('height', 'wavefront'), 'maxlength="5" size="5"');
-        $mform->setDefault('height', 400);
-        $mform->setType('height', PARAM_INT);
+        $mform->addElement('text', 'stageheight', get_string('stageheight', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('stageheight', 400);
+        $mform->setType('stageheight', PARAM_INT);
+        
+        // Camera
+        $mform->addElement('text', 'cameraangle', get_string('cameraangle', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('cameraangle', 45);
+        $mform->setType('cameraangle', PARAM_INT);
+        
+        $mform->addElement('text', 'camerafar', get_string('camerafar', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('camerafar', 1000);
+        $mform->setType('camerafar', PARAM_INT);
+        
+        $mform->addElement('text', 'camerax', get_string('camerax', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('camerax', 0);
+        $mform->setType('camerax', PARAM_INT);
+        
+        $mform->addElement('text', 'cameray', get_string('cameray', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('cameray', 1);
+        $mform->setType('cameray', PARAM_INT);
+        
+        $mform->addElement('text', 'cameraz', get_string('cameraz', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('cameraz', 200);
+        $mform->setType('cameraz', PARAM_INT);
         
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
