@@ -18,7 +18,7 @@
 /**
  * Shows a list of available models
  *
- * @package   mod_model
+ * @package   mod_wavefront
  * @copyright 2017 Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,19 +32,19 @@ $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 $context = context_course::instance($course->id);
 require_course_login($course);
 
-$event = \mod_model\event\course_module_instance_list_viewed::create(array(
+$event = \mod_wavefront\event\course_module_instance_list_viewed::create(array(
     'context' => $context
 ));
 $event->add_record_snapshot('course', $course);
 $event->trigger();
 
-$PAGE->set_url('/mod/model/view.php', array('id' => $id));
+$PAGE->set_url('/mod/wavefront/view.php', array('id' => $id));
 $PAGE->set_title($course->fullname);
 $PAGE->set_heading($course->shortname);
 
 echo $OUTPUT->header();
 
-if (! $models = get_all_instances_in_course('model', $course)) {
+if (! $models = get_all_instances_in_course('wavefront', $course)) {
     echo $OUTPUT->heading(get_string('thereareno', 'moodle', $strmodels), 2);
     echo $OUTPUT->continue_button('view.php?id='.$course->id);
     echo $OUTPUT->footer();
@@ -75,16 +75,16 @@ foreach ($models as $model) {
     }
 
     $fs = get_file_storage();
-    $files = $fs->get_area_files($cm->id, 'mod_model', 'model_files');
+    $files = $fs->get_area_files($cm->id, 'mod_wavefront', 'model');
     $modelcount = 0;
     foreach ($files as $file) {
         if ($file->get_filename() != '.') {
             $modelcount++;
         }
     }
-    $commentcount = $DB->count_records('model_comments', array('model' => $model->id));
+    $commentcount = $DB->count_records('wavefront_comments', array('model' => $model->id));
 
-    $viewurl = new moodle_url('/mod/model/view.php', array('id' => $model->coursemodule));
+    $viewurl = new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule));
     $table->data[] = array(($printsection ? $model->section : ''),
                            model_index_thumbnail($course->id, $model),
                            html_writer::link($viewurl, $model->name).
