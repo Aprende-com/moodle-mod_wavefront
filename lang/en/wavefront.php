@@ -33,13 +33,12 @@ $string['addmodel_help'] = 'Browse for model files on your local machine to add 
 You can also select a zip archive containing model files, which will be extracted into the model directory after being uploaded.';
 
 $string['allowcomments'] = 'Allow comments';
-$string['captionfull'] = 'Display full caption text?';
-$string['captionpos'] = 'Caption Position';
+$string['descriptionpos'] = 'Caption Position';
 $string['commentadded'] = 'Your comment has been posted to the gallery';
 $string['commentcount'] = '{$a} comments';
 $string['commentdelete'] = 'Confirm comment deletion?';
 
-$string['displayingmodel'] = 'Showing model: {$a}';
+$string['displayingmodel'] = '{$a}';
 
 $string['errornofile'] = 'The requested file was not found: {$a}';
 $string['errornomodel'] = 'No model files were found in this gallery';
@@ -75,10 +74,10 @@ $string['modeldescription'] = 'Description';
 $string['modelfiles'] = 'Upload Wavefront files';
 $string['modelfiles_help'] = 'Either upload all model files individually or you can select a zip archive containing the model files, which will be extracted into the model directory after being uploaded.';
 $string['editmodel'] = 'Edit model';
-$string['stageheading'] = 'Stage configuration';
+$string['stageheading'] = 'Stage';
 $string['stagewidth'] = 'Width';
 $string['stageheight'] = 'Height';
-$string['cameraheading'] = 'Camera configuration';
+$string['cameraheading'] = 'Camera';
 $string['camerax'] = 'X';
 $string['cameray'] = 'Y';
 $string['cameraz'] = 'Z';
