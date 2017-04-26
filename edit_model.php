@@ -17,6 +17,8 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
 
 $context = context_module::instance($cm->id);
 
+require_capability('mod/wavefront:edit', $context);
+
 if (!$wavefront = $DB->get_record('wavefront', array('id'=>$cm->instance))) {
     print_error('invalidid', 'wavefront');
 }
