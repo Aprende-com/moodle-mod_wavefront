@@ -15,8 +15,6 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
 }
 
-require_login($course, false, $cm);
-
 $context = context_module::instance($cm->id);
 
 if (!$wavefront = $DB->get_record('wavefront', array('id'=>$cm->instance))) {
@@ -28,6 +26,8 @@ if (!empty($id)) {
     $url->param('id', $id);
 }
 $PAGE->set_url($url);
+
+require_login($course, false, $cm);
 
 // attempt to get the correct model
 $model = $DB->get_record('wavefront_model', array('wavefrontid'=>$wavefront->id));
