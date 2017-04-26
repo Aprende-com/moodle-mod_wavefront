@@ -42,7 +42,7 @@ class restore_wavefront_activity_task extends restore_activity_task {
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // Choice only has one structure step.
+        // Wavefront only has one structure step.
         $this->add_step(new restore_wavefront_activity_structure_step('wavefront_structure', 'wavefront.xml'));
     }
 
