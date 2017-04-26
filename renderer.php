@@ -52,7 +52,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
                     '<div class="wavefront-model-wrapper">'.
                     '<div class="wavefront-model-frame">';
             $posclass = ($model->descriptionpos == 1) ? 'top' : 'bottom'; // doesn't matter if it's hidden
-            $captiondiv = html_writer::tag('div', $model->description, array('class' => "wavefront-model-caption $posclass"));
+            $captiondiv = html_writer::tag('div', format_text($model->description, FORMAT_MOODLE), array('class' => "wavefront-model-caption $posclass"));
             
             if($model->descriptionpos == 1) {
                 $output .= $captiondiv;
