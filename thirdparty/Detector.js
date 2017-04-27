@@ -58,7 +58,7 @@ addGetWebGLMessage: function ( parameters ) {
 
 	parameters = parameters || {};
 
-	parent = parameters.parent !== undefined ? parameters.parent : document.body;
+	parent = parameters.parentElement !== undefined ? parameters.parentElement : document.body;
 	id = parameters.id !== undefined ? parameters.id : 'oldie';
 
 		element = Detector.getWebGLErrorMessage();
