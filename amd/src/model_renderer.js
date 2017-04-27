@@ -45,11 +45,13 @@ define([], function() {
     
 	var t = {
         init: function(stage, obj_file, mtl_file, baseurl, width, height, cameraangle, camerafar, camerax, cameray, cameraz) {
-			if (!Detector.webgl) {
-			    Detector.addGetWebGLMessage();
+        	container = document.getElementById(stage);
+        	
+        	if (!Detector.webgl) {
+				
+			    Detector.addGetWebGLMessage(container);
+			    return true;
 			}
-			
-			container = document.getElementById(stage);
 			
 			wavefront_stage = stage;
 			stage_width = width;
