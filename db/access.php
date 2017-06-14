@@ -84,16 +84,6 @@ $capabilities = array(
         )
     ),
 
-    'mod/wavefront:addmodel' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-
     'mod/wavefront:edit' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',
