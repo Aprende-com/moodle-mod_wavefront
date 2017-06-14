@@ -49,7 +49,12 @@ $string['eventviewed'] = 'Wavefront model viewed';
 
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
+
 $string['wavefront:viewcomments'] = 'View model gallery comments';
+$string['wavefront:edit'] = 'Edit a model';
+$string['wavefront:submit'] = 'Submit a model to the gallery';
+$string['wavefront:addcomment'] = 'Comment on a model';
+
 $string['makepublic'] = 'Make public';
 $string['modulename'] = 'Wavefront Renderer';
 $string['modulename_help'] = 'The Wavefront 3D Renderer resource module enables participants to view a Wavefront .OBJ file format compliant 3D model.
