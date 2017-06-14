@@ -88,3 +88,4 @@ $string['cameray'] = 'Y';
 $string['cameraz'] = 'Z';
 $string['cameraangle'] = 'View angle';
 $string['camerafar'] = 'Far';
+
