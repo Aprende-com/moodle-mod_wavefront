@@ -30,4 +30,4 @@ $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
 
 $plugin->component = 'mod_wavefront';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.0.0.5';
+$plugin->release = '0.0.0.6';
