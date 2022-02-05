@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <libraries>
   <library>
-    <location>thirdparty/three.js</location>
-    <name>Three.js</name>
+    <location>amd/src/three.js</location>
+    <name>Three.js JavaScript 3D library</name>
     <license>MIT</license>
-    <version>v1</version>
-    <licenseversion>1</licenseversion>
+    <version>r137</version>
+    <licenseversion>MIT License</licenseversion>
   </library>
 </libraries>
