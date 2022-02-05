@@ -98,15 +98,6 @@ if (has_capability('mod/wavefront:edit', $context)) {
 }
 $PAGE->set_button($button);
 
-// The javascript this page requires
-// The code we are using is neat javascript so load each script one at a time
-//
-$PAGE->requires->js('/mod/wavefront/thirdparty/three.js', true);
-$PAGE->requires->js('/mod/wavefront/thirdparty/Detector.js', true);
-$PAGE->requires->js('/mod/wavefront/thirdparty/OrbitControls.js', true);
-$PAGE->requires->js('/mod/wavefront/thirdparty/OBJLoader.js', true);
-$PAGE->requires->js('/mod/wavefront/thirdparty/MTLLoader.js', true);
-
 $modelerr = true;
 
 if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id))) {
