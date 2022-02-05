@@ -18,16 +18,15 @@
  * Wavefront version info.
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2017061900;  // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version  = 2022020500;  // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2016052300;  // Requires this Moodle version.
 $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
-
 $plugin->component = 'mod_wavefront';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.0.0.6';
+$plugin->release = '0.0.0.7';
