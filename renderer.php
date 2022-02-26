@@ -32,7 +32,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      */
     public function display_model($context, $model, $stagename, $editing = false) {
         
-        $output = $this->output->box_start();
+        $output = $this->output->box_start('wavefront');
         /*
         TO PASS TO JS:
         $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(),
