@@ -28,11 +28,14 @@ require_once('lib.php');
 require_once('edit_model_form.php');
 
 $cmid = required_param('cmid', PARAM_INT);            // Course Module ID
-$id   = optional_param('id', 0, PARAM_INT);           // Wavefront ID
+$id   = optional_param('id', 0, PARAM_INT);           // model ID
 
 if (!$cm = get_coursemodule_from_id('wavefront', $cmid)) {
     print_error('invalidcoursemodule');
 }
+
+// Attempt to get the correct model
+$model = $DB->get_record('wavefront_model', array('id'=>$id));
 
 if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
@@ -53,9 +56,6 @@ if (!empty($id)) {
 $PAGE->set_url($url);
 
 require_login($course, false, $cm);
-
-// attempt to get the correct model
-$model = $DB->get_record('wavefront_model', array('wavefrontid'=>$wavefront->id));
      
 if($model) {     
     if (isguestuser()) {
