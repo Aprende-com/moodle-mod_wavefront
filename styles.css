@@ -1,3 +1,7 @@
+.wavefront-gallery {
+	display:flex;
+}
+
 .dir-rtl .wavefront .wavefront-model-container {
     display: inline-block;
     margin: 10px;
@@ -6,7 +10,7 @@
 .wavefront .wavefront-model-frame {
     background-color: #fff;
     display: inline-block;
-    margin: 10px auto;
+    margin: 10px;
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
