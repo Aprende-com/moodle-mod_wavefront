@@ -104,6 +104,7 @@ echo $output->header();
 
 $stagenames = array();
 
+echo html_writer::start_div('wavefront-gallery');
 // Get all models associated with this gallery
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
     
@@ -115,6 +116,7 @@ if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefr
         echo $output->display_model($context, $model, $stagename, $editing);
     }
 }
+echo html_writer::end_div();
 
 $js_params = array($stagenames);
     
