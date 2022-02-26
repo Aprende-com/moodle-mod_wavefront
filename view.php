@@ -34,7 +34,6 @@ global $DB;
 $id = optional_param('id', 0, PARAM_INT);
 $l = optional_param('l', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
-$search  = optional_param('search', '', PARAM_TEXT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
 
 if ($id) {
@@ -51,12 +50,10 @@ if ($id) {
 
 
 if ($wavefront->ispublic) {
-    $userid = (isloggedin() ? $USER->id : 0);
     $PAGE->set_cm($cm, $course);
     $PAGE->set_pagelayout('incourse');
 } else {
     require_login($course, true, $cm);
-    $userid = $USER->id;
 }
 
 $context = context_module::instance($cm->id);
@@ -98,50 +95,31 @@ if (has_capability('mod/wavefront:edit', $context)) {
 }
 $PAGE->set_button($button);
 
-$modelerr = true;
-
-if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id))) {
-    $fs = get_file_storage();
-    $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
-    
-    // A Wavefront model contains three files
-    $mtl_file = null;
-    $obj_file = null;
-    $baseurl = null;
-    
-    foreach ($fs_files as $f) {
-        // $f is an instance of stored_file
-        $pathname = $f->get_filepath();
-        $filename = $f->get_filename();
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        // what type of file is this?
-        if($ext === "mtl") {
-            $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-        } elseif ($ext === "obj") {
-            $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-            $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');  
-        }
-    }
-    
-    if($mtl_file != null && $obj_file != null) {
-        $modelerr = false;
-        
-        $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(),
-                $model->stagewidth, $model->stageheight,
-                $model->cameraangle, $model->camerafar, $model->camerax, $model->cameray, $model->cameraz);
-         
-        $PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
-    }
-}
-
 $output = $PAGE->get_renderer('mod_wavefront');
-
-echo $output->header();
 
 $heading = get_string('displayingmodel', 'wavefront', $wavefront->name);
 echo $output->heading($heading);
 
-echo $output->display_model($wavefront, $editing, $modelerr);
+echo $output->header();
+
+$stagenames = array();
+
+// Get all models associated with this gallery
+if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
+    
+    foreach($models as $model) {
+        
+        // Create a unique stage name, which will need to be passed to JS
+        $stagename = uniqid('wavefront_');
+        $stagenames[] = $stagename;
+        echo $output->display_model($context, $model, $stagename, $editing);
+    }
+}
+
+$js_params = array($stagenames);
+    
+$PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
+
 echo $output->display_comments($wavefront, $editing);
 
 echo $output->footer();
