@@ -87,6 +87,14 @@ echo html_writer::tag('p', get_string('deletemodelrecord', 'mod_wavefront'));
 
 $DB->delete_records("wavefront_model", array("id"=>$model->id));
 
+// Trigger deletion event.
+$eventparams = array(
+    'context' => $context,
+    'objectid' => $model->id,
+);
+$event = \mod_wavefront\event\model_deleted::create($eventparams);
+$event->trigger();
+
 echo $OUTPUT->heading( get_string("deletedmodel", "mod_wavefront") );
 
 echo $OUTPUT->continue_button("view.php?id=$cmid");
