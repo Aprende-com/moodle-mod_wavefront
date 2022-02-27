@@ -16,7 +16,7 @@
 
 
 /**
- * Form for adding comments on a model
+ * Form for editing a model
  *
  * @package   mod_wavefront
  * @copyright 2017 Ian Wild
@@ -49,7 +49,7 @@ if (!$wavefront = $DB->get_record('wavefront', array('id'=>$cm->instance))) {
     print_error('invalidid', 'wavefront');
 }
 
-$url = new moodle_url('/mod/wavefront/edit.php', array('cmid'=>$cm->id));
+$url = new moodle_url('/mod/wavefront/edit_model.php', array('cmid'=>$cm->id));
 if (!empty($id)) {
     $url->param('id', $id);
 }
