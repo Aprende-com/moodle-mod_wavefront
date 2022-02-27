@@ -33,11 +33,6 @@ class mod_wavefront_renderer extends plugin_renderer_base {
     public function display_model($context, $model, $stagename, $editing = false) {
         
         $output = $this->output->box_start('wavefront');
-        /*
-        TO PASS TO JS:
-        $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(),
-        $model->stagewidth, $model->stageheight, $model->cameraangle, $model->camerafar, $model->camerax, $model->cameray, $model->cameraz
-        */
         
         $fs = get_file_storage();
         $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
@@ -77,9 +72,13 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             if($model->descriptionpos == 1) {
                 $output .= $captiondiv;
             }
-            
+            // TODO set default background colour at site level 
+            $backcol = '646464';
+            if (isset($model->backcol) && (strlen($model->backcol) > 0) ) {
+                $backcol = $model->backcol;
+            }
             $output .= '<div data-baseurl='.urlencode($baseurl).' data-mtl='.urlencode($mtl_file).' data-obj='.urlencode($obj_file).' id="'.$stagename.'"';
-            $output .= ' data-stagewidth='.$model->stagewidth.' data-stageheight='.$model->stageheight.' data-cameraangle='.$model->cameraangle;
+            $output .= ' data-stagewidth='.$model->stagewidth.' data-stageheight='.$model->stageheight.' data-backcol='.$backcol.' data-cameraangle='.$model->cameraangle;
             $output .= ' data-camerafar='.$model->camerafar.' data-camerax='.$model->camerax.' data-cameray='.$model->cameray.' data-cameraz='.$model->cameraz.'></div>';
              
             if($model->descriptionpos == 0) {
