@@ -36,7 +36,7 @@ import jQuery from 'jquery';
 var cameras = [], controls_array = [], scenes = [], renderers = [];
 
 var containers = [];
-var stage_widths = [], stage_heights = []; 
+var stage_widths = [], stage_heights = [], scene_backcolours = []; 
 var lightings = [], ambients = [], keyLights = [], fillLights = [], backLights = [];
 
 var windowHalfX = window.innerWidth / 2;
@@ -74,7 +74,10 @@ export const init = (stages) => {
 		var stage_height = jQuery(container).attr("data-stageheight");
 		console.log(stage_height);
 	    stage_heights.push(stage_height);
-		
+	    var backcol = jQuery(container).attr("data-backcol");
+		console.log(backcol);
+	    scene_backcolours.push(backcol);
+	    
 		// Get camera attributes
 		var cameraangle = jQuery(container).attr("data-cameraangle");
 	    console.log(cameraangle);
@@ -139,6 +142,8 @@ export const init = (stages) => {
 				scene.add(fillLight);
 				scene.add(backLight);
 	            scene.add(object);
+	            var iCol = Number("0x" + backcol); 
+	            scene.background = new THREE.Color(iCol);
 	
 				/* Renderer */
 	    
