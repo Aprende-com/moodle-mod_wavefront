@@ -57,3 +57,11 @@
 .wavefront img.model-loading {
 	padding: 10px;
 }
+
+.wavefront div.model-management {
+	display: flex;
+}
+
+.wavefront div.model-management input[type=submit] {
+	margin-left: 10px;
+}
