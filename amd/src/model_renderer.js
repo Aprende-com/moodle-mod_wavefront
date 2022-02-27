@@ -180,6 +180,9 @@ export const init = (stages) => {
 			            }
 			        }	
 			    }, false);
+			    
+			    /* Remove the loading spinner */
+			    jQuery(container).next().remove();
 			
 			    /* Start animation */
 				animate();
