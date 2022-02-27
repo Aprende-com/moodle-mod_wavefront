@@ -53,3 +53,7 @@
 #mod-wavefront-view .generalbox {
     overflow: auto;
 }
+
+.wavefront img.model-loading {
+	padding: 10px;
+}
