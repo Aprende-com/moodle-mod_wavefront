@@ -85,9 +85,9 @@ $mform = new mod_wavefront_model_form(null, array('model'=>$model, 'cm'=>$cm, 'd
 
 if ($mform->is_cancelled()){
     if ($id){
-        redirect("view.php?id=$cm->id&mode=entry&hook=$id");
+        redirect("view.php?id=$cm->id&mode=entry&hook=$id&editing=1");
     } else {
-        redirect("view.php?id=$cm->id");
+        redirect("view.php?id=$cm->id&editing=1");
     }
 
 } else if ($model = $mform->get_data()) {
