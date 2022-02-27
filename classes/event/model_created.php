@@ -55,7 +55,7 @@ class model_created extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventmodelcreated', 'mod_wavefront');
+        return get_string('eventmodeladded', 'mod_wavefront');
     }
 
     /**
@@ -78,17 +78,6 @@ class model_created extends \core\event\base {
                 array('id' => $this->contextinstanceid,
                     'mode' => 'entry',
                     'hook' => $this->objectid));
-    }
-
-    /**
-     * Return the legacy event log data.
-     *
-     * @return array|null
-     */
-    public function get_legacy_logdata() {
-        return array($this->courseid, 'wavefront', 'add model',
-            "view.php?id={$this->contextinstanceid}&amp;mode=entry&amp;hook={$this->objectid}",
-            $this->objectid, $this->contextinstanceid);
     }
 
     /**
