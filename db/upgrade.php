@@ -39,19 +39,19 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_wavefront_upgrade($oldversion) {
-    global $CFG;
+    global $DB;
+    
+    $dbman = $DB->get_manager();
 
-    // Moodle v2.8.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Moodle v2.9.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Moodle v3.0.0 release upgrade line.
-    // Put any upgrade step following this.
-
-    // Moodle v3.1.0 release upgrade line.
-    // Put any upgrade step following this.
-
+    if ($oldversion < 2022022700) {
+        
+        $table = new xmldb_table('wavefront_model');
+        $field = new xmldb_field('backcol', XMLDB_TYPE_CHAR, '15', null, true, null, null, 'stageheight' );
+        
+        $dbman->add_field($table, $field);
+        
+        upgrade_mod_savepoint(true, 2022022700, 'wavefront');
+    }
+    
     return true;
 }    
