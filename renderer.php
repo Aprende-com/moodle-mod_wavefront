@@ -94,12 +94,22 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         // TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
         if ($editing) {
             $url = new moodle_url('/mod/wavefront/edit_model.php');
+            $output .= html_writer::start_div('model-management');
             $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="hidden" name="page" value="0" />'.
                     '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
                     '</form>';
+            
+            if(has_capability('mod/wavefront:delete', $context)) {
+                $url = new moodle_url('/mod/wavefront/delete_model.php');
+                $output .= '<form action="'. $url . '">'.
+                    '<input type="hidden" name="id" value="'. $model->id .'" />'.
+                    '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
+                    '<input type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
+                    '</form>';
+            }
+            $output .= html_writer::end_div();
         }
         
         $output .= $this->output->box_end();
