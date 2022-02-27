@@ -80,6 +80,8 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             $output .= '<div data-baseurl='.urlencode($baseurl).' data-mtl='.urlencode($mtl_file).' data-obj='.urlencode($obj_file).' id="'.$stagename.'"';
             $output .= ' data-stagewidth='.$model->stagewidth.' data-stageheight='.$model->stageheight.' data-backcol='.$backcol.' data-cameraangle='.$model->cameraangle;
             $output .= ' data-camerafar='.$model->camerafar.' data-camerax='.$model->camerax.' data-cameray='.$model->cameray.' data-cameraz='.$model->cameraz.'></div>';
+            
+            $output .= html_writer::empty_tag('image', array('class'=>'model-loading','src'=>$this->image_url('i/loading')) );
              
             if($model->descriptionpos == 0) {
                 $output .= $captiondiv;
