@@ -32,8 +32,7 @@ require_once($CFG->libdir.'/filelib.php');
 global $DB;
 
 $id = optional_param('id', 0, PARAM_INT);
-$l = optional_param('l', 0, PARAM_INT);
-$page = optional_param('page', 0, PARAM_INT);
+$w = optional_param('l', 0, PARAM_INT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
 
 if ($id) {
@@ -42,7 +41,7 @@ if ($id) {
         print_error('invalidcoursemodule');
     }
 } else {
-    if (!$wavefront = $DB->get_record('wavefront', array('id' => $l))) {
+    if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
         print_error('invalidwavefrontid', 'wavefront');
     }
     list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
@@ -88,7 +87,7 @@ $PAGE->set_title($wavefront->name);
 $PAGE->set_heading($course->shortname);
 $button = '';
 if (has_capability('mod/wavefront:edit', $context)) {
-    $urlparams = array('id' => $id, 'page' => $page, 'editing' => $editing ? '0' : '1');
+    $urlparams = array('id' => $id, 'editing' => $editing ? '0' : '1');
     $url = new moodle_url('/mod/wavefront/view.php', $urlparams);
     $strediting = get_string('turnediting'.($editing ? 'off' : 'on'));
     $button = $OUTPUT->single_button($url, $strediting, 'get').' ';
@@ -117,6 +116,15 @@ if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefr
     }
 }
 echo html_writer::end_div();
+
+if(has_capability('mod/wavefront:add', $context) && $editing) {
+    $url = new moodle_url('/mod/wavefront/add_model.php');
+    echo '<form action="'. $url . '">'.
+        '<input type="hidden" name="cmid" value="'.$PAGE->cm->id.'" />'.
+        '<input type="hidden" name="editing" value="'.$editing.'" />'.
+        '<input type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
+        '</form>';
+}
 
 $js_params = array($stagenames);
     
