@@ -38,6 +38,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
         
         // A Wavefront model contains two files
+        $modelerr = true;
         $mtl_file = null;
         $obj_file = null;
         $baseurl = null;
