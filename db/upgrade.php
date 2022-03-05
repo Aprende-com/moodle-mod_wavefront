@@ -50,6 +50,13 @@ function xmldb_wavefront_upgrade($oldversion) {
         
         $dbman->add_field($table, $field);
         
+        // Update backcol to black where it is currently null
+        $records = $DB->get_records('wavefront_model', array('backcol' => null));
+        foreach($records as $record) {
+            $record->backcol = '000000';
+            $DB->update_record('wavefront_model', $record);
+        }
+        
         upgrade_mod_savepoint(true, 2022022700, 'wavefront');
     }
     
