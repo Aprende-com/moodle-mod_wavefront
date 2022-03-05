@@ -48,10 +48,12 @@ function xmldb_wavefront_upgrade($oldversion) {
         $table = new xmldb_table('wavefront_model');
         $field = new xmldb_field('backcol', XMLDB_TYPE_CHAR, '15', null, true, null, null, 'stageheight' );
         
-        $dbman->add_field($table, $field);
+        if (!$dbman->field_exists($table, $field)) {   
+            $dbman->add_field($table, $field);
+        }
         
         // Update backcol to black where it is currently null
-        $records = $DB->get_records('wavefront_model', array('backcol' => null));
+        $records = $DB->get_records('wavefront_model', array('backcol' => ''));
         foreach($records as $record) {
             $record->backcol = '000000';
             $DB->update_record('wavefront_model', $record);
