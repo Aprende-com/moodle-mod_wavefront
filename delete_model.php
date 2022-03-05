@@ -56,7 +56,7 @@ if (! $delete) {
     
     $message = "$strdeletemodelcheck<br /><br />" . format_text($model->description, FORMAT_MOODLE);
     
-    $cancelurl = new moodle_url("/mod/wavefront/view.php", array('id'=>$cmid));
+    $cancelurl = new moodle_url("/mod/wavefront/view.php", array('id'=>$cmid, 'editing'=>1));
     
     echo $OUTPUT->confirm($message, "delete_model.php?id=$model->id&cmid=".$cmid."&d=".md5($model->timemodified), $cancelurl);
 
@@ -97,7 +97,7 @@ $event->trigger();
 
 echo $OUTPUT->heading( get_string("deletedmodel", "mod_wavefront") );
 
-echo $OUTPUT->continue_button("view.php?id=$cmid");
+echo $OUTPUT->continue_button("view.php?id=$cmid&editing=1");
 
 echo $OUTPUT->footer();
 
