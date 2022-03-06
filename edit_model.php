@@ -93,14 +93,14 @@ if ($mform->is_cancelled()){
         if( has_capability('mod/wavefront:edit', $context) ) {
             $params['editing'] = 1;
         }
-        $url = new moodle_url('mod/waverfront/view.php', $params);
+        $url = new moodle_url('/mod/wavefront/view.php', $params);
         redirect($url);
     } else {
         $params = array('id' => $cm->id);
         if( has_capability('mod/wavefront:edit', $context) ) {
             $params['editing'] = 1;
         }
-        $url = new moodle_url('mod/waverfront/view.php', $params);
+        $url = new moodle_url('/mod/wavefront/view.php', $params);
         redirect($url);
     }
 
@@ -162,7 +162,12 @@ if ($mform->is_cancelled()){
         }
     }
     
-    redirect("view.php?id=$cm->id&editing=1");
+    $params = array('id' => $cm->id);
+    if( has_capability('mod/wavefront:edit', $context) ) {
+        $params['editing'] = 1;
+    }
+    $url = new moodle_url('/mod/wavefront/view.php', $params);
+    redirect($url);
 }
 
 if (!empty($id)) {
