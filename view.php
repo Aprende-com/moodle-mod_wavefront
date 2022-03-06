@@ -117,7 +117,7 @@ if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefr
 }
 echo html_writer::end_div();
 
-if(has_capability('mod/wavefront:add', $context) && $editing) {
+if ( has_capability('mod/wavefront:add', $context) ) {
     $url = new moodle_url('/mod/wavefront/edit_model.php');
     echo '<form action="'. $url . '">'.
         '<input type="hidden" name="cmid" value="'.$PAGE->cm->id.'" />'.
