@@ -55,7 +55,6 @@ $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
 
 $string['wavefront:viewcomments'] = 'View model gallery comments';
-$string['wavefront:add'] = 'Add a model';
 $string['wavefront:edit'] = 'Edit a model';
 $string['wavefront:delete'] = 'Delete a model';
 $string['wavefront:submit'] = 'Submit a model to the gallery';
