@@ -55,7 +55,7 @@ $PAGE->set_url($url);
 
 require_login($course, false, $cm);
 
-if ( !(has_capability('mod/wavefront:edit', $context) || has_capability('mod/wavefront:add', $context)) ) {
+if ( !(has_capability('mod/wavefront:edit', $context) || has_capability('mod/wavefront:submit', $context)) ) {
     print_error('nopermissions', 'error', '', 'edit or add a wavefront model');
 }
 
