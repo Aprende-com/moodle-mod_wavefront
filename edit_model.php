@@ -87,10 +87,21 @@ $mform = new mod_wavefront_model_form(null, array('model'=>$model, 'cm'=>$cm, 'd
                                                     'modeloptions'=>$modeloptions));
 
 if ($mform->is_cancelled()){
+    
     if ($id){
-        redirect("view.php?id=$cm->id&mode=entry&hook=$id&editing=1");
+        $params = array('id' => $cm->id, 'hook' => $id);
+        if( has_capability('mod/wavefront:edit', $context) ) {
+            $params['editing'] = 1;
+        }
+        $url = new moodle_url('mod/waverfront/view.php', $params);
+        redirect($url);
     } else {
-        redirect("view.php?id=$cm->id&editing=1");
+        $params = array('id' => $cm->id);
+        if( has_capability('mod/wavefront:edit', $context) ) {
+            $params['editing'] = 1;
+        }
+        $url = new moodle_url('mod/waverfront/view.php', $params);
+        redirect($url);
     }
 
 } else if ($model = $mform->get_data()) {
