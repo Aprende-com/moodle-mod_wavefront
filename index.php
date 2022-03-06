@@ -19,7 +19,7 @@
  * Shows a list of available models
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,64 +38,48 @@ $event = \mod_wavefront\event\course_module_instance_list_viewed::create(array(
 $event->add_record_snapshot('course', $course);
 $event->trigger();
 
-$PAGE->set_url('/mod/wavefront/view.php', array('id' => $id));
+$PAGE->set_url('/mod/wavefront/index.php', array('id' => $id));
 $PAGE->set_title($course->fullname);
 $PAGE->set_heading($course->shortname);
 
-echo $OUTPUT->header();
-
 if (! $models = get_all_instances_in_course('wavefront', $course)) {
-    echo $OUTPUT->heading(get_string('thereareno', 'moodle', $strmodels), 2);
-    echo $OUTPUT->continue_button('view.php?id='.$course->id);
-    echo $OUTPUT->footer();
-    die();
+    notice("There are no wavefront models", "../../course/view.php?id=$course->id");
+    die;
 }
 
+echo $OUTPUT->header();
+
+$usesections = course_format_uses_sections($course->format);
+
+/// Print the list of instances (your module will probably extend this)
+
+$timenow = time();
+$strname = get_string("name");
 $table = new html_table();
-$table->head = array(get_string($course->format == 'weeks' ? 'week' : 'topic'),
-                        '&nbsp;',
-                        get_string('modulenameshort', 'model'),
-                        get_string('description'),
-                        'RSS');
-$table->align = array('center', 'center', 'left', 'left', 'center');
-$table->width = '*';
 
-$fobj = new stdClass;
-$fobj->para = false;
-
-$prevsection = '';
+if ($usesections) {
+    $strsectionname = get_string('sectionname', 'format_' . $course->format);
+    $table->head = array($strsectionname, $strname);
+} else {
+    $table->head = array($strname);
+}
 
 // TODO: Put this in a renderer.
 foreach ($models as $model) {
-    $cm = context_module::instance($model->coursemodule);
-
-    $printsection = ($model->section !== $prevsection ? true : false);
-    if ($printsection) {
-        $table->data[] = 'hr';
+    $attribs = array('class' => 'wavefront-view-link');
+    
+    $captiondiv = html_writer::tag('div', format_text($model->intro, FORMAT_MOODLE), array('class' => "wavefront-model-caption"));
+    $link = html_writer::link(new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule)), get_string('viewmodel', 'mod_wavefront'), $attribs);
+       
+    if ($usesections) {
+        $table->data[] = array(get_section_name($course, $model->section), $captiondiv . $link);
+    } else {
+        $table->data[] = array($link);
     }
-
-    $fs = get_file_storage();
-    $files = $fs->get_area_files($cm->id, 'mod_wavefront', 'model');
-    $modelcount = 0;
-    foreach ($files as $file) {
-        if ($file->get_filename() != '.') {
-            $modelcount++;
-        }
-    }
-    $commentcount = $DB->count_records('wavefront_comments', array('model' => $model->id));
-
-    $viewurl = new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule));
-    $table->data[] = array(($printsection ? $model->section : ''),
-                           model_index_thumbnail($course->id, $model),
-                           html_writer::link($viewurl, $model->name).
-                           '<br />'.get_string('modelcounta', 'model', $modelcount).' '.
-                           get_string('modelcount', 'model', $commentcount),
-                           format_text($model->intro, FORMAT_MOODLE, $fobj));
-                           
-    $prevsection = $model->section;
 }
 
-echo $OUTPUT->heading(get_string('modulenameplural', 'model'), 2);
 echo html_writer::table($table);
+    
+/// Finish the page
 echo $OUTPUT->footer();
 
