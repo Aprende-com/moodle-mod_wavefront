@@ -68,8 +68,8 @@ if ($usesections) {
 foreach ($models as $model) {
     $attribs = array('class' => 'wavefront-view-link');
     
-    $captiondiv = html_writer::tag('div', format_text($model->intro, FORMAT_MOODLE), array('class' => "wavefront-model-caption"));
-    $link = html_writer::link(new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule)), get_string('viewmodel', 'mod_wavefront'), $attribs);
+    $captiondiv = html_writer::tag('div', format_text($model->intro, FORMAT_MOODLE), array('class' => "wavefront-description-caption"));
+    $link = html_writer::link(new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule)), get_string('viewgallery', 'mod_wavefront'), $attribs);
        
     if ($usesections) {
         $table->data[] = array(get_section_name($course, $model->section), $captiondiv . $link);

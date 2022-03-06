@@ -106,5 +106,5 @@ $string['deletedmodel'] = 'Deleted model';
 $string['deletemodelfiles'] = 'Deleting files...';
 $string['deletemodelrecord'] = 'Delete record...';
 
-// Course list of models
-$string['viewmodel'] = 'View model';
+// Course list of galleries
+$string['viewgallery'] = 'View gallery';
