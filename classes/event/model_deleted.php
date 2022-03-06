@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_wavefront entry updated event.
+ * The mod_wavefront model deleted event.
  *
  * @package    mod_wavefront
- * @copyright  2017 Ian Wild
+ * @copyright  2022 Ian Wild
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,7 +26,7 @@ namespace mod_wavefront\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_wavefront model updated event.
+ * The mod_wavefront model deleted event.
  *
  * @property-read array $other {
  *      Extra information about event.
@@ -35,16 +35,16 @@ defined('MOODLE_INTERNAL') || die();
  * }
  *
  * @package    mod_wavefront
- * @since      Moodle 2.7
- * @copyright  2017 Ian Wild
+ * @since      Moodle 3.9
+ * @copyright  2022 Ian Wild
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class model_updated extends \core\event\base {
+class model_deleted extends \core\event\base {
     /**
      * Init method
      */
     protected function init() {
-        $this->data['crud'] = 'u';
+        $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'wavefront_model';
     }
@@ -55,7 +55,7 @@ class model_updated extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventmodelupdated', 'mod_wavefront');
+        return get_string('eventmodeldeleted', 'mod_wavefront');
     }
 
     /**
@@ -64,7 +64,7 @@ class model_updated extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' has updated the model entry with id '$this->objectid' in " .
+        return "The user with id '$this->userid' has deleted the model entry with id '$this->objectid' in " .
             "the wavefront activity with course module id '$this->contextinstanceid'.";
     }
 

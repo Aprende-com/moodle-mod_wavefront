@@ -30,19 +30,36 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * @param object $wavefront The wavefront activity with which the model is associated
      * @param boolean $editing true if the current user can edit the model, else false.
      */
-    public function display_model($wavefront, $editing = false, $modelerr=false) {
-        global $DB;
+    public function display_model($context, $model, $stagename, $editing = false) {
         
-        $output = '';
+        $output = $this->output->box_start('wavefront');
         
-        if ($wavefront->intro && !$editing) {
-            $output .= $this->output->box(format_module_intro('wavefront', $wavefront, $this->page->cm->id), 'generalbox', 'intro');
+        $fs = get_file_storage();
+        $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
+        
+        // A Wavefront model contains two files
+        $modelerr = true;
+        $mtl_file = null;
+        $obj_file = null;
+        $baseurl = null;
+        
+        foreach ($fs_files as $f) {
+            // $f is an instance of stored_file
+            $pathname = $f->get_filepath();
+            $filename = $f->get_filename();
+            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            // what type of file is this?
+            if($ext === "mtl") {
+                $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+            } elseif ($ext === "obj") {
+                $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+                $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');
+            }
         }
         
-        $output .= $this->output->box_start('generalbox wavefront clearfix');
-        
-        
-        $model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id));
+        if($mtl_file != null && $obj_file != null) {
+            $modelerr = false;
+        }
         
         if(!$model || $modelerr) {
             $output .= $this->output->heading(get_string("errornomodel", "wavefront"));
@@ -56,8 +73,16 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             if($model->descriptionpos == 1) {
                 $output .= $captiondiv;
             }
+            // TODO set default background colour at site level 
+            $backcol = '646464';
+            if (isset($model->backcol) && (strlen($model->backcol) > 0) ) {
+                $backcol = $model->backcol;
+            }
+            $output .= '<div data-baseurl='.urlencode($baseurl).' data-mtl='.urlencode($mtl_file).' data-obj='.urlencode($obj_file).' id="'.$stagename.'"';
+            $output .= ' data-stagewidth='.$model->stagewidth.' data-stageheight='.$model->stageheight.' data-backcol='.$backcol.' data-cameraangle='.$model->cameraangle;
+            $output .= ' data-camerafar='.$model->camerafar.' data-camerax='.$model->camerax.' data-cameray='.$model->cameray.' data-cameraz='.$model->cameraz.'></div>';
             
-            $output .= '<div id="wavefront_stage"></div>';
+            $output .= html_writer::empty_tag('image', array('class'=>'model-loading','src'=>$this->image_url('i/loading')) );
              
             if($model->descriptionpos == 0) {
                 $output .= $captiondiv;
@@ -70,12 +95,22 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         // TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
         if ($editing) {
             $url = new moodle_url('/mod/wavefront/edit_model.php');
+            $output .= html_writer::start_div('model-management');
             $output .= '<form action="'. $url . '">'.
-                    '<input type="hidden" name="id" value="'. $wavefront->id .'" />'.
+                    '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="hidden" name="page" value="0" />'.
                     '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
                     '</form>';
+            
+            if(has_capability('mod/wavefront:delete', $context)) {
+                $url = new moodle_url('/mod/wavefront/delete_model.php');
+                $output .= '<form action="'. $url . '">'.
+                    '<input type="hidden" name="id" value="'. $model->id .'" />'.
+                    '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
+                    '<input type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
+                    '</form>';
+            }
+            $output .= html_writer::end_div();
         }
         
         $output .= $this->output->box_end();

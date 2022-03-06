@@ -71,6 +71,11 @@ class mod_wavefront_model_form extends moodleform {
         $mform->setDefault('stageheight', 400);
         $mform->setType('stageheight', PARAM_INT);
         
+        $mform->addElement('text', 'backcol', get_string('backcol', 'wavefront'), 'maxlength="7" size="7"');
+        $mform->addHelpButton('backcol', 'backcol', 'mod_wavefront');
+        $mform->setDefault('backcol', '000000');
+        $mform->setType('backcol', PARAM_ALPHANUM);
+        
         // Camera
         $mform->addElement('header', 'cameraoptions', get_string('cameraheading', 'wavefront'));
         
@@ -107,9 +112,16 @@ class mod_wavefront_model_form extends moodleform {
     }
 
     function validation($data, $files) {
-        global $CFG, $USER, $DB;
+        
         $errors = parent::validation($data, $files);
 
+        // Ensure backcol is hexadecimal
+        if (!(ctype_xdigit($data['backcol']) &&
+            (strlen($data['backcol']) == 6 || strlen($data['backcol']) == 3))) {
+                
+            $errors['backcol'] = get_string('backcolerr', 'mod_wavefront');
+        }
+        
         return $errors;
     }
 }

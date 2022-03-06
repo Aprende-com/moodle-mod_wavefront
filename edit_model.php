@@ -16,7 +16,7 @@
 
 
 /**
- * Form for adding comments on a model
+ * Form for editing a model
  *
  * @package   mod_wavefront
  * @copyright 2017 Ian Wild
@@ -28,11 +28,14 @@ require_once('lib.php');
 require_once('edit_model_form.php');
 
 $cmid = required_param('cmid', PARAM_INT);            // Course Module ID
-$id   = optional_param('id', 0, PARAM_INT);           // Wavefront ID
+$id   = optional_param('id', 0, PARAM_INT);           // model ID
 
 if (!$cm = get_coursemodule_from_id('wavefront', $cmid)) {
     print_error('invalidcoursemodule');
 }
+
+// Attempt to get the correct model
+$model = $DB->get_record('wavefront_model', array('id'=>$id));
 
 if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
@@ -40,13 +43,11 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
 
 $context = context_module::instance($cm->id);
 
-require_capability('mod/wavefront:edit', $context);
-
 if (!$wavefront = $DB->get_record('wavefront', array('id'=>$cm->instance))) {
     print_error('invalidid', 'wavefront');
 }
 
-$url = new moodle_url('/mod/wavefront/edit.php', array('cmid'=>$cm->id));
+$url = new moodle_url('/mod/wavefront/edit_model.php', array('cmid'=>$cm->id));
 if (!empty($id)) {
     $url->param('id', $id);
 }
@@ -54,9 +55,11 @@ $PAGE->set_url($url);
 
 require_login($course, false, $cm);
 
-// attempt to get the correct model
-$model = $DB->get_record('wavefront_model', array('wavefrontid'=>$wavefront->id));
-     
+if ( !(has_capability('mod/wavefront:edit', $context) || has_capability('mod/wavefront:submit', $context)) ) {
+    print_error('nopermissions', 'error', '', 'edit or add a wavefront model');
+}
+
+
 if($model) {     
     if (isguestuser()) {
         print_error('guestnoedit', 'wavefront', "$CFG->wwwroot/mod/wavefront/view.php?id=$cmid");
@@ -84,10 +87,21 @@ $mform = new mod_wavefront_model_form(null, array('model'=>$model, 'cm'=>$cm, 'd
                                                     'modeloptions'=>$modeloptions));
 
 if ($mform->is_cancelled()){
+    
     if ($id){
-        redirect("view.php?id=$cm->id&mode=entry&hook=$id");
+        $params = array('id' => $cm->id, 'hook' => $id);
+        if( has_capability('mod/wavefront:edit', $context) ) {
+            $params['editing'] = 1;
+        }
+        $url = new moodle_url('/mod/wavefront/view.php', $params);
+        redirect($url);
     } else {
-        redirect("view.php?id=$cm->id");
+        $params = array('id' => $cm->id);
+        if( has_capability('mod/wavefront:edit', $context) ) {
+            $params['editing'] = 1;
+        }
+        $url = new moodle_url('/mod/wavefront/view.php', $params);
+        redirect($url);
     }
 
 } else if ($model = $mform->get_data()) {
@@ -148,7 +162,12 @@ if ($mform->is_cancelled()){
         }
     }
     
-    redirect("view.php?id=$cm->id&editing=1");
+    $params = array('id' => $cm->id);
+    if( has_capability('mod/wavefront:edit', $context) ) {
+        $params['editing'] = 1;
+    }
+    $url = new moodle_url('/mod/wavefront/view.php', $params);
+    redirect($url);
 }
 
 if (!empty($id)) {

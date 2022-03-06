@@ -41,7 +41,7 @@ class restore_wavefront_activity_structure_step extends restore_activity_structu
         $wavefront = new restore_path_element('wavefront', '/activity/wavefront');
         $paths[] = $wavefront;
 
-        $model = new restore_path_element('wavefront_model', '/activity/wavefront/model');
+        $model = new restore_path_element('wavefront_model', '/activity/wavefront/models/model');
         $paths[] = $model;
 
         if ($userinfo) {
@@ -69,28 +69,32 @@ class restore_wavefront_activity_structure_step extends restore_activity_structu
         global $DB;
 
         $data = (object)$data;
-
-        $data->wavefront = $this->get_new_parentid('wavefront');
+        $oldid = $data->id;
+        
+        $data->wavefrontid = $this->get_new_parentid('wavefront');
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
         if (isset($data->comment)) {
             $data->commenttext = $data->comment;
         }
-        $DB->insert_record('wavefront_comments', $data);
+        $newitemid = $DB->insert_record('wavefront_comments', $data);
+        $this->set_mapping('comments', $oldid, $newitemid);
     }
-
     protected function process_wavefront_model($data) {
         global $DB;
 
         $data = (object)$data;
+        $oldid = $data->id;
 
         $data->wavefrontid = $this->get_new_parentid('wavefront');
         // TODO: model var to match model.
-        $DB->insert_record('wavefront_model', $data);
+        $newitemid = $DB->insert_record('wavefront_model', $data);
+        
+        $this->set_mapping('model', $oldid, $newitemid, true);
     }
 
     protected function after_execute() {
-        $this->add_related_files('mod_wavefront', 'model', null);
+        $this->add_related_files('mod_wavefront', 'model', 'model');
         $this->add_related_files('mod_wavefront', 'intro', null);
     }
 }

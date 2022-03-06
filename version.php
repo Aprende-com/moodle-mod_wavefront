@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2022020501;  // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version  = 2022030602;  // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2016052300;  // Requires this Moodle version.
 $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
 $plugin->component = 'mod_wavefront';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.0.0.7';
+$plugin->release = '0.0.0.8';

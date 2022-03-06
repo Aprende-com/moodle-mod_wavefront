@@ -43,10 +43,12 @@ $string['commentdelete'] = 'Confirm comment deletion?';
 $string['displayingmodel'] = '{$a}';
 
 $string['errornofile'] = 'The requested file was not found: {$a}';
-$string['errornomodel'] = 'No model files were found in this gallery';
+$string['errornomodel'] = 'No model files found';
 $string['erroruploadmodel'] = 'The files you upload must be a valid Wavefront model';
 $string['eventmodelcommentcreated'] = 'Comment created';
+$string['eventmodeladded'] = 'Wavefront model added';
 $string['eventmodelupdated'] = 'Wavefront model updated';
+$string['eventmodeldeleted'] = 'Wavefront model deleted';
 $string['eventviewed'] = 'Wavefront model viewed';
 
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
@@ -54,6 +56,7 @@ $string['wavefrontrenderer'] = 'Wavefront Renderer';
 
 $string['wavefront:viewcomments'] = 'View model gallery comments';
 $string['wavefront:edit'] = 'Edit a model';
+$string['wavefront:delete'] = 'Delete a model';
 $string['wavefront:submit'] = 'Submit a model to the gallery';
 $string['wavefront:addcomment'] = 'Comment on a model';
 
@@ -80,10 +83,13 @@ $string['pluginname'] = 'Wavefront Renderer';
 $string['modeldescription'] = 'Description';
 $string['modelfiles'] = 'Upload Wavefront files';
 $string['modelfiles_help'] = 'Either upload all model files individually or you can select a zip archive containing the model files, which will be extracted into the model directory after being uploaded.';
-$string['editmodel'] = 'Edit model';
+$string['editmodel'] = 'Edit';
 $string['stageheading'] = 'Stage';
 $string['stagewidth'] = 'Width';
 $string['stageheight'] = 'Height';
+$string['backcol'] = 'Background colour';
+$string['backcol_help'] = 'Specify the background colour as a hexadecimal triplet in RRGGBB format, e.g. FFFFFF for white.';
+$string['backcolerr'] = 'Not a valid hexadecimal triplet';
 $string['cameraheading'] = 'Camera';
 $string['camerax'] = 'X';
 $string['cameray'] = 'Y';
@@ -91,3 +97,14 @@ $string['cameraz'] = 'Z';
 $string['cameraangle'] = 'View angle';
 $string['camerafar'] = 'Far';
 
+// Model management
+$string['deletemodel'] = 'Delete model';
+$string['addmodel'] = 'Add new model';
+$string['model'] = 'Model';
+$string['deletemodelcheck'] = 'Are you sure you want to delete this model?';
+$string['deletedmodel'] = 'Deleted model';
+$string['deletemodelfiles'] = 'Deleting files...';
+$string['deletemodelrecord'] = 'Delete record...';
+
+// Course list of galleries
+$string['viewgallery'] = 'View gallery';

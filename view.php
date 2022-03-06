@@ -32,9 +32,7 @@ require_once($CFG->libdir.'/filelib.php');
 global $DB;
 
 $id = optional_param('id', 0, PARAM_INT);
-$l = optional_param('l', 0, PARAM_INT);
-$page = optional_param('page', 0, PARAM_INT);
-$search  = optional_param('search', '', PARAM_TEXT);
+$w = optional_param('l', 0, PARAM_INT);
 $editing = optional_param('editing', 0, PARAM_BOOL);
 
 if ($id) {
@@ -43,7 +41,7 @@ if ($id) {
         print_error('invalidcoursemodule');
     }
 } else {
-    if (!$wavefront = $DB->get_record('wavefront', array('id' => $l))) {
+    if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
         print_error('invalidwavefrontid', 'wavefront');
     }
     list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
@@ -51,12 +49,10 @@ if ($id) {
 
 
 if ($wavefront->ispublic) {
-    $userid = (isloggedin() ? $USER->id : 0);
     $PAGE->set_cm($cm, $course);
     $PAGE->set_pagelayout('incourse');
 } else {
     require_login($course, true, $cm);
-    $userid = $USER->id;
 }
 
 $context = context_module::instance($cm->id);
@@ -91,57 +87,48 @@ $PAGE->set_title($wavefront->name);
 $PAGE->set_heading($course->shortname);
 $button = '';
 if (has_capability('mod/wavefront:edit', $context)) {
-    $urlparams = array('id' => $id, 'page' => $page, 'editing' => $editing ? '0' : '1');
+    $urlparams = array('id' => $id, 'editing' => $editing ? '0' : '1');
     $url = new moodle_url('/mod/wavefront/view.php', $urlparams);
     $strediting = get_string('turnediting'.($editing ? 'off' : 'on'));
     $button = $OUTPUT->single_button($url, $strediting, 'get').' ';
 }
 $PAGE->set_button($button);
 
-$modelerr = true;
-
-if ($model = $DB->get_record('wavefront_model', array('wavefrontid' => $wavefront->id))) {
-    $fs = get_file_storage();
-    $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
-    
-    // A Wavefront model contains three files
-    $mtl_file = null;
-    $obj_file = null;
-    $baseurl = null;
-    
-    foreach ($fs_files as $f) {
-        // $f is an instance of stored_file
-        $pathname = $f->get_filepath();
-        $filename = $f->get_filename();
-        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        // what type of file is this?
-        if($ext === "mtl") {
-            $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-        } elseif ($ext === "obj") {
-            $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-            $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');  
-        }
-    }
-    
-    if($mtl_file != null && $obj_file != null) {
-        $modelerr = false;
-        
-        $js_params = array('wavefront_stage', $obj_file->__toString(), $mtl_file->__toString(), $baseurl->__toString(),
-                $model->stagewidth, $model->stageheight,
-                $model->cameraangle, $model->camerafar, $model->camerax, $model->cameray, $model->cameraz);
-         
-        $PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
-    }
-}
-
 $output = $PAGE->get_renderer('mod_wavefront');
-
-echo $output->header();
 
 $heading = get_string('displayingmodel', 'wavefront', $wavefront->name);
 echo $output->heading($heading);
 
-echo $output->display_model($wavefront, $editing, $modelerr);
+echo $output->header();
+
+$stagenames = array();
+
+echo html_writer::start_div('wavefront-gallery');
+// Get all models associated with this gallery
+if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
+    
+    foreach($models as $model) {
+        
+        // Create a unique stage name, which will need to be passed to JS
+        $stagename = uniqid('wavefront_');
+        $stagenames[] = $stagename;
+        echo $output->display_model($context, $model, $stagename, $editing);
+    }
+}
+echo html_writer::end_div();
+
+if ( has_capability('mod/wavefront:submit', $context) ) {
+    $url = new moodle_url('/mod/wavefront/edit_model.php');
+    echo '<form action="'. $url . '">'.
+        '<input type="hidden" name="cmid" value="'.$PAGE->cm->id.'" />'.
+        '<input type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
+        '</form>';
+}
+
+$js_params = array($stagenames);
+    
+$PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
+
 echo $output->display_comments($wavefront, $editing);
 
 echo $output->footer();

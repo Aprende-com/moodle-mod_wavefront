@@ -32,6 +32,7 @@
         <FIELD NAME="descriptionpos" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="stagewidth" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="stageheight" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="backcol" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="camerax" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="cameray" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="cameraz" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

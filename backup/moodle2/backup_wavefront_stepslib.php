@@ -49,22 +49,24 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
             'wavefrontid', 'userid', 'commenttext', 'timemodified'
         ));
         
-        // currenty one model per wavefront
+        // There may be zero or more models per wavefront activity
+        $models = new backup_nested_element('models');
         $model = new backup_nested_element('model', array('id'), array(
                 'wavefrontid', 'description', 'descriptionformat', 'descriptionpos', 
-                'stagewidth', 'stageheight', 'camerax', 'cameray', 'cameraz', 'cameraangle', 'camerafar',
+                'stagewidth', 'stageheight', 'backcol', 'camerax', 'cameray', 'cameraz', 'cameraangle', 'camerafar',
                 'model', 'timemodified'
         ));
 
         // Build the tree.
 
-        $wavefront->add_child($model);
+        $wavefront->add_child($models);
+        $models->add_child($model);
         $wavefront->add_child($comments);
         $comments->add_child($comment);
         
         // Define sources.
         $wavefront->set_source_table('wavefront', array('id' => backup::VAR_ACTIVITYID));
-        $model->set_source_table('wavefront_model', array('wavefrontid' => backup::VAR_ACTIVITYID));
+        $model->set_source_table('wavefront_model', array('wavefrontid' => backup::VAR_PARENTID));
         
         // All the rest of elements only happen if we are including user info.
         if ($userinfo) {
@@ -72,10 +74,11 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         }
 
         // Define file annotations.
-        $wavefront->annotate_files('mod_wavefront', 'model', null);
-        $wavefront->annotate_files('mod_wavefront', 'intro', null);
-
+        $wavefront->annotate_files('mod_wavefront', 'intro', null); 
+        $model->annotate_files('mod_wavefront', 'model', 'id');
+        
         $comment->annotate_ids('user', 'userid');
+        
 
         // Return the root element (wavefront), wrapped into standard activity structure.
         return $this->prepare_activity_structure($wavefront);
