@@ -43,8 +43,6 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
 
 $context = context_module::instance($cm->id);
 
-require_capability('mod/wavefront:edit', $context);
-
 if (!$wavefront = $DB->get_record('wavefront', array('id'=>$cm->instance))) {
     print_error('invalidid', 'wavefront');
 }
@@ -56,7 +54,12 @@ if (!empty($id)) {
 $PAGE->set_url($url);
 
 require_login($course, false, $cm);
-     
+
+if ( !(has_capability('mod/wavefront:edit', $context) || has_capability('mod/wavefront:add', $context)) ) {
+    print_error('nopermissions', 'error', '', 'edit or add a wavefront model');
+}
+
+
 if($model) {     
     if (isguestuser()) {
         print_error('guestnoedit', 'wavefront', "$CFG->wwwroot/mod/wavefront/view.php?id=$cmid");
