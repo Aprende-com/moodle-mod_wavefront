@@ -94,6 +94,7 @@ export const init = (stage) => {
 		        var objLoader = new OBJLoader();
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (object) {
+		        	reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
 		            object.scale.setScalar(0.1);
 					scene.add( object );
 				});
