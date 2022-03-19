@@ -103,6 +103,7 @@ export const init = (stage) => {
 
 	window.addEventListener( 'resize', onWindowResize );
 
+    animate();
 }
 
 function onWindowResize() {
@@ -174,7 +175,5 @@ function render( timestamp, frame ) {
 	}
 
 	renderer.render( scene, camera );
-	
-	animate();
 
 }
