@@ -77,9 +77,15 @@ export const init = (stage) => {
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
-	const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
-	light.position.set( 0.5, 1, 0.25 );
-	scene.add( light );
+	// Lighting
+	var keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+	keyLight.position.set(-100, 0, 100);
+			
+	var fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+	fillLight.position.set(100, 0, 100);
+			
+	var backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+	backLight.position.set(100, 0, -100).normalize();
 
 	//
 
@@ -111,6 +117,8 @@ export const init = (stage) => {
 		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
 		        	object.scale.set(0.01,0.01,0.01);
 					scene.add( object );
+					controller.removeEventListener( 'select', onSelect );
+					scene.remove(reticle);
 				});
 			});
 		}
