@@ -48,6 +48,16 @@ export const init = (stage) => {
 
 	var container = document.getElementById(stage);
     console.log(container);
+    
+    // Get model files
+	var mtl = jQuery(container).attr("data-mtl");
+	console.log(mtl);
+	var mtl_file = decodeURIComponent(mtl);
+	console.log(mtl_file);
+	var obj = jQuery(container).attr("data-obj");
+	console.log(obj);
+	var obj_file = decodeURIComponent(obj);
+	console.log(obj_file);
 
 	scene = new THREE.Scene();
 
@@ -77,14 +87,20 @@ export const init = (stage) => {
 
 		if ( reticle.visible ) {
 
-			const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-			const mesh = new THREE.Mesh( geometry, material );
-			mesh.position.setFromMatrixPosition( reticle.matrix );
-			mesh.scale.y = Math.random() * 2 + 1;
-			scene.add( mesh );
-
+			/* Load model */
+			var mtlLoader = new MTLLoader();
+		    mtlLoader.load(mtl_file, (materials) => {
+		
+		        materials.preload();
+		
+		        var objLoader = new OBJLoader();
+		        objLoader.setMaterials(materials);
+		        objLoader.load(obj_file, function (object) {
+				
+					scene.add( object );
+				});
+			});
 		}
-
 	}
 
 	controller = renderer.xr.getController( 0 );
