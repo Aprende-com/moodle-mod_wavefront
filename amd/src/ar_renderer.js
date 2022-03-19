@@ -37,9 +37,6 @@ import jQuery from 'jquery';
 let camera, scene, renderer;
 let controller;
 
-init();
-animate();
-
 function onWindowResize() {
 
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -108,6 +105,7 @@ export const init = () => {
 
 	window.addEventListener( 'resize', onWindowResize );
 
+    animate();
 };
 
 		
