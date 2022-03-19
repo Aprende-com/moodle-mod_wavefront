@@ -121,7 +121,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
             '<input type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
             '</form>';
-        
+        $output .= html_writer::end_div();
         
         $output .= $this->output->box_end();
         
