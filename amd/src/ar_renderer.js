@@ -81,7 +81,7 @@ export const init = (stage) => {
 
 	//
 
-	container.appendChild( ARButton.createButton( renderer ) );
+	container.appendChild( ARButton.createButton( renderer ), { requiredFeatures: [ 'hit-test' ] } );
 
 	//
 
