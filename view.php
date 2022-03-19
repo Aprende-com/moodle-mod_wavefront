@@ -103,7 +103,7 @@ echo $output->header();
 
 $stagenames = array();
 
-echo html_writer::start_div('wavefront-gallery');
+echo html_writer::start_div('wavefront-gallery row');
 // Get all models associated with this gallery
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
     
