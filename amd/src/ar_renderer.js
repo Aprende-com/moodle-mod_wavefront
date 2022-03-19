@@ -34,28 +34,26 @@ import { OrbitControls } from 'mod_wavefront/OrbitControls';
 import { ARButton } from 'mod_wavefront/ARButton';
 import jQuery from 'jquery';
 
-var container;
-var camera, scene, renderer;
-var controller;
+let container;
+let camera, scene, renderer;
+let controller;
 
-var reticle;
+let reticle;
 
-var hitTestSource = null;
-var hitTestSourceRequested = false;
+let hitTestSource = null;
+let hitTestSourceRequested = false;
 
-var mtlLoader;
-var monkeymesh;
 
-export const init = (stage) => {
+export const init = (stages) => {
 
 	var container = document.getElementById(stage);
+    console.log(container);
 
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
-	camera.position.z = 10;
 
-	var light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+	const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
 	light.position.set( 0.5, 1, 0.25 );
 	scene.add( light );
 
@@ -67,39 +65,23 @@ export const init = (stage) => {
 	renderer.xr.enabled = true;
 	container.appendChild( renderer.domElement );
 
+	//
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	mtlLoader = new MTLLoader();
-	mtlLoader.setPath( "https://moodle.ianwild.co.uk/mod/wavefront/samples/" );
-	mtlLoader.load( 'greek_vase2.mtl', function ( materials ) {
+	document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
 
-		materials.preload();
+	//
 
-		var objLoader = new OBJLoader();
-		objLoader.setMaterials( materials );
-		objLoader.setPath( "https://moodle.ianwild.co.uk/mod/wavefront/samples/" );
-		objLoader.load( 'greek_vase2.obj', function ( object ) {
-
-			monkeymesh = object;
-			scene.add( monkeymesh );
-
-		} );
-
-	} );
-
-	var boxgeometry = new THREE.BoxBufferGeometry( 0.25, 0.25, 0.25 ).translate( 0, 0.1, 0 );
+	const geometry = new THREE.CylinderGeometry( 0.1, 0.1, 0.2, 32 ).translate( 0, 0.1, 0 );
 
 	function onSelect() {
 
 		if ( reticle.visible ) {
 
-			var material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-			var mesh = new THREE.Mesh( boxgeometry, material );
+			const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
+			const mesh = new THREE.Mesh( geometry, material );
 			mesh.position.setFromMatrixPosition( reticle.matrix );
-			//mesh.scale.y = Math.random() * 2 + 1;
-			mesh.scale.set( 0.25, 0.25, 0.25 );
+			mesh.scale.y = Math.random() * 2 + 1;
 			scene.add( mesh );
-
 
 		}
 
@@ -110,7 +92,7 @@ export const init = (stage) => {
 	scene.add( controller );
 
 	reticle = new THREE.Mesh(
-		new THREE.RingBufferGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
+		new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
 		new THREE.MeshBasicMaterial()
 	);
 	reticle.matrixAutoUpdate = false;
@@ -119,10 +101,9 @@ export const init = (stage) => {
 
 	//
 
-	window.addEventListener( 'resize', onWindowResize, false );
-	
-	animate();
-};
+	window.addEventListener( 'resize', onWindowResize );
+
+}
 
 function onWindowResize() {
 
@@ -132,6 +113,8 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
+
+//
 
 function animate() {
 
@@ -143,8 +126,8 @@ function render( timestamp, frame ) {
 
 	if ( frame ) {
 
-		var referenceSpace = renderer.xr.getReferenceSpace();
-		var session = renderer.xr.getSession();
+		const referenceSpace = renderer.xr.getReferenceSpace();
+		const session = renderer.xr.getSession();
 
 		if ( hitTestSourceRequested === false ) {
 
@@ -171,11 +154,11 @@ function render( timestamp, frame ) {
 
 		if ( hitTestSource ) {
 
-			var hitTestResults = frame.getHitTestResults( hitTestSource );
+			const hitTestResults = frame.getHitTestResults( hitTestSource );
 
 			if ( hitTestResults.length ) {
 
-				var hit = hitTestResults[ 0 ];
+				const hit = hitTestResults[ 0 ];
 
 				reticle.visible = true;
 				reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
@@ -193,5 +176,3 @@ function render( timestamp, frame ) {
 	renderer.render( scene, camera );
 
 }
-
-		
