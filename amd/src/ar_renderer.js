@@ -39,6 +39,7 @@ let camera, scene, renderer;
 let controller;
 
 let reticle;
+let object;
 
 let hitTestSource = null;
 let hitTestSourceRequested = false;
@@ -125,7 +126,8 @@ export const init = (stage) => {
 		
 		        var objLoader = new OBJLoader();
 		        objLoader.setMaterials(materials);
-		        objLoader.load(obj_file, function (object) {
+		        objLoader.load(obj_file, function (obj) {
+		            object = obj;
 		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
 		        	object.scale.set(0.01,0.01,0.01);
 					scene.add( object );
