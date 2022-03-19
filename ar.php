@@ -31,22 +31,13 @@ require_once($CFG->libdir.'/filelib.php');
 
 global $DB;
 
-$id = optional_param('id', 0, PARAM_INT);
-$w = optional_param('w', 0, PARAM_INT);
-//$editing = optional_param('editing', 0, PARAM_BOOL);
+$m = required_param('m', PARAM_INT);
+$w = required_param('w', PARAM_INT);
 
-if ($id) {
-    list($course, $cm) = get_course_and_cm_from_cmid($id, 'wavefront');
-    if (!$wavefront = $DB->get_record('wavefront', array('id' => $cm->instance))) {
-        print_error('invalidcoursemodule');
-    }
-} else {
-    if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
-        print_error('invalidwavefrontid', 'wavefront');
-    }
-    list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
+if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
+    print_error('invalidwavefrontid', 'wavefront');
 }
-
+list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
 
 if ($wavefront->ispublic) {
     $PAGE->set_cm($cm, $course);
@@ -63,21 +54,7 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
 
 wavefront_config_defaults();
 
-/*
-$params = array(
-    'context' => $context,
-    'objectid' => $wavefront->id
-);
-$event = \mod_wavefront\event\course_module_viewed::create($params);
-$event->add_record_snapshot('course_modules', $cm);
-$event->add_record_snapshot('course', $course);
-$event->add_record_snapshot('wavefront', $wavefront);
-$event->trigger();
 
-// Mark viewed.
-$completion = new completion_info($course);
-$completion->set_module_viewed($cm);
-*/
 $PAGE->set_cm($cm);
 $PAGE->set_url('/mod/wavefront/ar.php', array('id' => $cm->id));
 $PAGE->set_title($wavefront->name);
@@ -93,7 +70,7 @@ $js_params = array('stage' => 'stage');
 $PAGE->requires->js_call_amd('mod_wavefront/ar_renderer', 'init', $js_params);
 
 // get first model for now 
-if ($model = $DB->get_record('wavefront_model', array('id' => 2)) ) {
+if ($model = $DB->get_record('wavefront_model', array('id' => $m)) ) {
     
     echo $output->display_model_in_ar($context, $model);
 }

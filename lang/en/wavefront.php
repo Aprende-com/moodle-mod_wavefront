@@ -106,5 +106,7 @@ $string['deletedmodel'] = 'Deleted model';
 $string['deletemodelfiles'] = 'Deleting files...';
 $string['deletemodelrecord'] = 'Delete record...';
 
+$string['arview'] = 'View in AR';
+
 // Course list of galleries
 $string['viewgallery'] = 'View gallery';
