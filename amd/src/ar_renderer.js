@@ -44,7 +44,7 @@ let hitTestSource = null;
 let hitTestSourceRequested = false;
 
 
-export const init = (stages) => {
+export const init = (stage) => {
 
 	var container = document.getElementById(stage);
     console.log(container);
