@@ -99,6 +99,14 @@ export const init = (stage) => {
 	renderer.xr.enabled = true;
 	container.appendChild( renderer.domElement );
 
+    //
+    
+    rendere.xr.addEventListener('sessionend', function ( event ) {
+    	scene.remove( object );
+		scene.add( reticle );
+		controller.addEventListener( 'select', onSelect );
+	});
+    
 	//
 
 	document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
