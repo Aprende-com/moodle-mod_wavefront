@@ -74,7 +74,8 @@ export const init = (stage) => {
 	scene = new THREE.Scene();
 
 	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
-	var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
 	const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
 	light.position.set( 0.5, 1, 0.25 );
