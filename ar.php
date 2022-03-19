@@ -89,7 +89,7 @@ $PAGE->set_pagelayout('popup');
 $output = $PAGE->get_renderer('mod_wavefront');
 
 // send page header
-$output->header();
+echo $output->header();
 
 $js_params = array();
 
@@ -98,5 +98,4 @@ $PAGE->requires->js_call_amd('mod_wavefront/ar_renderer', 'init', $js_params);
 // get first model for now    
 echo $output->display_model_in_ar();
 
-
-
+echo $output->footer();
