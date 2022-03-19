@@ -161,8 +161,11 @@ class ARButton {
 
 				supported ? showStartAR() : showARNotSupported();
 
-			} ).catch( showARNotSupported );
-
+			} ).catch(function(value) {
+  				console.log(value.name + ": " + value.message);
+			 	showARNotSupported 
+			});
+			
 			return button;
 
 		} else {
