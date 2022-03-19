@@ -81,8 +81,6 @@ export const init = (stage) => {
 
 	//
 
-	const geometry = new THREE.CylinderGeometry( 0.1, 0.1, 0.2, 32 ).translate( 0, 0.1, 0 );
-
 	function onSelect() {
 
 		if ( reticle.visible ) {
@@ -96,7 +94,7 @@ export const init = (stage) => {
 		        var objLoader = new OBJLoader();
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (object) {
-				
+				    object.scale.set(0.5,0.5,0.5);
 					scene.add( object );
 				});
 			});
