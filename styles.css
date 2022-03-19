@@ -62,6 +62,7 @@
 	display: flex;
 }
 
+.wavefront div.ar input[type=submit],
 .wavefront div.model-management input[type=submit] {
 	margin-left: 10px;
 }
