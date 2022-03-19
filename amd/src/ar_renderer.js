@@ -58,11 +58,11 @@ function render() {
 
 }
 
-export const init = () => {
+export const init = (stage) => {
 
-	const container = document.createElement( 'div' );
-	document.body.appendChild( container );
-
+	var container = document.getElementById(stage);
+    console.log(container);
+	
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
@@ -81,7 +81,7 @@ export const init = () => {
 
 	//
 
-	document.body.appendChild( ARButton.createButton( renderer ) );
+	container.appendChild( ARButton.createButton( renderer ) );
 
 	//
 
