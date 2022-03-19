@@ -213,10 +213,16 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         }
         
         if (!$modelerr) {
-            $attr = array('data-baseurl' => urlencode($baseurl),
+            $attr = array('data-camerafar' =>$model->camerafar,
+                          'data-cameraangle' =>  $model->cameraangle,
+                          'data-camerax' => $model->camerax,
+                          'data-cameray' => $model->cameray,
+                          'data-cameraz' => $model->cameraz,            
+                          'data-baseurl' => urlencode($baseurl),
                           'data-mtl' => urlencode($mtl_file),
                           'data-obj' => urlencode($obj_file),
                           'id' => 'stage');
+            
             $output = html_writer::div('', 'ar-stage', $attr);
         }
             
