@@ -57,15 +57,12 @@ if ($wavefront->ispublic) {
 
 $context = context_module::instance($cm->id);
 
-
-require_login();
-
-/*
 if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
     notice(get_string("activityiscurrentlyhidden"));
 }
-*/
+
 wavefront_config_defaults();
+
 /*
 $params = array(
     'context' => $context,
