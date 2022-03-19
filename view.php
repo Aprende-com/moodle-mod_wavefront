@@ -121,7 +121,7 @@ if ( has_capability('mod/wavefront:submit', $context) ) {
     $url = new moodle_url('/mod/wavefront/edit_model.php');
     echo '<form action="'. $url . '">'.
         '<input type="hidden" name="cmid" value="'.$PAGE->cm->id.'" />'.
-        '<input type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
+        '<input class="btn btn-secondary" type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
         '</form>';
 }
 
