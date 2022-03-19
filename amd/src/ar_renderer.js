@@ -49,8 +49,6 @@ var monkeymesh;
 export const init = (stage) => {
 
 	var container = document.getElementById(stage);
-    container = document.createElement( 'div' );
-	document.body.appendChild( container );
 
 	scene = new THREE.Scene();
 
