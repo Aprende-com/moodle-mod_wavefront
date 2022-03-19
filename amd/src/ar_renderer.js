@@ -58,10 +58,26 @@ export const init = (stage) => {
 	console.log(obj);
 	var obj_file = decodeURIComponent(obj);
 	console.log(obj_file);
+	
+	// Get camera attributes
+	var cameraangle = jQuery(container).attr("data-cameraangle");
+    console.log(cameraangle);
+	var camerafar = jQuery(container).attr("data-camerafar");
+	console.log(camerafar);
+	var camerax = jQuery(container).attr("data-camerax");
+	console.log(camerax);
+	var cameray = jQuery(container).attr("data-cameray");
+	console.log(cameray);
+	var cameraz = jQuery(container).attr("data-cameraz");
+	console.log(cameraz);
 
 	scene = new THREE.Scene();
 
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
+	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
+	var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	cameras.push(camera);
+	scene.add(camera);
+	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
 	const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
 	light.position.set( 0.5, 1, 0.25 );
