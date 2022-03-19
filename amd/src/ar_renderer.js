@@ -72,14 +72,14 @@ export const init = (stage) => {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	mtlLoader = new MTLLoader();
-	mtlLoader.setPath( "/var/www/moodle.ianwild.co.uk/public_html/mod/wavefront/samples/" );
+	mtlLoader.setPath( "https://moodle.ianwild.co.uk/mod/wavefront/samples/" );
 	mtlLoader.load( 'greek_vase2.mtl', function ( materials ) {
 
 		materials.preload();
 
 		var objLoader = new OBJLoader();
 		objLoader.setMaterials( materials );
-		objLoader.setPath( "/var/www/moodle.ianwild.co.uk/public_html/mod/wavefront/samples/" );
+		objLoader.setPath( "https://moodle.ianwild.co.uk/mod/wavefront/samples/" );
 		objLoader.load( 'greek_vase2.obj', function ( object ) {
 
 			monkeymesh = object;
