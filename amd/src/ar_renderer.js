@@ -75,7 +75,6 @@ export const init = (stage) => {
 
 	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
 	var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-	cameras.push(camera);
 	scene.add(camera);
 	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
