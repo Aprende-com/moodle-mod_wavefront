@@ -183,9 +183,42 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * Returns html to display the Wavefront model
      * @param boolean $editing true if the current user can edit the model, else false.
      */
-    public function display_model_in_ar() {
+    public function display_model_in_ar($context, $model) {
         
-        $output = html_writer::div('', 'ar-stage', array('id' => "stage"));
+        $fs = get_file_storage();
+        $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
+        
+        // A Wavefront model contains two files
+        $modelerr = true;
+        $mtl_file = null;
+        $obj_file = null;
+        $baseurl = null;
+        
+        foreach ($fs_files as $f) {
+            // $f is an instance of stored_file
+            $pathname = $f->get_filepath();
+            $filename = $f->get_filename();
+            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            // what type of file is this?
+            if($ext === "mtl") {
+                $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+            } elseif ($ext === "obj") {
+                $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+                $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');
+            }
+        }
+        
+        if($mtl_file != null && $obj_file != null) {
+            $modelerr = false;
+        }
+        
+        if (!$modelerr) {
+            $attr = array('data-baseurl' => urlencode($baseurl),
+                          'data-mtl' => urlencode($mtl_file),
+                          'data-obj' => urlencode($obj_file),
+                          'id' => 'stage');
+            $output = html_writer::div('', 'ar-stage', $attr);
+        }
             
         return $output;
     }

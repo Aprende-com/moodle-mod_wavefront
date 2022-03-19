@@ -95,7 +95,9 @@ $js_params = array('stage' => 'stage');
 
 $PAGE->requires->js_call_amd('mod_wavefront/ar_renderer', 'init', $js_params);
 
-// get first model for now    
-echo $output->display_model_in_ar();
-
+// get first model for now 
+if ($model = $DB->get_records('wavefront_model', array('id' => 2)) ) {
+    
+    echo $output->display_model_in_ar($context, $model);
+}
 echo $output->footer();
