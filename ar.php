@@ -91,7 +91,7 @@ $output = $PAGE->get_renderer('mod_wavefront');
 // send page header
 echo $output->header();
 
-$js_params = array();
+$js_params = array('stage' => 'stage');
 
 $PAGE->requires->js_call_amd('mod_wavefront/ar_renderer', 'init', $js_params);
 
