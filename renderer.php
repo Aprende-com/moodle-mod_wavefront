@@ -99,7 +99,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
+                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
                     '</form>';
             
             if(has_capability('mod/wavefront:delete', $context)) {
@@ -107,7 +107,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
                 $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
+                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
                     '</form>';
             }
             $output .= html_writer::end_div();
@@ -119,7 +119,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $output .= '<form target="_blank" action="'. $url . '">'.
             '<input type="hidden" name="m" value="'. $model->id .'" />'.
             '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
-            '<input type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
+            '<input class="btn btn-secondary" type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
             '</form>';
         $output .= html_writer::end_div();
         
