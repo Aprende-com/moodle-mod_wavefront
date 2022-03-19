@@ -101,7 +101,7 @@ export const init = (stage) => {
 
     //
     
-    rendere.xr.addEventListener('sessionend', function ( event ) {
+    renderer.xr.addEventListener('sessionend', function ( event ) {
     	scene.remove( object );
 		scene.add( reticle );
 		controller.addEventListener( 'select', onSelect );
