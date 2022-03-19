@@ -94,7 +94,7 @@ export const init = (stage) => {
 		        var objLoader = new OBJLoader();
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (object) {
-				    object.scale.set(0.5,0.5,0.5);
+		            object.scale.setScalar(0.1);
 					scene.add( object );
 				});
 			});
