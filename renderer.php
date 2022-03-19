@@ -178,5 +178,18 @@ class mod_wavefront_renderer extends plugin_renderer_base {
 
         return $output;
     }
+    
+    /**
+     * Returns html to display the Wavefront model
+     * @param boolean $editing true if the current user can edit the model, else false.
+     */
+    public function display_model_in_ar() {
+        
+        $output = '<canvas data-engine="three.js r138" width="1560" height="929" style="display: block; width: 1560px; height: 929px;"></canvas>';
+        
+        $output .= '<button id="ARButton" style="position: absolute; bottom: 20px; padding: 12px 6px; border: 1px solid rgb(255, 255, 255); border-radius: 4px; background: rgba(0, 0, 0, 0.1); color: rgb(255, 255, 255); font: 13px sans-serif; text-align: center; opacity: 0.5; outline: none; z-index: 999; cursor: auto; left: calc(50% - 75px); width: 150px;">AR NOT SUPPORTED</button>';
+        
+        return $output;
+    }
 
 }
