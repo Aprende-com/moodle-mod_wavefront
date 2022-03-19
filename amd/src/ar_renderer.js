@@ -34,8 +34,97 @@ import { OrbitControls } from 'mod_wavefront/OrbitControls';
 import { ARButton } from 'mod_wavefront/ARButton';
 import jQuery from 'jquery';
 
-let camera, scene, renderer;
-let controller;
+var container;
+var camera, scene, renderer;
+var controller;
+
+var reticle;
+
+var hitTestSource = null;
+var hitTestSourceRequested = false;
+
+var mtlLoader;
+var monkeymesh;
+
+export const init = (stage) => {
+
+	var container = document.getElementById(stage);
+    container = document.createElement( 'div' );
+	document.body.appendChild( container );
+
+	scene = new THREE.Scene();
+
+	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
+	camera.position.z = 10;
+
+	var light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+	light.position.set( 0.5, 1, 0.25 );
+	scene.add( light );
+
+	//
+
+	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.xr.enabled = true;
+	container.appendChild( renderer.domElement );
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	mtlLoader = new MTLLoader();
+	mtlLoader.setPath( "/var/www/moodle.ianwild.co.uk/public_html/mod/wavefront/samples/" );
+	mtlLoader.load( 'greek_vase2.mtl', function ( materials ) {
+
+		materials.preload();
+
+		var objLoader = new OBJLoader();
+		objLoader.setMaterials( materials );
+		objLoader.setPath( "/var/www/moodle.ianwild.co.uk/public_html/mod/wavefront/samples/" );
+		objLoader.load( 'greek_vase2.obj', function ( object ) {
+
+			monkeymesh = object;
+			scene.add( monkeymesh );
+
+		} );
+
+	} );
+
+	var boxgeometry = new THREE.BoxBufferGeometry( 0.25, 0.25, 0.25 ).translate( 0, 0.1, 0 );
+
+	function onSelect() {
+
+		if ( reticle.visible ) {
+
+			var material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
+			var mesh = new THREE.Mesh( boxgeometry, material );
+			mesh.position.setFromMatrixPosition( reticle.matrix );
+			//mesh.scale.y = Math.random() * 2 + 1;
+			mesh.scale.set( 0.25, 0.25, 0.25 );
+			scene.add( mesh );
+
+
+		}
+
+	}
+
+	controller = renderer.xr.getController( 0 );
+	controller.addEventListener( 'select', onSelect );
+	scene.add( controller );
+
+	reticle = new THREE.Mesh(
+		new THREE.RingBufferGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
+		new THREE.MeshBasicMaterial()
+	);
+	reticle.matrixAutoUpdate = false;
+	reticle.visible = false;
+	scene.add( reticle );
+
+	//
+
+	window.addEventListener( 'resize', onWindowResize, false );
+	
+	animate();
+};
 
 function onWindowResize() {
 
@@ -52,60 +141,59 @@ function animate() {
 
 }
 
-function render() {
+function render( timestamp, frame ) {
+
+	if ( frame ) {
+
+		var referenceSpace = renderer.xr.getReferenceSpace();
+		var session = renderer.xr.getSession();
+
+		if ( hitTestSourceRequested === false ) {
+
+			session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
+
+				session.requestHitTestSource( { space: referenceSpace } ).then( function ( source ) {
+
+					hitTestSource = source;
+
+				} );
+
+			} );
+
+			session.addEventListener( 'end', function () {
+
+				hitTestSourceRequested = false;
+				hitTestSource = null;
+
+			} );
+
+			hitTestSourceRequested = true;
+
+		}
+
+		if ( hitTestSource ) {
+
+			var hitTestResults = frame.getHitTestResults( hitTestSource );
+
+			if ( hitTestResults.length ) {
+
+				var hit = hitTestResults[ 0 ];
+
+				reticle.visible = true;
+				reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
+
+			} else {
+
+				reticle.visible = false;
+
+			}
+
+		}
+
+	}
 
 	renderer.render( scene, camera );
 
 }
-
-export const init = (stage) => {
-
-	var container = document.getElementById(stage);
-    console.log(container);
-	
-	scene = new THREE.Scene();
-
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
-
-	const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
-	light.position.set( 0.5, 1, 0.25 );
-	scene.add( light );
-
-	//
-
-	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.xr.enabled = true;
-	container.appendChild( renderer.domElement );
-
-	//
-
-	container.appendChild( ARButton.createButton( renderer ), { requiredFeatures: [ 'hit-test' ] } );
-
-	//
-
-	const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 32 ).rotateX( Math.PI / 2 );
-
-	function onSelect() {
-
-		const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-		const mesh = new THREE.Mesh( geometry, material );
-		mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
-		mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
-		scene.add( mesh );
-
-	}
-
-	controller = renderer.xr.getController( 0 );
-	controller.addEventListener( 'select', onSelect );
-	scene.add( controller );
-
-	//
-
-	window.addEventListener( 'resize', onWindowResize );
-
-    animate();
-};
 
 		
