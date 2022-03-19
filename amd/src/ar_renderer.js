@@ -119,7 +119,7 @@ export const init = (stage) => {
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (object) {
 		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
-		        	object.scale.set(0.1,0.1,0.1);
+		        	object.scale.set(0.05,0.05,0.05);
 					scene.add( object );
 					controller.removeEventListener( 'select', onSelect );
 					scene.remove(reticle);
