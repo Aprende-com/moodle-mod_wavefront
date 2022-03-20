@@ -106,7 +106,14 @@ $string['deletedmodel'] = 'Deleted model';
 $string['deletemodelfiles'] = 'Deleting files...';
 $string['deletemodelrecord'] = 'Delete record...';
 
-$string['arview'] = 'View in AR';
-
 // Course list of galleries
 $string['viewgallery'] = 'View gallery';
+
+// Augmented Reality
+$string['arview'] = 'View in AR';
+$string['arheading'] = 'Augmented Reality (AR)';
+$string['arenabled'] = 'Enable AR view';
+$string['arenabled_help'] = 'If \'Yes\' then an option to allow the viewer to open an AR tab will be shown beneath the model. Note AR will only work on WebXR-enabled devices.';
+$string['arscale'] = 'Object scaling';
+$string['arscale_help'] = 'Apply x y z vector scaling to the object.';
+$string['arscaleerr'] = 'Object scaling should be greater than 0';

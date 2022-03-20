@@ -38,12 +38,7 @@ class mod_wavefront_model_form extends moodleform {
         $descriptionoptions = $this->_customdata['descriptionoptions'];
         $modeloptions       = $this->_customdata['modeloptions'];
 
-        $context  = context_module::instance($cm->id);
-        // Prepare format_string/text options
-        $fmtoptions = array(
-            'context' => $context);
-
-//-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         $mform->addElement('editor', 'description_editor', get_string('modeldescription', 'wavefront'), null, $descriptionoptions);
@@ -99,6 +94,20 @@ class mod_wavefront_model_form extends moodleform {
         $mform->setDefault('cameraz', 200);
         $mform->setType('cameraz', PARAM_INT);
         
+        // AR
+        $mform->addElement('header', 'aroptions', get_string('arheading', 'wavefront'));
+        
+        $mform->addElement('selectyesno', 'arenabled', get_string('arenabled', 'wavefront'));
+        $mform->setDefault('arenabled', 0);
+        $mform->addHelpButton('arenabled', 'arenabled', 'mod_wavefront');
+        $mform->setType('selectyesno', PARAM_BOOL);
+        
+        $mform->addElement('text', 'arscale', get_string('arscale', 'wavefront'));
+        $mform->addHelpButton('arscale', 'arscale', 'mod_wavefront');
+        $mform->setDefault('arscale', 0.01);
+        $mform->setType('arscale', PARAM_FLOAT);
+        $mform->disabledIf('arscale', 'arenabled', 'eq', 0);
+        
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'cmid');
@@ -120,6 +129,11 @@ class mod_wavefront_model_form extends moodleform {
             (strlen($data['backcol']) == 6 || strlen($data['backcol']) == 3))) {
                 
             $errors['backcol'] = get_string('backcolerr', 'mod_wavefront');
+        }
+        
+        // Ensure AR object scaling > 0
+        if ( ($data['arenabled'] == 1) && ($data['arscale'] <= 0) ) {           
+            $errors['arscale'] = get_string('arscaleerr', 'mod_wavefront');
         }
         
         return $errors;
