@@ -113,15 +113,17 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             $output .= html_writer::end_div();
         }
         
-        // Add a button to allow user to view model in AR
-        $url = new moodle_url('/mod/wavefront/ar.php');
-        $output .= html_writer::start_div('ar');
-        $output .= '<form target="_blank" action="'. $url . '">'.
-            '<input type="hidden" name="m" value="'. $model->id .'" />'.
-            '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
-            '<input class="btn btn-secondary" type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
-            '</form>';
-        $output .= html_writer::end_div();
+        // Add a button to allow user to view model in AR?
+        if($model->arenabled) {
+            $url = new moodle_url('/mod/wavefront/ar.php');
+            $output .= html_writer::start_div('ar');
+            $output .= '<form target="_blank" action="'. $url . '">'.
+                '<input type="hidden" name="m" value="'. $model->id .'" />'.
+                '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
+                '<input class="btn btn-secondary" type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
+                '</form>';
+            $output .= html_writer::end_div();
+        }
         
         $output .= $this->output->box_end();
         
