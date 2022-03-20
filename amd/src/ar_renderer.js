@@ -40,15 +40,19 @@ let controller;
 
 let reticle;
 let object;
+let objectscale;
 
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 
 
-export const init = (stage) => {
+export const init = (stage, scale) => {
 
 	var container = document.getElementById(stage);
     console.log(container);
+    
+    // Object vector scaling
+    objectscale = scale;
     
     // Get model files
 	var mtl = jQuery(container).attr("data-mtl");
@@ -105,6 +109,7 @@ export const init = (stage) => {
     renderer.xr.addEventListener('sessionend', function ( event ) {
     	scene.remove( object );
 		scene.add( reticle );
+		reticle.visible = false;
 		controller.addEventListener( 'select', onSelect );
 	});
     
@@ -129,7 +134,7 @@ export const init = (stage) => {
 		        objLoader.load(obj_file, function (obj) {
 		            object = obj;
 		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
-		        	object.scale.set(0.01,0.01,0.01);
+		        	object.scale.set(objectscale,objectscale,objectscale);
 					scene.add( object );
 					controller.removeEventListener( 'select', onSelect );
 					scene.remove(reticle);
