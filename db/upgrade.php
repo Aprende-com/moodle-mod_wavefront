@@ -62,5 +62,21 @@ function xmldb_wavefront_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022022700, 'wavefront');
     }
     
+    if ($oldversion < 2022032003) {
+        
+        $table = new xmldb_table('wavefront_model');
+        $field = new xmldb_field('arenabled', XMLDB_TYPE_INTEGER, '2', null, true, null, 0, 'model' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        $field = new xmldb_field('arscale', XMLDB_TYPE_FLOAT, null, null, true, null, 1, 'arenabled' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        upgrade_mod_savepoint(true, 2022032003, 'wavefront');
+    }
+    
     return true;
 }    
