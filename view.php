@@ -50,10 +50,10 @@ if ($id) {
 
 if ($wavefront->ispublic) {
     $PAGE->set_cm($cm, $course);
-    $PAGE->set_pagelayout('incourse');
 } else {
     require_login($course, true, $cm);
 }
+$PAGE->set_pagelayout('incourse');
 
 $context = context_module::instance($cm->id);
 
