@@ -66,3 +66,10 @@
 .wavefront div.model-management input[type=submit] {
 	margin-left: 10px;
 }
+
+body#page-mod-wavefront-ar,
+body#page-mod-wavefront-ar div#page,
+body#page-mod-wavefront-ar div#page div.ar-stage {
+	margin: 0;
+	background: #000;
+}
