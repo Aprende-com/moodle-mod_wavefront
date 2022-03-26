@@ -101,6 +101,11 @@ echo $output->heading($heading);
 
 echo $output->header();
 
+// Display activity intro if there is one
+if ($wavefront->intro && (strlen($wavefront->intro) > 0) ) {
+    echo $output->box(format_module_intro('wavefront', $wavefront, $cm->id, 'generalbox wavefront intro'));
+}
+
 $stagenames = array();
 
 echo html_writer::start_div('wavefront-gallery row');
