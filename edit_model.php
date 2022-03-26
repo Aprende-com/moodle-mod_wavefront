@@ -19,7 +19,7 @@
  * Form for editing a model
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -119,7 +119,6 @@ if ($mform->is_cancelled()){
 
     $model->description      = '';          // updated later
     $model->descriptionformat = FORMAT_HTML; // updated later
-    $model->definitiontrust  = 0;           // updated later
     $model->timemodified     = $timenow;
     
     if ($isnewentry) {
@@ -127,7 +126,7 @@ if ($mform->is_cancelled()){
         $model->id = $DB->insert_record('wavefront_model', $model);
     } else {
         // Update existing entry.
-        $DB->update_record('wavefront', $model);
+        $DB->update_record('wavefront_model', $model);
     }
 
     // save and relink embedded images and save attachments

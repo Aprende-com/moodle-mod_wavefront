@@ -52,7 +52,8 @@ function wavefront_supports($feature) {
             return false;
         case FEATURE_BACKUP_MOODLE2:
             return true;
-
+        case FEATURE_COMPLETION_HAS_RULES:
+            return true;
         default:
             return null;
     }
@@ -458,4 +459,101 @@ function wavefront_print_comment($comment, $context) {
     (has_capability('mod/wavefront:edit', $context) ? html_writer::link($deleteurl, get_string('delete')) : '').
     '</div>'.
     '</td></tr></table>';
+}
+
+/**
+ * Add a get_coursemodule_info function in case any forum type wants to add 'extra' information
+ * for the course (see resource).
+ *
+ * Given a course_module object, this function returns any "extra" information that may be needed
+ * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
+ *
+ * @param stdClass $coursemodule The coursemodule object (record).
+ * @return cached_cm_info An object on information that the courses
+ *                        will know about (most noticeably, an icon).
+ */
+function wavefront_get_coursemodule_info($coursemodule) {
+    global $DB;
+    
+    $dbparams = ['id' => $coursemodule->instance];
+    $fields = 'id, name, intro, introformat, completioncomments';
+    if (!$wavefront = $DB->get_record('wavefront', $dbparams, $fields)) {
+        return false;
+    }
+    
+    $result = new cached_cm_info();
+    $result->name = $wavefront->name;
+    
+    if ($coursemodule->showdescription) {
+        // Convert intro to html. Do not filter cached version, filters run at display time.
+        $result->content = format_module_intro('wavefront', $wavefront, $coursemodule->id, false);
+    }
+    
+    // Populate the custom completion rules as key => value pairs, but only if the completion mode is 'automatic'.
+    if ($coursemodule->completion == COMPLETION_TRACKING_AUTOMATIC) {
+        $result->customdata['customcompletionrules']['completioncomments'] = $wavefront->completioncomments;
+    }
+    
+    return $result;
+}
+
+/**
+ * Obtains the automatic completion state for this wavefront gallery based on any conditions
+ * in gallery settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not, $type if conditions not set.
+ */
+function wavefront_get_completion_state($course,$cm,$userid,$type) {
+    global $DB;
+    
+    // Get wavefront details
+    if (!($wavefront=$DB->get_record('wavefront',array('id'=>$cm->instance)))) {
+        throw new Exception("Can't find wavefront gallery {$cm->instance}");
+    }
+    
+    $result=$type; // Default return value
+    
+    if ($wavefront->completioncomments) {
+        $value = $wavefront->completioncomments <=
+        $DB->count_records('wavefront_comments',array('wavefrontid'=>$wavefront->id,'userid'=>$userid));
+        if ($type == COMPLETION_AND) {
+            $result = $result && $value;
+        } else {
+            $result = $result || $value;
+        }
+    }
+    
+    return $result;
+}
+
+/**
+ * Callback which returns human-readable strings describing the active completion custom rules for the module instance.
+ *
+ * @param cm_info|stdClass $cm object with fields ->completion and ->customdata['customcompletionrules']
+ * @return array $descriptions the array of descriptions for the custom rules.
+ */
+function mod_wavefront_get_completion_active_rule_descriptions($cm) {
+    // Values will be present in cm_info, and we assume these are up to date.
+    if (empty($cm->customdata['customcompletionrules'])
+        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
+            return [];
+        }
+        
+        $descriptions = [];
+        foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
+            switch ($key) {
+                case 'completioncomments':
+                    if (!empty($val)) {
+                        $descriptions[] = get_string('completioncommentsdesc', 'mod_wavefront', $val);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $descriptions;
 }

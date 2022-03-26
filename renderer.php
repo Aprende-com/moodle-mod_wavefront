@@ -99,7 +99,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
+                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
                     '</form>';
             
             if(has_capability('mod/wavefront:delete', $context)) {
@@ -107,9 +107,21 @@ class mod_wavefront_renderer extends plugin_renderer_base {
                 $output .= '<form action="'. $url . '">'.
                     '<input type="hidden" name="id" value="'. $model->id .'" />'.
                     '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
+                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
                     '</form>';
             }
+            $output .= html_writer::end_div();
+        }
+        
+        // Add a button to allow user to view model in AR?
+        if($model->arenabled) {
+            $url = new moodle_url('/mod/wavefront/ar.php');
+            $output .= html_writer::start_div('ar');
+            $output .= '<form target="_blank" action="'. $url . '">'.
+                '<input type="hidden" name="m" value="'. $model->id .'" />'.
+                '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
+                '<input class="btn btn-secondary" type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
+                '</form>';
             $output .= html_writer::end_div();
         }
         
@@ -176,6 +188,56 @@ class mod_wavefront_renderer extends plugin_renderer_base {
             }
         }
 
+        return $output;
+    }
+    
+    /**
+     * Returns html to display the Wavefront model
+     * @param boolean $editing true if the current user can edit the model, else false.
+     */
+    public function display_model_in_ar($context, $model) {
+        
+        $fs = get_file_storage();
+        $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
+        
+        // A Wavefront model contains two files
+        $modelerr = true;
+        $mtl_file = null;
+        $obj_file = null;
+        $baseurl = null;
+        
+        foreach ($fs_files as $f) {
+            // $f is an instance of stored_file
+            $pathname = $f->get_filepath();
+            $filename = $f->get_filename();
+            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+            // what type of file is this?
+            if($ext === "mtl") {
+                $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+            } elseif ($ext === "obj") {
+                $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
+                $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');
+            }
+        }
+        
+        if($mtl_file != null && $obj_file != null) {
+            $modelerr = false;
+        }
+        
+        if (!$modelerr) {
+            $attr = array('data-camerafar' =>$model->camerafar,
+                          'data-cameraangle' =>  $model->cameraangle,
+                          'data-camerax' => $model->camerax,
+                          'data-cameray' => $model->cameray,
+                          'data-cameraz' => $model->cameraz,            
+                          'data-baseurl' => urlencode($baseurl),
+                          'data-mtl' => urlencode($mtl_file),
+                          'data-obj' => urlencode($obj_file),
+                          'id' => 'stage');
+            
+            $output = html_writer::div('', 'ar-stage', $attr);
+        }
+            
         return $output;
     }
 

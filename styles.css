@@ -62,6 +62,21 @@
 	display: flex;
 }
 
+.wavefront div.ar input[type=submit],
 .wavefront div.model-management input[type=submit] {
 	margin-left: 10px;
+}
+
+body#page-mod-wavefront-ar,
+body#page-mod-wavefront-ar div#page,
+body#page-mod-wavefront-ar div#page div.ar-stage {
+	margin: 0;
+	background: #000;
+}
+
+@media (max-width: 767px) {
+    .wavefront-gallery.row {
+        margin-left: 0;
+        margin-right: 0;
+    }
 }

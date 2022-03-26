@@ -19,13 +19,18 @@
  * English strings for the wavefront 3D model renderer module
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $string['wavefront:addinstance'] = 'Can add a new wavefront activity.';
+$string['wavefront:viewcomments'] = 'View model gallery comments';
+$string['wavefront:edit'] = 'Edit a model';
+$string['wavefront:delete'] = 'Delete a model';
+$string['wavefront:submit'] = 'Submit a model to the gallery';
+$string['wavefront:addcomment'] = 'Comment on a gallery';
 
 $string['acceptablefiletypebriefing'] = 'If you wish to upload multiple files at a time, you can submit a zip file with images inside it and all valid images inside the zip archive will be added to the gallery.';
 $string['addcomment'] = 'Add comment';
@@ -53,12 +58,6 @@ $string['eventviewed'] = 'Wavefront model viewed';
 
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
-
-$string['wavefront:viewcomments'] = 'View model gallery comments';
-$string['wavefront:edit'] = 'Edit a model';
-$string['wavefront:delete'] = 'Delete a model';
-$string['wavefront:submit'] = 'Submit a model to the gallery';
-$string['wavefront:addcomment'] = 'Comment on a model';
 
 $string['makepublic'] = 'Make public';
 $string['modulename'] = 'Wavefront Renderer';
@@ -108,3 +107,18 @@ $string['deletemodelrecord'] = 'Delete record...';
 
 // Course list of galleries
 $string['viewgallery'] = 'View gallery';
+
+// Augmented Reality
+$string['arview'] = 'View in AR';
+$string['arheading'] = 'Augmented Reality (AR)';
+$string['arenabled'] = 'Enable AR view';
+$string['arenabled_help'] = 'If \'Yes\' then an option to allow the viewer to open an AR tab will be shown beneath the model. Note AR will only work on WebXR-enabled devices.';
+$string['arscale'] = 'Object scaling';
+$string['arscale_help'] = 'Apply x y z vector scaling to the object.';
+$string['arscaleerr'] = 'Object scaling should be greater than 0';
+
+// Completion settings
+$string['completioncomments'] = 'Student must add comments to the gallery:';
+$string['completioncommentsdesc'] = 'Student must add at least {$a} comment(s)';
+$string['completioncommentsgroup'] = 'Require comments';
+$string['completioncommentshelp'] = 'requiring comments to complete';

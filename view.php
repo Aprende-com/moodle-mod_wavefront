@@ -50,10 +50,10 @@ if ($id) {
 
 if ($wavefront->ispublic) {
     $PAGE->set_cm($cm, $course);
-    $PAGE->set_pagelayout('incourse');
 } else {
     require_login($course, true, $cm);
 }
+$PAGE->set_pagelayout('incourse');
 
 $context = context_module::instance($cm->id);
 
@@ -101,9 +101,14 @@ echo $output->heading($heading);
 
 echo $output->header();
 
+// Display activity intro if there is one
+if ($wavefront->intro && (strlen($wavefront->intro) > 0) ) {
+    echo $output->box(format_module_intro('wavefront', $wavefront, $cm->id, 'generalbox wavefront intro'));
+}
+
 $stagenames = array();
 
-echo html_writer::start_div('wavefront-gallery');
+echo html_writer::start_div('wavefront-gallery row');
 // Get all models associated with this gallery
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
     
@@ -121,7 +126,7 @@ if ( has_capability('mod/wavefront:submit', $context) ) {
     $url = new moodle_url('/mod/wavefront/edit_model.php');
     echo '<form action="'. $url . '">'.
         '<input type="hidden" name="cmid" value="'.$PAGE->cm->id.'" />'.
-        '<input type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
+        '<input class="btn btn-secondary" type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
         '</form>';
 }
 
