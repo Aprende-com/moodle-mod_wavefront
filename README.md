@@ -1,10 +1,8 @@
 # Wavefront 3D model activity for Moodle 3.1+
 
-This resource allows learners to view 3D models within your Moodle course.
+mod_wavefront is a Moodle activity that allows learners to upload and view 3D models in a gallery. It supports Wavefront .OBJ geometry definition file format models, which can be uploaded together with .MTL material textures. The excellent three.js library is used to render models. For anyone interested in 3D rendering, including AR and VR, please do check out the three.js docs.
 
-As a course teacher, you are able to create, edit and delete model views.
-
-There is also the option to allow users to add comments to the model.
+This module started life as a fork of the Lightbox Gallery plugin.
 
 ## Install
 ### Using a downloaded zip file
@@ -19,6 +17,6 @@ Then add mod/wavefront to your gitignore.
 ## Credits
 Based on the lightboxgallery module
 
-Maintainer: Ian Wild (ian.wild@heavy-horse.co.uk)
+Maintainer: Ian Wild (ianwild1972@gmail.com)
   
 Original lightboxgallery plugin: Paul Holden (pholden[at]greenhead[dot]ac[dot]uk)  
