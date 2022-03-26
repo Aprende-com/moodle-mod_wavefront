@@ -519,7 +519,7 @@ function wavefront_get_completion_state($course,$cm,$userid,$type) {
     
     if ($wavefront->completioncomments) {
         $value = $wavefront->completioncomments <=
-        $DB->count_records('',array('wavefrontid'=>$wavefront->id,'userid'=>$userid));
+        $DB->count_records('wavefront_comments',array('wavefrontid'=>$wavefront->id,'userid'=>$userid));
         if ($type == COMPLETION_AND) {
             $result = $result && $value;
         } else {
