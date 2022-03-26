@@ -118,7 +118,7 @@ $string['arscale_help'] = 'Apply x y z vector scaling to the object.';
 $string['arscaleerr'] = 'Object scaling should be greater than 0';
 
 // Completion settings
-$string['completioncomments'] = 'Student must add a comment to the gallery:';
+$string['completioncomments'] = 'Student must add comments to the gallery:';
 $string['completioncommentsdesc'] = 'Student must add at least {$a} comment(s)';
 $string['completioncommentsgroup'] = 'Require comments';
 $string['completioncommentshelp'] = 'requiring comments to complete';
