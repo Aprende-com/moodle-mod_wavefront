@@ -70,6 +70,75 @@ class mod_wavefront_mod_form extends moodleform_mod {
 
         $this->add_action_buttons();
     }
+    
+    
 
+    /**
+     * Add custom completion rules.
+     *
+     * @return array Array of string IDs of added items, empty array if none
+     */
+    public function add_completion_rules() {
+       
+        $mform =& $this->_form;
+        
+        $group=array();
+        $group[] =& $mform->createElement('checkbox', 'completioncommentsenabled', '', get_string('completioncomments','mod_wavefront'));
+        $group[] =& $mform->createElement('text', 'completioncomments', '', array('size'=>3));
+        $mform->setType('completioncomments',PARAM_INT);
+        $mform->addGroup($group, 'completioncommentsgroup', get_string('completioncommentsgroup','mod_wavefront'), array(' '), false);
+        $mform->disabledIf('completioncomments','completioncommentsenabled','notchecked');
+        
+        return array('completioncommentsgroup');
+    }
+    
+    /**
+     * Called during validation
+     * 
+     * {@inheritDoc}
+     * @see moodleform_mod::completion_rule_enabled()
+     */
+    function completion_rule_enabled($data) {
+        return (($data['comments']==1) && ($data['completioncommentsenabled']!=0) && $data['completioncomments']!=0);
+    }
+    
+    /**
+     * Set up the completion checkboxes when the form is displayed
+     * 
+     * {@inheritDoc}
+     * @see moodleform_mod::data_preprocessing()
+     */
+    function data_preprocessing(&$default_values) {
+        parent::data_preprocessing($default_values);
+        
+        // Tick by default if Add mode or if completion comments settings is set to 1 or more.
+        if (empty($this->_instance) || ($default_values['comments'] == 1)) {
+            $default_values['completioncommentsenabled'] = 1;
+        } else {
+            $default_values['completioncommentsenabled'] = 0;
+        }
+        if (empty($default_values['completioncomments'])) {
+            $default_values['completioncomments']=1;
+        }
+    }
+    
+    /**
+     * Allows module to modify the data returned by form get_data().
+     * This method is also called in the bulk activity completion form.
+     *
+     * Only available on moodleform_mod.
+     *
+     * @param stdClass $data the form data to be modified.
+     */
+    public function data_postprocessing($data) {
+        parent::data_postprocessing($data);
+        // Turn off completion settings if the checkboxes aren't ticked
+        if (!empty($data->completionunlocked)) {
+            $autocompletion = !empty($data->completion) && $data->completion==COMPLETION_TRACKING_AUTOMATIC;
+            if (empty($data->completioncommentsenabled) || !$autocompletion) {
+                $data->completioncomments = 0;
+            }
+        }
+    }
 }
 

@@ -116,3 +116,9 @@ $string['arenabled_help'] = 'If \'Yes\' then an option to allow the viewer to op
 $string['arscale'] = 'Object scaling';
 $string['arscale_help'] = 'Apply x y z vector scaling to the object.';
 $string['arscaleerr'] = 'Object scaling should be greater than 0';
+
+// Completion settings
+$string['completioncomments'] = 'Student must add a comment to the gallery:';
+$string['completioncommentsdesc'] = 'Student must add at least {$a} comment(s)';
+$string['completioncommentsgroup'] = 'Require comments';
+$string['completioncommentshelp'] = 'requiring comments to complete';

@@ -78,5 +78,16 @@ function xmldb_wavefront_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022032003, 'wavefront');
     }
     
+    if ($oldversion < 2022032601) {
+        
+        $table = new xmldb_table('wavefront');
+        $field = new xmldb_field('completioncomments', XMLDB_TYPE_INTEGER, '9', null, true, null, 0, 'introformat' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        upgrade_mod_savepoint(true, 2022032601, 'wavefront');
+    }
+    
     return true;
 }    

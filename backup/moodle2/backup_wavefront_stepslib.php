@@ -41,7 +41,7 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         $wavefront = new backup_nested_element('wavefront', array('id'), array(
             'course', 'folder', 'name', 'comments',
             'timemodified', 'ispublic',
-            'intro', 'introformat'
+            'intro', 'introformat', 'completioncomments'
         ));
 
         $comments = new backup_nested_element('usercomments');
@@ -54,7 +54,7 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         $model = new backup_nested_element('model', array('id'), array(
                 'wavefrontid', 'description', 'descriptionformat', 'descriptionpos', 
                 'stagewidth', 'stageheight', 'backcol', 'camerax', 'cameray', 'cameraz', 'cameraangle', 'camerafar',
-                'model', 'timemodified'
+                'model', 'arenabled', 'arscale', 'timemodified'
         ));
 
         // Build the tree.
