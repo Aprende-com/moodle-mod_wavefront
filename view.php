@@ -106,8 +106,6 @@ if ($wavefront->intro && (strlen($wavefront->intro) > 0) ) {
     echo $output->box(format_module_intro('wavefront', $wavefront, $cm->id, 'generalbox wavefront intro'));
 }
 
-$stagenames = array();
-
 echo html_writer::start_div('wavefront-gallery row');
 // Get all models associated with this gallery
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
@@ -116,7 +114,6 @@ if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefr
         
         // Create a unique stage name, which will need to be passed to JS
         $stagename = uniqid('wavefront_');
-        $stagenames[] = $stagename;
         echo $output->display_model($context, $model, $stagename, $editing);
     }
 }
@@ -129,10 +126,6 @@ if ( has_capability('mod/wavefront:submit', $context) ) {
         '<input class="btn btn-secondary" type="submit" Value="'.get_string('addmodel', 'wavefront').'" />'.
         '</form>';
 }
-
-$js_params = array($stagenames);
-    
-$PAGE->requires->js_call_amd('mod_wavefront/model_renderer', 'init', $js_params);
 
 echo $output->display_comments($wavefront, $editing);
 
