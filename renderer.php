@@ -29,11 +29,22 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      * Render a wavefront model.
      *
      * @param \mod_wavefront\output\wavefront_model $wavefront The Wavefront model area.
-     * @return string The rendered edit action area.
+     * @return string The rendered model's html.
      */
     public function render_wavefront_model(\mod_wavefront\output\wavefront_model $wavefront): string {
         $context = $wavefront->export_for_template($this);
         return $this->render_from_template('mod_wavefront/wavefront_model', $context);
+    }
+    
+    /**
+     * Render the model's configuration buttons.
+     *
+     * @param \mod_wavefront\output\wavefront_controls $controls The Wavefront model's config buttons.
+     * @return string The rendered edit action area.
+     */
+    public function render_wavefront_controls(\mod_wavefront\output\wavefront_controls $controls): string {
+        $context = $controls->export_for_template($this);
+        return $this->render_from_template('mod_wavefront/wavefront_controls', $context);
     }
     
     /**
@@ -45,41 +56,13 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         
         $output = $this->output->box_start('wavefront');
         
+        // Display model
         $wavefrontmodel = new \mod_wavefront\output\wavefront_model($context, $model, $stagename);
         $output .= $this->render($wavefrontmodel);
         
-        // Add in edit link if necessary
-        if ($editing) {
-            $url = new moodle_url('/mod/wavefront/edit_model.php');
-            $output .= html_writer::start_div('model-management');
-            $output .= '<form action="'. $url . '">'.
-                    '<input type="hidden" name="id" value="'. $model->id .'" />'.
-                    '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('editmodel', 'wavefront').'" />'.
-                    '</form>';
-            
-            if(has_capability('mod/wavefront:delete', $context)) {
-                $url = new moodle_url('/mod/wavefront/delete_model.php');
-                $output .= '<form action="'. $url . '">'.
-                    '<input type="hidden" name="id" value="'. $model->id .'" />'.
-                    '<input type="hidden" name="cmid" value="'.$this->page->cm->id.'" />'.
-                    '<input class="btn btn-secondary" type="submit" Value="'.get_string('deletemodel', 'wavefront').'" />'.
-                    '</form>';
-            }
-            $output .= html_writer::end_div();
-        }
-        
-        // Add a button to allow user to view model in AR?
-        if($model->arenabled) {
-            $url = new moodle_url('/mod/wavefront/ar.php');
-            $output .= html_writer::start_div('ar');
-            $output .= '<form target="_blank" action="'. $url . '">'.
-                '<input type="hidden" name="m" value="'. $model->id .'" />'.
-                '<input type="hidden" name="w" value="'. $model->wavefrontid .'" />'.
-                '<input class="btn btn-secondary" type="submit" Value="'.get_string('arview', 'wavefront').'" />'.
-                '</form>';
-            $output .= html_writer::end_div();
-        }
+        // Display controls
+        $wavefrontcontrols = new \mod_wavefront\output\wavefront_controls($context, $model, $editing, $this->page->cm->id);
+        $output .= $this->render($wavefrontcontrols);
         
         $output .= $this->output->box_end();
         
