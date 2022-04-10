@@ -18,13 +18,24 @@
  * Wavefront module renderer
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
 class mod_wavefront_renderer extends plugin_renderer_base {
 
+    /**
+     * Render a wavefront model.
+     *
+     * @param \mod_wavefront\output\wavefront_model $wavefront The Wavefront model area.
+     * @return string The rendered edit action area.
+     */
+    public function render_wavefront_model(\mod_wavefront\output\wavefront_model $wavefront): string {
+        $context = $wavefront->export_for_template($this);
+        return $this->render_from_template('mod_wavefront/wavefront_model', $context);
+    }
+    
     /**
      * Returns html to display the Wavefront model
      * @param object $wavefront The wavefront activity with which the model is associated
@@ -34,65 +45,10 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         
         $output = $this->output->box_start('wavefront');
         
-        $fs = get_file_storage();
-        $fs_files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
-        
-        // A Wavefront model contains two files
-        $modelerr = true;
-        $mtl_file = null;
-        $obj_file = null;
-        $baseurl = null;
-        
-        foreach ($fs_files as $f) {
-            // $f is an instance of stored_file
-            $pathname = $f->get_filepath();
-            $filename = $f->get_filename();
-            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            // what type of file is this?
-            if($ext === "mtl") {
-                $mtl_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-            } elseif ($ext === "obj") {
-                $obj_file = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, $filename);
-                $baseurl = moodle_url::make_pluginfile_url($context->id, 'mod_wavefront', 'model', $model->id, $pathname, '');
-            }
-        }
-        
-        if($mtl_file != null && $obj_file != null) {
-            $modelerr = false;
-        }
-        
-        if(!$model || $modelerr) {
-            $output .= $this->output->heading(get_string("errornomodel", "wavefront"));
-        } else {
-            $output .= '<div class="wavefront-model-container">'.
-                    '<div class="wavefront-model-wrapper">'.
-                    '<div class="wavefront-model-frame">';
-            $posclass = ($model->descriptionpos == 1) ? 'top' : 'bottom'; // doesn't matter if it's hidden
-            $captiondiv = html_writer::tag('div', format_text($model->description, FORMAT_MOODLE), array('class' => "wavefront-model-caption $posclass"));
-            
-            if($model->descriptionpos == 1) {
-                $output .= $captiondiv;
-            }
-            // TODO set default background colour at site level 
-            $backcol = '646464';
-            if (isset($model->backcol) && (strlen($model->backcol) > 0) ) {
-                $backcol = $model->backcol;
-            }
-            $output .= '<div data-baseurl='.urlencode($baseurl).' data-mtl='.urlencode($mtl_file).' data-obj='.urlencode($obj_file).' id="'.$stagename.'"';
-            $output .= ' data-stagewidth='.$model->stagewidth.' data-stageheight='.$model->stageheight.' data-backcol='.$backcol.' data-cameraangle='.$model->cameraangle;
-            $output .= ' data-camerafar='.$model->camerafar.' data-camerax='.$model->camerax.' data-cameray='.$model->cameray.' data-cameraz='.$model->cameraz.'></div>';
-            
-            $output .= html_writer::empty_tag('image', array('class'=>'model-loading','src'=>$this->image_url('i/loading')) );
-             
-            if($model->descriptionpos == 0) {
-                $output .= $captiondiv;
-            }
-            
-            $output .= '</div></div></div>';
-        }
+        $wavefrontmodel = new \mod_wavefront\output\wavefront_model($context, $model, $stagename);
+        $output .= $this->render($wavefrontmodel);
         
         // Add in edit link if necessary
-        // TODO We are not passing the wavefront model id for now - we may display more than one model on the page.
         if ($editing) {
             $url = new moodle_url('/mod/wavefront/edit_model.php');
             $output .= html_writer::start_div('model-management');
