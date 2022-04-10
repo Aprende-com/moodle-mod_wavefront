@@ -39,12 +39,12 @@ class mod_wavefront_renderer extends plugin_renderer_base {
     /**
      * Render the model's configuration buttons.
      *
-     * @param \mod_wavefront\output\wavefront_controls $controls The Wavefront model's config buttons.
+     * @param \mod_wavefront\output\model_controls $controls The Wavefront model's config buttons.
      * @return string The rendered edit action area.
      */
-    public function render_wavefront_controls(\mod_wavefront\output\wavefront_controls $controls): string {
+    public function render_model_controls(\mod_wavefront\output\model_controls $controls): string {
         $context = $controls->export_for_template($this);
-        return $this->render_from_template('mod_wavefront/wavefront_controls', $context);
+        return $this->render_from_template('mod_wavefront/model_controls', $context);
     }
     
     /**
@@ -61,7 +61,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $output .= $this->render($wavefrontmodel);
         
         // Display controls
-        $wavefrontcontrols = new \mod_wavefront\output\wavefront_controls($context, $model, $editing, $this->page->cm->id);
+        $wavefrontcontrols = new \mod_wavefront\output\model_controls($context, $model, $editing, $this->page->cm->id);
         $output .= $this->render($wavefrontcontrols);
         
         $output .= $this->output->box_end();
