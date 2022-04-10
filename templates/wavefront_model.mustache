@@ -63,3 +63,11 @@
         </div>
     </div>
  </div>
+ 
+ {{#js}}
+    require(['mod_wavefront/wavefront_renderer'],
+        function(wavefront_renderer) {
+            wavefront_renderer.init('{{stagename}}');
+        }
+    );
+{{/js}}
