@@ -26,7 +26,7 @@ if (!defined('MOODLE_INTERNAL')) {
 
 require_once ($CFG->dirroot.'/lib/formslib.php');
 
-class mod_wavefront_model_form extends moodleform {
+class mod_wavefront_edit_model_form extends moodleform {
 
     function definition() {
         global $CFG, $DB;
@@ -46,9 +46,9 @@ class mod_wavefront_model_form extends moodleform {
         $mform->addRule('description_editor', get_string('required'), 'required', null, 'client');
 
         $descriptionposopts = array(
-                '0' => get_string('position_bottom', 'wavefront'),
-                '1' => get_string('position_top', 'wavefront'),
-                '2' => get_string('hide'),
+                WAVEFRONT_CAPTION_BOTTOM => get_string('position_bottom', 'wavefront'),
+                WAVEFRONT_CAPTION_TOP => get_string('position_top', 'wavefront'),
+                WAVEFRONT_CAPTION_HIDE => get_string('hide'),
         );
         $mform->addElement('select', 'descriptionpos', get_string('descriptionpos', 'wavefront'), $descriptionposopts);  
         
