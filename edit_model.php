@@ -25,7 +25,6 @@
 
 require_once('../../config.php');
 require_once('lib.php');
-require_once('edit_model_form.php');
 
 $cmid = required_param('cmid', PARAM_INT);            // Course Module ID
 $id   = optional_param('id', 0, PARAM_INT);           // model ID
@@ -83,7 +82,7 @@ $model = file_prepare_standard_filemanager($model, 'model', $modeloptions, $cont
 $model->cmid = $cm->id;
 
 // create form and set initial data
-$mform = new mod_wavefront_model_form(null, array('model'=>$model, 'cm'=>$cm, 'descriptionoptions'=>$descriptionoptions, 
+$mform = new mod_wavefront_edit_model_form(null, array('model'=>$model, 'cm'=>$cm, 'descriptionoptions'=>$descriptionoptions, 
                                                     'modeloptions'=>$modeloptions));
 
 if ($mform->is_cancelled()){
