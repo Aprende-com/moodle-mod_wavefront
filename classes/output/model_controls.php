@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output a wavefront model's config buttons.
+ * Output a model's config buttons.
  *
  * @package   mod_wavefront
  * @copyright 2022 Ian Wild <ianwild1972@gmail.com>
@@ -29,13 +29,13 @@ use templatable;
 use renderable;
 
 /**
- * Output a wavefront model's config buttons.
+ * Output a model's config buttons.
  *
  * @package   mod_wavefront
  * @copyright 2022 Ian Wild <ianwild1972@gmail.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class wavefront_controls implements templatable, renderable {
+class model_controls implements templatable, renderable {
 
     
     /** @var object The context in which the model is to be rendered. */
