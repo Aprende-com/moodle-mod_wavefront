@@ -26,7 +26,7 @@
  * here will all be database-neutral, using the functions defined in DLL libraries.
  *
  * @package   mod_wavefront
- * @copyright 2017 Ian Wild
+ * @copyright 2017 onward Ian Wild
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -87,6 +87,25 @@ function xmldb_wavefront_upgrade($oldversion) {
         }
         
         upgrade_mod_savepoint(true, 2022032601, 'wavefront');
+    }
+    
+    if ($oldversion < 2022041003) {
+        
+        $table = new xmldb_table('wavefront_model');
+        $field = new xmldb_field('type', XMLDB_TYPE_CHAR, '8', null, true, null, null, 'wavefrontid' );
+        
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        // Update model type to 'obj' where it is currently null
+        $records = $DB->get_records('wavefront_model', array('type' => ''));
+        foreach($records as $record) {
+            $record->type = 'obj';
+            $DB->update_record('wavefront_model', $record);
+        }
+        
+        upgrade_mod_savepoint(true, 2022041003, 'wavefront');
     }
     
     return true;
