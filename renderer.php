@@ -33,13 +33,32 @@ class mod_wavefront_renderer extends plugin_renderer_base {
      */
     public function render_wavefront_model(\mod_wavefront\output\wavefront_model $wavefront): string {
         $context = $wavefront->export_for_template($this);
+        if(count($context) == 0) {
+            // an error has occured
+            return $this->output->heading(get_string("errornomodel", "wavefront"));
+        }
         return $this->render_from_template('mod_wavefront/wavefront_model', $context);
     }
     
     /**
-     * Render the model's configuration buttons.
+     * Render a collada model.
      *
-     * @param \mod_wavefront\output\model_controls $controls The Wavefront model's config buttons.
+     * @param \mod_wavefront\output\collada_model $collada The Collada model area.
+     * @return string The rendered model's html.
+     */
+    public function render_collada_model(\mod_wavefront\output\collada_model $collada): string {
+        $context = $collada->export_for_template($this);
+        if(count($context) == 0) {
+            // an error has occured
+            return $this->output->heading(get_string("errornomodel", "wavefront"));
+        }
+        return $this->render_from_template('mod_wavefront/collada_model', $context);
+    }
+    
+    /**
+     * Render a model's configuration buttons.
+     *
+     * @param \mod_wavefront\output\model_controls $controls The model's config buttons.
      * @return string The rendered edit action area.
      */
     public function render_model_controls(\mod_wavefront\output\model_controls $controls): string {
@@ -48,7 +67,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
     }
     
     /**
-     * Returns html to display the Wavefront model
+     * Returns html to display a 3D model
      * @param object $wavefront The wavefront activity with which the model is associated
      * @param boolean $editing true if the current user can edit the model, else false.
      */
@@ -57,8 +76,13 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $output = $this->output->box_start('wavefront');
         
         // Display model
-        $wavefrontmodel = new \mod_wavefront\output\wavefront_model($context, $model, $stagename);
-        $output .= $this->render($wavefrontmodel);
+        if ($model->type === 'obj') {
+            $wavefrontmodel = new \mod_wavefront\output\wavefront_model($context, $model, $stagename);
+            $output .= $this->render($wavefrontmodel);
+        } elseif ($model->type === 'dae') {
+            $colladamodel = new \mod_wavefront\output\collada_model($context, $model, $stagename);
+            $output .= $this->render($colladamodel);
+        }
         
         // Display controls
         $wavefrontcontrols = new \mod_wavefront\output\model_controls($context, $model, $editing, $this->page->cm->id);
