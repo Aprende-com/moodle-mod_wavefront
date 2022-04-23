@@ -101,6 +101,7 @@ export const init = (stage, scale) => {
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.xr.enabled = true;
+	renderer.xr.setReferenceSpaceType( 'local' );
 	container.appendChild( renderer.domElement );
 
     //
@@ -141,9 +142,13 @@ export const init = (stage, scale) => {
 
 				mixer = new THREE.AnimationMixer( avatar );
 				
-				var action = mixer.clipAction( animations[ 0 ] ).play();
-				
-				reticle.matrix.decompose( avatar.position, null, null );
+				// TODO play all animations
+				mixer.clipAction( animations[ 0 ] ).play();
+				var translation = new THREE.Vector3();
+  				var rotation = new THREE.Quaternion();
+  				var scale = new THREE.Vector3();
+
+				reticle.matrix.decompose( avatar.position, rotation, scale);
 		        avatar.scale.set(objectscale,objectscale,objectscale);
 				scene.add( avatar );
 				
