@@ -143,7 +143,7 @@ export const init = (stage, scale) => {
 				
 				var action = mixer.clipAction( animations[ 0 ] ).play();
 				
-				//reticle.matrix.decompose( avatar.position, avatar.quaternion, avatar.scale );
+				reticle.matrix.decompose( avatar.position, null, null );
 		        avatar.scale.set(objectscale,objectscale,objectscale);
 				scene.add( avatar );
 				
