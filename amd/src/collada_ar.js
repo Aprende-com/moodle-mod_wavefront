@@ -70,6 +70,8 @@ export const init = (stage, scale) => {
 	console.log(cameray);
 	var cameraz = jQuery(container).attr("data-cameraz");
 	console.log(cameraz);
+	
+	clock = new THREE.Clock();
 
 	scene = new THREE.Scene();
 
