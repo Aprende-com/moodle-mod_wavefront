@@ -148,8 +148,8 @@ export const init = (stage, scale) => {
   				var rotation = new THREE.Quaternion();
   				var scale = new THREE.Vector3();
 
-				reticle.matrix.decompose( object.position, rotation, object.scale);
-		        //object.scale.set(objectscale,objectscale,objectscale);
+				reticle.matrix.decompose( object.position, rotation, scale);
+		        object.scale.set(objectscale,objectscale,objectscale);
 				scene.add( object );
 				
 				controller.removeEventListener( 'select', onSelect );
