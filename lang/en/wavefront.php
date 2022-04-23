@@ -80,7 +80,7 @@ $string['pluginname'] = 'Wavefront Renderer';
 
 // Model edit form
 $string['modeldescription'] = 'Description';
-$string['modelfiles'] = 'Upload Wavefront files';
+$string['modelfiles'] = 'Model files';
 $string['modelfiles_help'] = 'Either upload all model files individually or you can select a zip archive containing the model files, which will be extracted into the model directory after being uploaded.';
 $string['editmodel'] = 'Edit';
 $string['stageheading'] = 'Stage';
@@ -95,6 +95,10 @@ $string['cameray'] = 'Y';
 $string['cameraz'] = 'Z';
 $string['cameraangle'] = 'View angle';
 $string['camerafar'] = 'Far';
+$string['modeltype'] = 'Model file format';
+$string['modeltype_help'] = 'Use this setting to specify the type of model you are uploading.';
+$string['wavefront_type'] = 'Wavefront (.OBJ)';
+$string['collada_type'] = 'Collada (.DAE)';
 
 // Model management
 $string['deletemodel'] = 'Delete model';
