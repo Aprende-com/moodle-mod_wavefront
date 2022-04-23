@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_wavefront/model
+    @template mod_wavefront/wavefront_model
 
     Wavefront model template
 
@@ -64,7 +64,7 @@
     </div>
  </div>
  
- {{#js}}
+{{#js}}
     require(['mod_wavefront/wavefront_renderer'],
         function(wavefront_renderer) {
             wavefront_renderer.init('{{stagename}}');
