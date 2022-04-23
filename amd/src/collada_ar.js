@@ -233,7 +233,7 @@ function render( timestamp, frame ) {
 
 	}
 	
-	if(mixer !== undefined) {
+	if(mixer !== null) {
 		var delta = clock.getDelta();
 
 		mixer.update( delta );	
