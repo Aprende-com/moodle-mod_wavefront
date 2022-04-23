@@ -55,6 +55,13 @@ class mod_wavefront_edit_model_form extends moodleform {
         $mform->addElement('filemanager', 'model_filemanager', get_string('modelfiles', 'wavefront'), null, $modeloptions);
         $mform->addHelpButton('model_filemanager', 'modelfiles', 'wavefront');
         
+        // Model type
+        $options = array(WAVEFRONT_MODEL_WAVEFRONT => get_string('wavefront_type', 'wavefront'),
+                         WAVEFRONT_MODEL_COLLADA => get_string('collada_type', 'wavefront'));
+        
+        $mform->addElement('select', 'type', get_string('modeltype', 'wavefront'), $options);
+        $mform->addHelpButton('type', 'modeltype', 'wavefront');
+        
         // Stage
         $mform->addElement('header', 'stageoptions', get_string('stageheading', 'wavefront'));
         
