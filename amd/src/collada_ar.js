@@ -140,7 +140,7 @@ export const init = (stage, scale) => {
 		
 				} );
 
-				mixer = new THREE.AnimationMixer( avatar );
+				mixer = new THREE.AnimationMixer( object );
 				
 				// TODO play all animations
 				mixer.clipAction( animations[ 0 ] ).play();
