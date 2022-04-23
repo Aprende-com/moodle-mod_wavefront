@@ -41,7 +41,7 @@ var stage_widths = [], stage_heights = [], scene_backcolours = [];
 var ambients = [], pointlights = [];
 var clocks = [], mixers = [];
 
-const render = () => {
+const animate = () => {
 	renderers.forEach( function(renderer, i) {
 		var delta = clocks[i].getDelta();
 
@@ -54,12 +54,8 @@ const render = () => {
 	    renderer.render(scenes[i], cameras[i]);
 	 	controls_array[i].update();
 	});
-}
-
-const animate = () => {
+	
 	requestAnimationFrame( animate );
-
-	render();
 }
 
 export const init = (stage) => {
