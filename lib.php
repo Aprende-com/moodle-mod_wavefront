@@ -38,6 +38,9 @@ define('WAVEFRONT_CAPTION_TOP', 0);
 define('WAVEFRONT_CAPTION_BOTTOM', 1);
 define('WAVEFRONT_CAPTION_HIDE', 2);
 
+define('WAVEFRONT_MODEL_WAVEFRONT', 'obj');
+define('WAVEFRONT_MODEL_COLLADA', 'dae');
+
 function wavefront_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_ARCHETYPE:
