@@ -38,11 +38,8 @@ var cameras = [], controls_array = [], scenes = [], renderers = [];
 var containers = [];
  
 var stage_widths = [], stage_heights = [], scene_backcolours = []; 
-var lightings = [], ambients = [], pointlights = [];
+var ambients = [], pointlights = [];
 var clocks = [], mixers = [];
-
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
 
 const render = () => {
 	renderers.forEach( function(renderer, i) {
