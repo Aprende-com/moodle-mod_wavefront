@@ -14,9 +14,15 @@ git clone git://github.com/iandavidwild/moodle-mod_wavefront.git mod/wavefront
 
 Then add mod/wavefront to your gitignore.
 
-## Credits
+## Plugin Credits
 Based on the lightboxgallery module
 
 Maintainer: Ian Wild (ianwild1972@gmail.com)
   
 Original lightboxgallery plugin: Paul Holden (pholden[at]greenhead[dot]ac[dot]uk)  
+
+### Model Credits
+
+Dancing stormtrooper - https://sketchfab.com/strykerdoesgames
+Human Skeleton - https://rigmodels.com/model.php?view=Human_Skeleton-3d-model__4SNJNBFX63778E0I6R7LBO2TQ
+Covid-19 - https://www.turbosquid.com/3d-models/coronavirus-virus-cell-model-1519563
