@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_wavefront/model
+    @template mod_wavefront/collada_model
 
     Collada model template
 
@@ -63,7 +63,7 @@
     </div>
  </div>
  
- {{#js}}
+{{#js}}
     require(['mod_wavefront/collada_renderer'],
         function(collada_renderer) {
             collada_renderer.init('{{stagename}}');
