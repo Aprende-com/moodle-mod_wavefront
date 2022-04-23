@@ -195,7 +195,7 @@ function onWindowResize() {
 
 //
 
-const render = ( timestamp, frame ) => {
+function render( timestamp, frame ) {
 	if ( frame ) {
 
 		const referenceSpace = renderer.xr.getReferenceSpace();
@@ -253,9 +253,8 @@ const render = ( timestamp, frame ) => {
     renderer.render(scene, camera);
 }
 
-const animate = () => {
-	
+function animate() {
+
 	requestAnimationFrame( animate );
 
-	render();
 }
