@@ -44,16 +44,13 @@ var clocks = [], mixers = [];
 const animate = () => {
 	
 	renderers.forEach( function(renderer, i) {
-		var delta = clocks[i].getDelta();
 
 		if ( mixers[i] !== undefined ) {
-
+			var delta = clocks[i].getDelta();
 			mixers[i].update( delta );
-
+			renderer.render(scenes[i], cameras[i]);
+	 		controls_array[i].update();
 		}
-
-	    renderer.render(scenes[i], cameras[i]);
-	 	controls_array[i].update();
 	});
 	
 	requestAnimationFrame( animate );
@@ -115,21 +112,6 @@ export const init = (stage) => {
 	var dae_file = decodeURIComponent(dae);
 	console.log(dae_file);
 	
-	// Create scene
-	var scene = new THREE.Scene();
-	scenes.push(scene);
-	
-	// Camera
-	var SCREEN_WIDTH = stage_width, SCREEN_HEIGHT = stage_height;
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = Number(cameranear), FAR = Number(camerafar);
-	var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-	cameras.push(camera);
-	scene.add(camera);
-	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
-
-	clock = new THREE.Clock();
-	clocks.push(clock);
-	
 	/* Load model */
 	var daeLoader = new ColladaLoader();
     daeLoader.load(dae_file, (collada) => {
@@ -146,6 +128,21 @@ export const init = (stage) => {
 			}
 
 		} );
+		
+		// Create scene
+		var scene = new THREE.Scene();
+		scenes.push(scene);
+		
+		// Camera
+		var SCREEN_WIDTH = stage_width, SCREEN_HEIGHT = stage_height;
+		var VIEW_ANGLE = Number(cameraangle), ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = Number(cameranear), FAR = Number(camerafar);
+		var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+		cameras.push(camera);
+		scene.add(camera);
+		camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
+	
+		clock = new THREE.Clock();
+		clocks.push(clock);
 
 		mixer = new THREE.AnimationMixer( avatar );
 		mixers.push(mixer);
