@@ -31,7 +31,7 @@ import { ColladaLoader } from 'mod_wavefront/ColladaLoader';
 import { ARButton } from 'mod_wavefront/ARButton';
 import jQuery from 'jquery';
 
-let camera, scene, renderer, mixer, clock;
+let camera, scene, renderer, mixer = null, clock = null;
 let controller;
 
 let reticle;
@@ -244,9 +244,11 @@ const render = ( timestamp, frame ) => {
 		}
 
 	}
-	var delta = clock.getDelta();
 	
-	mixer.update( delta );
+	if(mixer !== null) {
+		var delta = clock.getDelta();
+		mixer.update( delta );	
+	}
 
     renderer.render(scene, camera);
 }
