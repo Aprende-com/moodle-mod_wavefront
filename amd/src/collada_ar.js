@@ -141,6 +141,10 @@ export const init = (stage, scale) => {
 				
 				var action = mixer.clipAction( animations[ 0 ] ).play();
 
+			    var box = new THREE.Box3().setFromObject( avatar ); // compute the bounding box of the model
+				box.getCenter( avatar.position ); // set avatar.position to be the center of the bounding box
+				avatar.position.multiplyScalar( - 1 ); // negate the dae.position coordinates
+				
 				reticle.matrix.decompose( avatar.position, avatar.quaternion, avatar.scale );
 		        avatar.scale.set(objectscale,objectscale,objectscale);
 				scene.add( avatar );
