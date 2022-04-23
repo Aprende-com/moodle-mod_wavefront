@@ -34,6 +34,9 @@
     	"camerax": "0",
     	"cameray": "1",
     	"cameraz": "200",
+    	"controlx": "0",
+    	"controly": "2",
+    	"controlz": "0",
     	"arscale": 0.01
     }
 }}
@@ -41,7 +44,9 @@
 
 <div data-baseurl={{baseurl}} data-mtl={{mtlfile}} data-obj={{objfile}} id="{{stagename}}" class="ar-stage"
  	 data-stagewidth={{stagewidth}} data-stageheight={{stageheight}} data-cameraangle={{cameraangle}}
-	 data-cameranear={{cameranear}} data-camerafar={{camerafar}} data-camerax={{camerax}} data-cameray={{cameray}} data-cameraz={{cameraz}}></div>
+	 data-cameranear={{cameranear}} data-camerafar={{camerafar}} data-camerax={{camerax}} data-cameray={{cameray}} data-cameraz={{cameraz}}
+	 data-controlx={{controlx}} data-controly={{controly}} data-controlz={{controlz}}>
+</div>
  
 {{#js}}
     require(['mod_wavefront/wavefront_ar'],

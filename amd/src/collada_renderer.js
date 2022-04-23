@@ -75,28 +75,36 @@ export const init = (stage) => {
 	
 	// Get stage attributes
 	var stage_width = jQuery(container).attr("data-stagewidth");
-	console.log(stage_width);
+	console.log('stage width: ' + stage_width);
 	stage_widths.push(stage_width);
 	var stage_height = jQuery(container).attr("data-stageheight");
-	console.log(stage_height);
+	console.log('stage height: ' + stage_height);
     stage_heights.push(stage_height);
     var backcol = jQuery(container).attr("data-backcol");
-	console.log(backcol);
+	console.log('background  color: ' + backcol);
     scene_backcolours.push(backcol);
     
 	// Get camera attributes
 	var cameraangle = jQuery(container).attr("data-cameraangle");
-    console.log(cameraangle);
+    console.log('camera angle: ' + cameraangle);
     var cameranear = jQuery(container).attr("data-cameranear");
-	console.log(cameranear);
+	console.log('camera near: ' + cameranear);
 	var camerafar = jQuery(container).attr("data-camerafar");
-	console.log(camerafar);
+	console.log('camera far: ' + camerafar);
 	var camerax = jQuery(container).attr("data-camerax");
-	console.log(camerax);
+	console.log('camera x: ' + camerax);
 	var cameray = jQuery(container).attr("data-cameray");
-	console.log(cameray);
+	console.log('camera y: ' + cameray);
 	var cameraz = jQuery(container).attr("data-cameraz");
-	console.log(cameraz);
+	console.log('camera z: ' + cameraz);
+	
+	// Get controls attributes
+	var controlx = jQuery(container).attr("data-controlx");
+	console.log('control x: ' + controlx);
+	var controly = jQuery(container).attr("data-controly");
+	console.log('control y: ' + controly);
+	var controlz = jQuery(container).attr("data-controlz");
+	console.log('control z: ' + controlz);
 	
 	// Get model files
 	var baseurl = jQuery(container).attr("data-baseurl");
@@ -172,8 +180,8 @@ export const init = (stage) => {
 		var controls = new OrbitControls( camera, renderer.domElement );
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.25;
+		controls.target.set(Number(controlx), Number(controly), Number(controlz));
 		controls_array.push(controls);
-		controls.target.set(0, 2, 0);
 		
 		/* Remove the loading spinner */
 		jQuery(container).next().remove();

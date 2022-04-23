@@ -120,5 +120,24 @@ function xmldb_wavefront_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022042303, 'wavefront');
     }
     
+    if ($oldversion < 2022042304) {
+        
+        $table = new xmldb_table('wavefront_model');
+        $field = new xmldb_field('controlx', XMLDB_TYPE_INTEGER, '4', null, true, null, 0, 'backcol' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('controly', XMLDB_TYPE_INTEGER, '4', null, true, null, 0, 'controlx' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('controlz', XMLDB_TYPE_INTEGER, '4', null, true, null, 0, 'controly' );
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        upgrade_mod_savepoint(true, 2022042304, 'wavefront');
+    }
+    
     return true;
 }    

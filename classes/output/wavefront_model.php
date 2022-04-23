@@ -132,6 +132,9 @@ class wavefront_model implements templatable, renderable {
             $data['camerax'] = $this->model->camerax;
             $data['cameray'] = $this->model->cameray;
             $data['cameraz'] = $this->model->cameraz;
+            $data['controlx'] = $this->model->controlx;
+            $data['controly'] = $this->model->controly;
+            $data['controlz'] = $this->model->controlz;
             $data['stagename'] = $this->stagename;
         }
         return $data;

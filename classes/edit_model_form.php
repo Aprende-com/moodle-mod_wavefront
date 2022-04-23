@@ -105,6 +105,21 @@ class mod_wavefront_edit_model_form extends moodleform {
         $mform->setDefault('cameraz', 200);
         $mform->setType('cameraz', PARAM_INT);
         
+        // Controls
+        $mform->addElement('header', 'controloptions', get_string('controlsheading', 'wavefront'));
+        
+        $mform->addElement('text', 'controlx', get_string('controlx', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('controlx', 0);
+        $mform->setType('controlx', PARAM_INT);
+        
+        $mform->addElement('text', 'controly', get_string('controly', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('controly', 0);
+        $mform->setType('controly', PARAM_INT);
+        
+        $mform->addElement('text', 'controlz', get_string('controlz', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('controlz', 0);
+        $mform->setType('controlz', PARAM_INT);
+        
         // AR
         $mform->addElement('header', 'aroptions', get_string('arheading', 'wavefront'));
         
