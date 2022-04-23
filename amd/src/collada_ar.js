@@ -255,6 +255,6 @@ function render( timestamp, frame ) {
 
 function animate() {
 
-	requestAnimationFrame( animate );
+	renderer.setAnimationLoop( render );
 
 }
