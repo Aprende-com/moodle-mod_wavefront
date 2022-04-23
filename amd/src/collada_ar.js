@@ -128,9 +128,9 @@ export const init = (stage, scale) => {
     		daeLoader.load(dae_file, (collada) => {
 
 				var animations = collada.animations;
-				var avatar = collada.scene;
+				object = collada.scene;
 
-				avatar.traverse( function ( node ) {
+				object.traverse( function ( node ) {
 		
 					if ( node.isSkinnedMesh ) {
 		
@@ -144,13 +144,13 @@ export const init = (stage, scale) => {
 				
 				// TODO play all animations
 				mixer.clipAction( animations[ 0 ] ).play();
-				var translation = new THREE.Vector3();
+				// Neither rotation nor scale are used when displaying Collada models in AR
   				var rotation = new THREE.Quaternion();
   				var scale = new THREE.Vector3();
 
-				reticle.matrix.decompose( avatar.position, rotation, scale);
-		        avatar.scale.set(objectscale,objectscale,objectscale);
-				scene.add( avatar );
+				reticle.matrix.decompose( object.position, rotation, object.scale);
+		        //object.scale.set(objectscale,objectscale,objectscale);
+				scene.add( object );
 				
 				controller.removeEventListener( 'select', onSelect );
 				scene.remove(reticle);
