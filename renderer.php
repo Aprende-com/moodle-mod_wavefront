@@ -35,7 +35,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $context = $wavefront->export_for_template($this);
         if(count($context) == 0) {
             // an error has occured
-            return $this->output->heading(get_string("errornomodel", "wavefront"));
+            return $this->output->heading(get_string("errornowavefrontfiles", "wavefront"));
         }
         return $this->render_from_template('mod_wavefront/wavefront_model', $context);
     }
@@ -50,7 +50,7 @@ class mod_wavefront_renderer extends plugin_renderer_base {
         $context = $collada->export_for_template($this);
         if(count($context) == 0) {
             // an error has occured
-            return $this->output->heading(get_string("errornomodel", "wavefront"));
+            return $this->output->heading(get_string("errornocolladafiles", "wavefront"));
         }
         return $this->render_from_template('mod_wavefront/collada_model', $context);
     }

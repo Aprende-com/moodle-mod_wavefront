@@ -48,7 +48,8 @@ $string['commentdelete'] = 'Confirm comment deletion?';
 $string['displayingmodel'] = '{$a}';
 
 $string['errornofile'] = 'The requested file was not found: {$a}';
-$string['errornomodel'] = 'No model files found';
+$string['errornowavefrontfiles'] = 'No Wavefront files found';
+$string['errornocolladafiles'] = 'No Collada files found';
 $string['erroruploadmodel'] = 'The files you upload must be a valid Wavefront model';
 $string['eventmodelcommentcreated'] = 'Comment created';
 $string['eventmodeladded'] = 'Wavefront model added';
