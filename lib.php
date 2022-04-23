@@ -383,7 +383,7 @@ function wavefront_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
  */
 function wavefront_get_file_areas($course, $cm, $context) {
     $areas = array();
-    $areas['wavefront_files'] = get_string('modelfiles', 'model');
+    $areas['wavefront_files'] = 'model';
 
     return $areas;
 }

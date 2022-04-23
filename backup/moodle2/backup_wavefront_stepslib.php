@@ -52,8 +52,10 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         // There may be zero or more models per wavefront activity
         $models = new backup_nested_element('models');
         $model = new backup_nested_element('model', array('id'), array(
-                'wavefrontid', 'description', 'descriptionformat', 'descriptionpos', 
-                'stagewidth', 'stageheight', 'backcol', 'camerax', 'cameray', 'cameraz', 'cameraangle', 'camerafar',
+                'wavefrontid', 'type', 'description', 'descriptionformat', 'descriptionpos', 
+                'stagewidth', 'stageheight', 'backcol', 
+                'camerax', 'cameray', 'cameraz', 'cameraangle', 'cameranear', 'camerafar',
+                'controlx', 'controly', 'controlz',
                 'model', 'arenabled', 'arscale', 'timemodified'
         ));
 
