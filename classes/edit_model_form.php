@@ -85,6 +85,10 @@ class mod_wavefront_edit_model_form extends moodleform {
         $mform->setDefault('cameraangle', 45);
         $mform->setType('cameraangle', PARAM_INT);
         
+        $mform->addElement('text', 'cameranear', get_string('cameranear', 'wavefront'), 'maxlength="5" size="5"');
+        $mform->setDefault('cameranear', 1.0);
+        $mform->setType('cameranear', PARAM_LOCALISEDFLOAT);
+        
         $mform->addElement('text', 'camerafar', get_string('camerafar', 'wavefront'), 'maxlength="5" size="5"');
         $mform->setDefault('camerafar', 1000);
         $mform->setType('camerafar', PARAM_INT);

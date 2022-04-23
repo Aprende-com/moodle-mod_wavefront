@@ -42,6 +42,7 @@ var ambients = [], pointlights = [];
 var clocks = [], mixers = [];
 
 const animate = () => {
+	
 	renderers.forEach( function(renderer, i) {
 		var delta = clocks[i].getDelta();
 
@@ -86,6 +87,8 @@ export const init = (stage) => {
 	// Get camera attributes
 	var cameraangle = jQuery(container).attr("data-cameraangle");
     console.log(cameraangle);
+    var cameranear = jQuery(container).attr("data-cameranear");
+	console.log(cameranear);
 	var camerafar = jQuery(container).attr("data-camerafar");
 	console.log(camerafar);
 	var camerax = jQuery(container).attr("data-camerax");
@@ -110,7 +113,7 @@ export const init = (stage) => {
 	
 	// Camera
 	var SCREEN_WIDTH = stage_width, SCREEN_HEIGHT = stage_height;
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = Number(camerafar);
+	var VIEW_ANGLE = Number(cameraangle), ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = Number(cameranear), FAR = Number(camerafar);
 	var camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	cameras.push(camera);
 	scene.add(camera);
@@ -135,10 +138,6 @@ export const init = (stage) => {
 			}
 
 		} );
-		
-		var box = new THREE.Box3().setFromObject( avatar ); // compute the bounding box of the model
-		box.getCenter( avatar.position ); // set avatar.position to be the center of the bounding box
-		avatar.position.multiplyScalar( - 1 ); // negate the dae.position coordinates
 
 		mixer = new THREE.AnimationMixer( avatar );
 		mixers.push(mixer);
@@ -174,7 +173,7 @@ export const init = (stage) => {
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.25;
 		controls_array.push(controls);
-		controls.target.set(0, 0, 0);
+		controls.target.set(0, 2, 0);
 		
 		/* Remove the loading spinner */
 		jQuery(container).next().remove();

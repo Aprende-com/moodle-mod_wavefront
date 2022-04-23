@@ -99,6 +99,7 @@ class wavefront_ar implements templatable, renderable {
             $data['mtlfile'] = urlencode($mtl_file);
             $data['objfile'] = urlencode($obj_file);
             $data['cameraangle'] = $this->model->cameraangle;
+            $data['cameranear'] = $this->model->cameranear;
             $data['camerafar'] = $this->model->camerafar;
             $data['camerax'] = $this->model->camerax;
             $data['cameray'] = $this->model->cameray;

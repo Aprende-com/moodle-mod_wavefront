@@ -64,6 +64,8 @@ export const init = (stage, scale) => {
 	// Get camera attributes
 	var cameraangle = jQuery(container).attr("data-cameraangle");
     console.log(cameraangle);
+    var cameranear = jQuery(container).attr("data-cameranear");
+	console.log(cameranear);
 	var camerafar = jQuery(container).attr("data-camerafar");
 	console.log(camerafar);
 	var camerax = jQuery(container).attr("data-camerax");
@@ -75,7 +77,7 @@ export const init = (stage, scale) => {
 
 	scene = new THREE.Scene();
 
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
+	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = Number(cameranear), FAR = Number(camerafar);
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 

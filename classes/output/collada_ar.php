@@ -96,6 +96,7 @@ class collada_ar implements templatable, renderable {
             $data['stagewidth'] = $this->model->stagewidth;
             $data['stageheight'] = $this->model->stageheight;
             $data['cameraangle'] = $this->model->cameraangle;
+            $data['cameranear'] = $this->model->cameranear;
             $data['camerafar'] = $this->model->camerafar;
             $data['camerax'] = $this->model->camerax;
             $data['cameray'] = $this->model->cameray;

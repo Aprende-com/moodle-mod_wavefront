@@ -62,6 +62,8 @@ export const init = (stage, scale) => {
 	// Get camera attributes
 	var cameraangle = jQuery(container).attr("data-cameraangle");
     console.log(cameraangle);
+    var cameranear = jQuery(container).attr("data-cameranear");
+	console.log(cameranear);
 	var camerafar = jQuery(container).attr("data-camerafar");
 	console.log(camerafar);
 	var camerax = jQuery(container).attr("data-camerax");
@@ -75,7 +77,7 @@ export const init = (stage, scale) => {
 
 	scene = new THREE.Scene();
 
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
+	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = Number(cameranear), FAR = Number(camerafar);
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
@@ -140,10 +142,6 @@ export const init = (stage, scale) => {
 				mixer = new THREE.AnimationMixer( avatar );
 				
 				var action = mixer.clipAction( animations[ 0 ] ).play();
-
-			    var box = new THREE.Box3().setFromObject( avatar ); // compute the bounding box of the model
-				box.getCenter( avatar.position ); // set avatar.position to be the center of the bounding box
-				avatar.position.multiplyScalar( - 1 ); // negate the dae.position coordinates
 				
 				reticle.matrix.decompose( avatar.position, avatar.quaternion, avatar.scale );
 		        avatar.scale.set(objectscale,objectscale,objectscale);
@@ -235,8 +233,9 @@ function render( timestamp, frame ) {
 
 	}
 	
-	if(mixer !== null) {
+	if(mixer !== undefined) {
 		var delta = clock.getDelta();
+
 		mixer.update( delta );	
 	}
 

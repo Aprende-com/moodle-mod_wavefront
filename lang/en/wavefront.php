@@ -94,6 +94,7 @@ $string['camerax'] = 'X';
 $string['cameray'] = 'Y';
 $string['cameraz'] = 'Z';
 $string['cameraangle'] = 'View angle';
+$string['cameranear'] = 'Near';
 $string['camerafar'] = 'Far';
 $string['modeltype'] = 'Model file format';
 $string['modeltype_help'] = 'Use this setting to specify the type of model you are uploading.';

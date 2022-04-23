@@ -108,5 +108,17 @@ function xmldb_wavefront_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022041003, 'wavefront');
     }
     
+    if ($oldversion < 2022042303) {
+        
+        $table = new xmldb_table('wavefront_model');
+        $field = new xmldb_field('cameranear', XMLDB_TYPE_NUMBER, '10, 5', null, true, null, 0.1, 'cameraangle' );
+        
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        upgrade_mod_savepoint(true, 2022042303, 'wavefront');
+    }
+    
     return true;
 }    
