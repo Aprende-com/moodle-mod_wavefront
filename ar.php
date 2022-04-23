@@ -66,11 +66,7 @@ $output = $PAGE->get_renderer('mod_wavefront');
 echo $output->header();
 
 if ($model = $DB->get_record('wavefront_model', array('id' => $m)) ) {
-    
-    $js_params = array('stage' => 'stage', 'scale' => $model->arscale);
 
-    $PAGE->requires->js_call_amd('mod_wavefront/ar_renderer', 'init', $js_params);
-
-    echo $output->display_model_in_ar($context, $model);
+    echo $output->display_model_in_ar($context, $model, 'stage');
 }
 echo $output->footer();
