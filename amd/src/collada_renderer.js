@@ -135,6 +135,10 @@ export const init = (stage) => {
 			}
 
 		} );
+		
+		var box = new THREE.Box3().setFromObject( avatar ); // compute the bounding box of the model
+		box.getCenter( avatar.position ); // set avatar.position to be the center of the bounding box
+		avatar.position.multiplyScalar( - 1 ); // negate the dae.position coordinates
 
 		mixer = new THREE.AnimationMixer( avatar );
 		mixers.push(mixer);
