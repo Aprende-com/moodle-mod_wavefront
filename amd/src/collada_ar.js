@@ -145,22 +145,8 @@ export const init = (stage, scale) => {
 		        avatar.scale.set(objectscale,objectscale,objectscale);
 				scene.add( avatar );
 				
-				var iCol = Number("0x" + backcol); 
-		        scene.background = new THREE.Color(iCol);
-				
-				var ambientLight = new THREE.AmbientLight( 0xffffff, 0.2 );
-				ambients.push[ambientLight];
-				scene.add( ambientLight );
-		
-				var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
-				pointlights.push[pointLight];
-		
-				scene.add( camera );
-				camera.add( pointLight );
-			
 				controller.removeEventListener( 'select', onSelect );
 				scene.remove(reticle);
-
 			});
 		}
 	}
