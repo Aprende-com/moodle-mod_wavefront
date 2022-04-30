@@ -37,19 +37,23 @@ use renderable;
  */
 class wavefront_ar implements templatable, renderable {
 
-    
-    /** @var object The context in which the model is to be rendered. */
+    /**
+     * @var object The context in which the model is to be rendered.
+     */
     protected $context;
-    
-    /** @var object The model we need to render. */
+
+    /**
+     * @var object The model we need to render.
+     */
     protected $model;
-    
-    /** @var string The id of the DIV where three.js will add its canvas. */
+
+    /**
+     * @var string The id of the DIV where three.js will add its canvas.
+     */
     protected $stagename;
-    
+
     /**
      * Constructor for this object.
-     *
      */
     public function __construct(\context_module $context, $model, $stagename) {
         $this->context = $context;
@@ -60,44 +64,47 @@ class wavefront_ar implements templatable, renderable {
     /**
      * Data for use with a template.
      *
-     * @param \renderer_base $output render base output.
+     * @param  \renderer_base $output render base output.
      * @return array Said data.
      */
     public function export_for_template(\renderer_base $output): array {
 
         $data = [];
-        
+
         $fs = get_file_storage();
-        $fs_files = $fs->get_area_files($this->context->id, 'mod_wavefront', 'model', $this->model->id, "itemid, filepath, filename", false);
-        
-        // A Wavefront model contains two files
+        $fsfiles = $fs->get_area_files($this->context->id, 'mod_wavefront', 'model',
+                                       $this->model->id, "itemid, filepath, filename", false);
+
+        // A Wavefront model contains two files.
         $modelerr = true;
-        $mtl_file = null;
-        $obj_file = null;
+        $mtlfile = null;
+        $objfile = null;
         $baseurl = null;
-        
-        foreach ($fs_files as $f) {
-            // $f is an instance of stored_file
+
+        foreach ($fsfiles as $f) {
             $pathname = $f->get_filepath();
             $filename = $f->get_filename();
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            // what type of file is this?
-            if($ext === "mtl") {
-                $mtl_file = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront', 'model', $this->model->id, $pathname, $filename);
-            } elseif ($ext === "obj") {
-                $obj_file = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront', 'model', $this->model->id, $pathname, $filename);
-                $baseurl = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront', 'model', $this->model->id, $pathname, '');
+            // What type of file is this?
+            if ($ext === "mtl") {
+                $mtlfile = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront',
+                                                           'model', $this->model->id, $pathname, $filename);
+            } else if ($ext === "obj") {
+                $objfile = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront',
+                                                           'model', $this->model->id, $pathname, $filename);
+                $baseurl = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront',
+                                                           'model', $this->model->id, $pathname, '');
             }
         }
-        
-        if($mtl_file != null && $obj_file != null) {
+
+        if ($mtlfile != null && $objfile != null) {
             $modelerr = false;
         }
-        
-        if($this->model && !$modelerr) {
+
+        if ($this->model && !$modelerr) {
             $data['baseurl'] = urlencode($baseurl);
-            $data['mtlfile'] = urlencode($mtl_file);
-            $data['objfile'] = urlencode($obj_file);
+            $data['mtlfile'] = urlencode($mtlfile);
+            $data['objfile'] = urlencode($objfile);
             $data['cameraangle'] = $this->model->cameraangle;
             $data['cameranear'] = $this->model->cameranear;
             $data['camerafar'] = $this->model->camerafar;

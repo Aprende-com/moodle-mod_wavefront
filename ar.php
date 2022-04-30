@@ -35,7 +35,7 @@ $m = required_param('m', PARAM_INT);
 $w = required_param('w', PARAM_INT);
 
 if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
-    print_error('invalidwavefrontid', 'wavefront');
+    throw new moodle_exception('invalidwavefrontid', 'wavefront');
 }
 list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
 
@@ -62,7 +62,7 @@ $PAGE->set_pagelayout('popup');
 
 $output = $PAGE->get_renderer('mod_wavefront');
 
-// send page header
+// Send page header.
 echo $output->header();
 
 if ($model = $DB->get_record('wavefront_model', array('id' => $m)) ) {

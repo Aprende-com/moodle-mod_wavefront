@@ -37,22 +37,30 @@ use renderable;
  */
 class model_controls implements templatable, renderable {
 
-    
-    /** @var object The context in which the model is to be rendered. */
+
+
+    /**
+     * @var object The context in which the model is to be rendered.
+     */
     protected $context;
-    
-    /** @var object The model we need to render. */
+
+    /**
+     * @var object The model we need to render.
+     */
     protected $model;
-    
-    /** @var bool True if editing is enabled, else false. */
+
+    /**
+     * @var bool True if editing is enabled, else false.
+     */
     protected $editing;
-    
-    /** @var int cmid. */
+
+    /**
+     * @var int cmid.
+     */
     protected $cmid;
-    
+
     /**
      * Constructor for this object.
-     *
      */
     public function __construct(\context_module $context, $model, bool $editing, $cmid) {
         $this->context = $context;
@@ -64,23 +72,23 @@ class model_controls implements templatable, renderable {
     /**
      * Data for use with a template.
      *
-     * @param \renderer_base $output render base output.
+     * @param  \renderer_base $output render base output.
      * @return array Said data.
      */
     public function export_for_template(\renderer_base $output): array {
         $data = [];
-        
+
         $data['editing'] = $this->editing;
         $data['editurl'] = new moodle_url('/mod/wavefront/edit_model.php');
         $data['id'] = $this->model->id;
         $data['wavefrontid'] = $this->model->wavefrontid;
         $data['cmid'] = $this->cmid;
-        
+
         $data['candelete'] = has_capability('mod/wavefront:delete', $this->context);
         $data['delurl'] = new moodle_url('/mod/wavefront/delete_model.php');
         $data['arenabled'] = $this->model->arenabled;
         $data['arurl'] = new moodle_url('/mod/wavefront/ar.php');
-            
+
         return $data;
     }
 }

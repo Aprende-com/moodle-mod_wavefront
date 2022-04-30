@@ -23,12 +23,12 @@ $delete  = optional_param('delete', 0, PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_INT);
 
 if (!$wavefront = $DB->get_record('wavefront', array('id' => $id))) {
-    print_error('invalidwavefrontid', 'wavefront');
+    throw new moodle_exception('invalidwavefrontid', 'wavefront');
 }
 list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
 
 if ($delete && ! $comment = $DB->get_record('wavefront_comments', array('wavefrontid' => $wavefront->id, 'id' => $delete))) {
-    print_error('Invalid comment ID');
+    throw new moodle_exception('Invalid comment ID');
 }
 
 require_login($course, true, $cm);
@@ -52,9 +52,11 @@ if ($delete && has_capability('mod/wavefront:edit', $context)) {
         echo('<br />');
         $paramsyes = array('id' => $wavefront->id, 'delete' => $comment->id, 'sesskey' => sesskey(), 'confirm' => 1);
         $paramsno = array('id' => $cm->id);
-        echo $OUTPUT->confirm(get_string('commentdelete', 'wavefront'),
-                              new moodle_url('/mod/wavefront/comment.php', $paramsyes),
-                              new moodle_url('/mod/wavefront/view.php', $paramsno));
+        echo $OUTPUT->confirm(
+            get_string('commentdelete', 'wavefront'),
+            new moodle_url('/mod/wavefront/comment.php', $paramsyes),
+            new moodle_url('/mod/wavefront/view.php', $paramsno)
+        );
         echo $OUTPUT->footer();
         die();
     }
@@ -63,7 +65,7 @@ if ($delete && has_capability('mod/wavefront:edit', $context)) {
 require_capability('mod/wavefront:addcomment', $context);
 
 if (! $wavefront->comments) {
-    print_error('Comments disabled', $wavefronturl);
+    throw new moodle_exception('commentsdisabled', 'wavefront', $wavefronturl);
 }
 
 $mform = new mod_wavefront_comment_form(null, $wavefront);
@@ -88,10 +90,9 @@ if ($mform->is_cancelled()) {
 
         redirect($wavefronturl, get_string('commentadded', 'wavefront'));
     } else {
-        print_error('Comment creation failed');
+        throw new moodle_exception('commentcreationfailed', 'wavefront');
     }
 }
-
 
 echo $OUTPUT->header();
 

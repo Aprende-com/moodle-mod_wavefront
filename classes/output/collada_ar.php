@@ -37,19 +37,25 @@ use renderable;
  */
 class collada_ar implements templatable, renderable {
 
-    
-    /** @var object The context in which the model is to be rendered. */
+
+
+    /**
+     * @var object The context in which the model is to be rendered.
+     */
     protected $context;
-    
-    /** @var object The model we need to render. */
+
+    /**
+     * @var object The model we need to render.
+     */
     protected $model;
-    
-    /** @var string The id of the DIV where three.js will add its canvas. */
+
+    /**
+     * @var string The id of the DIV where three.js will add its canvas.
+     */
     protected $stagename;
-    
+
     /**
      * Constructor for this object.
-     *
      */
     public function __construct(\context_module $context, $model, $stagename) {
         $this->context = $context;
@@ -60,39 +66,41 @@ class collada_ar implements templatable, renderable {
     /**
      * Data for use with a template.
      *
-     * @param \renderer_base $output render base output.
+     * @param  \renderer_base $output render base output.
      * @return array Said data.
      */
     public function export_for_template(\renderer_base $output): array {
 
         $data = [];
-        
+
         $fs = get_file_storage();
-        $fs_files = $fs->get_area_files($this->context->id, 'mod_wavefront', 'model', $this->model->id, "itemid, filepath, filename", false);
-        
-        // A collada model contains an XML file. The textures are loaded automatically so we don't need to specify them
+        $fsfiles = $fs->get_area_files($this->context->id, 'mod_wavefront', 'model',
+                                       $this->model->id, "itemid, filepath, filename", false);
+
+        // A collada model contains an XML file. The textures are loaded automatically so we don't need to specify them.
         $modelerr = true;
-        $dae_file = null;
-        
-        foreach ($fs_files as $f) {
-            // $f is an instance of stored_file
+        $daefile = null;
+
+        foreach ($fsfiles as $f) {
             $pathname = $f->get_filepath();
             $filename = $f->get_filename();
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            // what type of file is this?
-            if($ext === "dae") {
-                $dae_file = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront', 'model', $this->model->id, $pathname, $filename);
-                $baseurl = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront', 'model', $this->model->id, $pathname, '');
-            } 
+            // What type of file is this?
+            if ($ext === "dae") {
+                $daefile = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront',
+                                                           'model', $this->model->id, $pathname, $filename);
+                $baseurl = moodle_url::make_pluginfile_url($this->context->id, 'mod_wavefront',
+                                                           'model', $this->model->id, $pathname, '');
+            }
         }
-        
-        if($dae_file != null) {
+
+        if ($daefile != null) {
             $modelerr = false;
         }
-        
-        if($this->model && !$modelerr) {
+
+        if ($this->model && !$modelerr) {
             $data['baseurl'] = urlencode($baseurl);
-            $data['daefile'] = urlencode($dae_file);
+            $data['daefile'] = urlencode($daefile);
             $data['stagewidth'] = $this->model->stagewidth;
             $data['stageheight'] = $this->model->stageheight;
             $data['cameraangle'] = $this->model->cameraangle;

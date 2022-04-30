@@ -17,14 +17,12 @@
 /**
  * The mod_model post updated event.
  *
- * @package    mod_wavefront
- * @copyright  2017 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @copyright 2017 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_wavefront\event;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The mod_wavefront model updated event class.
@@ -36,11 +34,12 @@ defined('MOODLE_INTERNAL') || die();
  *      - string tab: The editing mode that was used.
  * }
  *
- * @package    mod_wavefront
- * @copyright  2017 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @copyright 2017 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class wavefront_updated extends \core\event\base {
+
     /**
      * Init method.
      *

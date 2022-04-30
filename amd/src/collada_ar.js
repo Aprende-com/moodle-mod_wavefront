@@ -18,12 +18,12 @@
  *
  * Manages the UI while operations are occuring, including rendering and manipulating the model.
  *
- * @module     mod_wavefront/collada_ar
- * @class      ar_renderer
- * @package    mod_wavefront
- * @copyright  2022 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since      3.9
+ * @module    mod_wavefront/collada_ar
+ * @class     ar_renderer
+ * @package   mod_wavefront
+ * @copyright 2022 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @since     3.9
  */
 
 import * as THREE from 'mod_wavefront/three';
@@ -44,211 +44,221 @@ let hitTestSourceRequested = false;
 
 export const init = (stage, scale) => {
 
-	var container = document.getElementById(stage);
+    var container = document.getElementById(stage);
     console.log(container);
     
     // Object vector scaling
     objectscale = scale;
     
     // Get model files
-	var baseurl = jQuery(container).attr("data-baseurl");
-	var base_url = decodeURIComponent(baseurl);
-	console.log(base_url);
-	
-	var dae = jQuery(container).attr("data-dae");
-	var dae_file = decodeURIComponent(dae);
-	console.log(dae_file);
-	
-	// Get camera attributes
-	var cameraangle = jQuery(container).attr("data-cameraangle");
+    var baseurl = jQuery(container).attr("data-baseurl");
+    var base_url = decodeURIComponent(baseurl);
+    console.log(base_url);
+    
+    var dae = jQuery(container).attr("data-dae");
+    var dae_file = decodeURIComponent(dae);
+    console.log(dae_file);
+    
+    // Get camera attributes
+    var cameraangle = jQuery(container).attr("data-cameraangle");
     console.log(cameraangle);
     var cameranear = jQuery(container).attr("data-cameranear");
-	console.log(cameranear);
-	var camerafar = jQuery(container).attr("data-camerafar");
-	console.log(camerafar);
-	var camerax = jQuery(container).attr("data-camerax");
-	console.log(camerax);
-	var cameray = jQuery(container).attr("data-cameray");
-	console.log(cameray);
-	var cameraz = jQuery(container).attr("data-cameraz");
-	console.log(cameraz);
-	
-	clock = new THREE.Clock();
+    console.log(cameranear);
+    var camerafar = jQuery(container).attr("data-camerafar");
+    console.log(camerafar);
+    var camerax = jQuery(container).attr("data-camerax");
+    console.log(camerax);
+    var cameray = jQuery(container).attr("data-cameray");
+    console.log(cameray);
+    var cameraz = jQuery(container).attr("data-cameraz");
+    console.log(cameraz);
+    
+    clock = new THREE.Clock();
 
-	scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = Number(cameranear), FAR = Number(camerafar);
-	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
+    var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = Number(cameranear), FAR = Number(camerafar);
+    camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+    camera.position.set(Number(camerax),Number(cameray),Number(cameraz));    
 
-	// Lighting
-	var keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
-	keyLight.position.set(-100, 0, 100);
-			
-	var fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
-	fillLight.position.set(100, 0, 100);
-			
-	var backLight = new THREE.DirectionalLight(0xffffff, 1.0);
-	backLight.position.set(100, 0, -100).normalize();
+    // Lighting
+    var keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+    keyLight.position.set(-100, 0, 100);
+            
+    var fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+    fillLight.position.set(100, 0, 100);
+            
+    var backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    backLight.position.set(100, 0, -100).normalize();
 
-	scene.add(keyLight);
-	scene.add(fillLight);
-	scene.add(backLight);
-	
-	//
+    scene.add(keyLight);
+    scene.add(fillLight);
+    scene.add(backLight);
+    
+    //
 
-	renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.xr.enabled = true;
-	renderer.xr.setReferenceSpaceType( 'local' );
-	container.appendChild( renderer.domElement );
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.xr.enabled = true;
+    renderer.xr.setReferenceSpaceType('local');
+    container.appendChild(renderer.domElement);
 
     //
     
-    renderer.xr.addEventListener('sessionend', function ( event ) {
-    	scene.remove( object );
-		scene.add( reticle );
-		reticle.visible = false;
-		controller.addEventListener( 'select', onSelect );
-	});
+    renderer.xr.addEventListener(
+        'sessionend', function ( event ) {
+            scene.remove(object);
+            scene.add(reticle);
+            reticle.visible = false;
+            controller.addEventListener('select', onSelect);
+        }
+    );
     
-	//
+    //
 
-	document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
+    document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: [ 'hit-test' ] }));
 
-	//
+    //
 
-	function onSelect() {
+function onSelect()
+{
 
-		if ( reticle.visible ) {
+    if (reticle.visible ) {
 
-			/* Load model */
-			var daeLoader = new ColladaLoader();
-    		daeLoader.load(dae_file, (collada) => {
+        /* Load model */
+        var daeLoader = new ColladaLoader();
+        daeLoader.load(
+            dae_file, (collada) => {
+                var animations = collada.animations;
+                object = collada.scene;
+                object.traverse(
+                function ( node ) {
+        
+                    if (node.isSkinnedMesh ) {
+        
+                        node.frustumCulled = false;
+        
+                    }
+        
+                } 
+            );
+            mixer = new THREE.AnimationMixer(object);
+            // TODO play all animations
+            mixer.clipAction(animations[ 0 ]).play();
+            // Neither rotation nor scale are used when displaying Collada models in AR
+            var rotation = new THREE.Quaternion();
+            var scale = new THREE.Vector3();
+            reticle.matrix.decompose(object.position, rotation, scale);
+            object.scale.set(objectscale,objectscale,objectscale);
+            scene.add(object);
+            controller.removeEventListener('select', onSelect);
+            scene.remove(reticle);
+            }
+        );
+    }
+}
 
-				var animations = collada.animations;
-				object = collada.scene;
+    controller = renderer.xr.getController(0);
+    controller.addEventListener('select', onSelect);
+    scene.add(controller);
 
-				object.traverse( function ( node ) {
-		
-					if ( node.isSkinnedMesh ) {
-		
-						node.frustumCulled = false;
-		
-					}
-		
-				} );
+    reticle = new THREE.Mesh(
+        new THREE.RingGeometry(0.15, 0.2, 32).rotateX(- Math.PI / 2),
+        new THREE.MeshBasicMaterial()
+    );
+    reticle.matrixAutoUpdate = false;
+    reticle.visible = false;
+    scene.add(reticle);
 
-				mixer = new THREE.AnimationMixer( object );
-				
-				// TODO play all animations
-				mixer.clipAction( animations[ 0 ] ).play();
-				// Neither rotation nor scale are used when displaying Collada models in AR
-  				var rotation = new THREE.Quaternion();
-  				var scale = new THREE.Vector3();
+    //
 
-				reticle.matrix.decompose( object.position, rotation, scale);
-		        object.scale.set(objectscale,objectscale,objectscale);
-				scene.add( object );
-				
-				controller.removeEventListener( 'select', onSelect );
-				scene.remove(reticle);
-			});
-		}
-	}
-
-	controller = renderer.xr.getController( 0 );
-	controller.addEventListener( 'select', onSelect );
-	scene.add( controller );
-
-	reticle = new THREE.Mesh(
-		new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
-		new THREE.MeshBasicMaterial()
-	);
-	reticle.matrixAutoUpdate = false;
-	reticle.visible = false;
-	scene.add( reticle );
-
-	//
-
-	window.addEventListener( 'resize', onWindowResize );
+    window.addEventListener('resize', onWindowResize);
 
     animate();
 }
 
-function onWindowResize() {
+function onWindowResize()
+{
 
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 
-	renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
 }
 
 //
 
-function render( timestamp, frame ) {
-	if ( frame ) {
+function render( timestamp, frame )
+{
+    if (frame ) {
 
-		const referenceSpace = renderer.xr.getReferenceSpace();
-		const session = renderer.xr.getSession();
+        const referenceSpace = renderer.xr.getReferenceSpace();
+        const session = renderer.xr.getSession();
 
-		if ( hitTestSourceRequested === false ) {
+        if (hitTestSourceRequested === false ) {
 
-			session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
+            session.requestReferenceSpace('viewer').then(
+                function ( referenceSpace ) {
 
-				session.requestHitTestSource( { space: referenceSpace } ).then( function ( source ) {
+                    session.requestHitTestSource({ space: referenceSpace }).then(
+                        function ( source ) {
 
-					hitTestSource = source;
+                            hitTestSource = source;
 
-				} );
+                        } 
+                    );
 
-			} );
+                } 
+            );
 
-			session.addEventListener( 'end', function () {
+            session.addEventListener(
+                'end', function () {
 
-				hitTestSourceRequested = false;
-				hitTestSource = null;
+                    hitTestSourceRequested = false;
+                    hitTestSource = null;
 
-			} );
+                } 
+            );
 
-			hitTestSourceRequested = true;
+            hitTestSourceRequested = true;
 
-		}
+        }
 
-		if ( hitTestSource ) {
+        if (hitTestSource ) {
 
-			const hitTestResults = frame.getHitTestResults( hitTestSource );
+            const hitTestResults = frame.getHitTestResults(hitTestSource);
 
-			if ( hitTestResults.length ) {
+            if (hitTestResults.length ) {
 
-				const hit = hitTestResults[ 0 ];
+                const hit = hitTestResults[ 0 ];
 
-				reticle.visible = true;
-				reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
+                reticle.visible = true;
+                reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
 
-			} else {
+            } else {
 
-				reticle.visible = false;
+                reticle.visible = false;
 
-			}
+            }
 
-		}
+        }
 
-	}
-	
-	if(mixer !== null) {
-		var delta = clock.getDelta();
+    }
+    
+    if(mixer !== null) {
+        var delta = clock.getDelta();
 
-		mixer.update( delta );	
-	}
+        mixer.update(delta);    
+    }
 
     renderer.render(scene, camera);
 }
 
-function animate() {
+function animate()
+{
 
-	renderer.setAnimationLoop( render );
+    renderer.setAnimationLoop(render);
 
 }

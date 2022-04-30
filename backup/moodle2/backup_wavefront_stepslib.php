@@ -21,8 +21,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Define all the backup steps that will be used by the backup_wavefront_activity_task
  */
@@ -48,12 +46,12 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         $comment = new backup_nested_element('comment', array('id'), array(
             'wavefrontid', 'userid', 'commenttext', 'timemodified'
         ));
-        
-        // There may be zero or more models per wavefront activity
+
+        // There may be zero or more models per wavefront activity.
         $models = new backup_nested_element('models');
         $model = new backup_nested_element('model', array('id'), array(
-                'wavefrontid', 'type', 'description', 'descriptionformat', 'descriptionpos', 
-                'stagewidth', 'stageheight', 'backcol', 
+                'wavefrontid', 'type', 'description', 'descriptionformat', 'descriptionpos',
+                'stagewidth', 'stageheight', 'backcol',
                 'camerax', 'cameray', 'cameraz', 'cameraangle', 'cameranear', 'camerafar',
                 'controlx', 'controly', 'controlz',
                 'model', 'arenabled', 'arscale', 'timemodified'
@@ -65,22 +63,21 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         $models->add_child($model);
         $wavefront->add_child($comments);
         $comments->add_child($comment);
-        
+
         // Define sources.
         $wavefront->set_source_table('wavefront', array('id' => backup::VAR_ACTIVITYID));
         $model->set_source_table('wavefront_model', array('wavefrontid' => backup::VAR_PARENTID));
-        
+
         // All the rest of elements only happen if we are including user info.
         if ($userinfo) {
             $comment->set_source_table('wavefront_comments', array('wavefrontid' => backup::VAR_PARENTID));
         }
 
         // Define file annotations.
-        $wavefront->annotate_files('mod_wavefront', 'intro', null); 
+        $wavefront->annotate_files('mod_wavefront', 'intro', null);
         $model->annotate_files('mod_wavefront', 'model', 'id');
-        
+
         $comment->annotate_ids('user', 'userid');
-        
 
         // Return the root element (wavefront), wrapped into standard activity structure.
         return $this->prepare_activity_structure($wavefront);

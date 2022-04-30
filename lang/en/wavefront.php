@@ -67,7 +67,7 @@ $string['modulename_help'] = 'The Wavefront 3D Renderer resource module enables 
 This resource allows you to display \'3D\' images within your Moodle course.
 
 As a course teacher, you are able to add and delete models.
-        
+
 If enabled, users are able to leave comments on your model.';
 $string['modulenameplural'] = 'Wavefront Renderers';
 $string['modulenameshort'] = 'Wavefront';
@@ -79,7 +79,7 @@ $string['position_top'] = 'Top';
 $string['pluginadministration'] = 'Wavefront Renderer administration';
 $string['pluginname'] = 'Wavefront Renderer';
 
-// Model edit form
+// Model edit form.
 $string['modeldescription'] = 'Description';
 $string['modelfiles'] = 'Model files';
 $string['modelfiles_help'] = 'Either upload all model files individually or you can select a zip archive containing the model files, which will be extracted into the model directory after being uploaded.';
@@ -106,7 +106,7 @@ $string['modeltype_help'] = 'Use this setting to specify the type of model you a
 $string['wavefront_type'] = 'Wavefront (.OBJ)';
 $string['collada_type'] = 'Collada (.DAE)';
 
-// Model management
+// Model management.
 $string['deletemodel'] = 'Delete model';
 $string['addmodel'] = 'Add new model';
 $string['model'] = 'Model';
@@ -115,10 +115,10 @@ $string['deletedmodel'] = 'Deleted model';
 $string['deletemodelfiles'] = 'Deleting files...';
 $string['deletemodelrecord'] = 'Delete record...';
 
-// Course list of galleries
+// Course list of galleries.
 $string['viewgallery'] = 'View gallery';
 
-// Augmented Reality
+// Augmented Reality.
 $string['arview'] = 'View in AR';
 $string['arheading'] = 'Augmented Reality (AR)';
 $string['arenabled'] = 'Enable AR view';
@@ -127,8 +127,13 @@ $string['arscale'] = 'Object scaling';
 $string['arscale_help'] = 'Apply x y z vector scaling to the object.';
 $string['arscaleerr'] = 'Object scaling should be greater than 0';
 
-// Completion settings
+// Completion settings.
 $string['completioncomments'] = 'Student must add comments to the gallery:';
 $string['completioncommentsdesc'] = 'Student must add at least {$a} comment(s)';
 $string['completioncommentsgroup'] = 'Require comments';
 $string['completioncommentshelp'] = 'requiring comments to complete';
+
+// Errors.
+$string['commentsdisabled'] = 'Comments disabled';
+$string['commentcreationfailed'] = 'Comment creation failed';
+$string['invalidmodelid'] = 'Invalid model id';

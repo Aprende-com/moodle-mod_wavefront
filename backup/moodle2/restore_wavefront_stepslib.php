@@ -21,9 +21,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * Define all the restore steps that will be used by the restore_wavefront_activity_task
  */
@@ -70,7 +67,7 @@ class restore_wavefront_activity_structure_step extends restore_activity_structu
 
         $data = (object)$data;
         $oldid = $data->id;
-        
+
         $data->wavefrontid = $this->get_new_parentid('wavefront');
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
@@ -89,7 +86,7 @@ class restore_wavefront_activity_structure_step extends restore_activity_structu
         $data->wavefrontid = $this->get_new_parentid('wavefront');
         // TODO: model var to match model.
         $newitemid = $DB->insert_record('wavefront_model', $data);
-        
+
         $this->set_mapping('model', $oldid, $newitemid, true);
     }
 

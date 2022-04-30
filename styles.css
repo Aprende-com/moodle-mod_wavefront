@@ -1,5 +1,5 @@
 .wavefront-gallery {
-	display:flex;
+    display:flex;
 }
 
 .dir-rtl .wavefront .collada-model-container,
@@ -58,23 +58,23 @@
 }
 
 .wavefront img.model-loading {
-	padding: 10px;
+    padding: 10px;
 }
 
 .wavefront div.model-management {
-	display: flex;
+    display: flex;
 }
 
 .wavefront div.ar input[type=submit],
 .wavefront div.model-management input[type=submit] {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 body#page-mod-wavefront-ar,
 body#page-mod-wavefront-ar div#page,
 body#page-mod-wavefront-ar div#page div.ar-stage {
-	margin: 0;
-	background: #000;
+    margin: 0;
+    background: #000;
 }
 
 @media (max-width: 767px) {

@@ -38,11 +38,11 @@ $editing = optional_param('editing', 0, PARAM_BOOL);
 if ($id) {
     list($course, $cm) = get_course_and_cm_from_cmid($id, 'wavefront');
     if (!$wavefront = $DB->get_record('wavefront', array('id' => $cm->instance))) {
-        print_error('invalidcoursemodule');
+        throw new moodle_exception('invalidcoursemodule');
     }
 } else {
     if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
-        print_error('invalidwavefrontid', 'wavefront');
+        throw new moodle_exception('invalidwavefrontid', 'wavefront');
     }
     list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
 }
@@ -101,18 +101,18 @@ echo $output->heading($heading);
 
 echo $output->header();
 
-// Display activity intro if there is one
+// Display activity intro if there is one.
 if ($wavefront->intro && (strlen($wavefront->intro) > 0) ) {
     echo $output->box(format_module_intro('wavefront', $wavefront, $cm->id, 'generalbox wavefront intro'));
 }
 
 echo html_writer::start_div('wavefront-gallery row');
-// Get all models associated with this gallery
+// Get all models associated with this gallery.
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
-    
-    foreach($models as $model) {
-        
-        // Create a unique stage name, which will need to be passed to JS
+
+    foreach ($models as $model) {
+
+        // Create a unique stage name, which will need to be passed to JS.
         $stagename = uniqid('wavefront_');
         echo $output->display_model($context, $model, $stagename, $editing);
     }
