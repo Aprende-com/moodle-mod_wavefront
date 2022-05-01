@@ -133,8 +133,7 @@ export const init = (stage, scale) => {
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (obj) {
 		            object = obj;
-		            var rotation = new THREE.Quaternion();
-		        	reticle.matrix.decompose( object.position, rotation, object.scale );
+		        	reticle.matrix.decompose( object.position,  object.quaternion, object.scale );
 		        	object.scale.set(objectscale,objectscale,objectscale);
 					scene.add( object );
 					controller.removeEventListener( 'select', onSelect );
