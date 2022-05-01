@@ -1,12 +1,14 @@
 .wavefront-gallery {
-	display:flex;
+    display:flex;
 }
 
+.dir-rtl .wavefront .collada-model-container,
 .dir-rtl .wavefront .wavefront-model-container {
     display: inline-block;
     margin: 10px;
 }
 
+.wavefront .collada-model-frame,
 .wavefront .wavefront-model-frame {
     background-color: #fff;
     display: inline-block;
@@ -19,6 +21,7 @@
     color: #696969;
 }
 
+.wavefront .collada-model-container .collada-model-frame:hover,
 .wavefront .wavefront-model-container .wavefront-model-frame:hover {
     transition: box-shadow 150ms, border-color 150ms;
     text-decoration: none;
@@ -29,23 +32,23 @@
     color: #333;
 }
 
+.wavefront .collada-model-container .collada-model-frame:active,
 .wavefront .wavefront-model-container .wavefront-model-frame:active {
     box-shadow: 0 0 15px #666;
     -webkit-box-shadow: 0 0 15px #666;
 }
 
+.wavefront .collada-model-caption,
 .wavefront .wavefront-model-caption {
     font-family: 'Verdana', 'Lucida Grande', 'sans-serif';
     font-size: 11px;
     margin-bottom: 3px;
     text-decoration: none;
-}
-
-.wavefront .wavefront-model-caption {
     font-weight: bold;
     word-wrap: break-word;
 }
 
+.wavefront .collada-model-caption.top,
 .wavefront .wavefront-model-caption.top {
     margin-bottom: -3px;
 }
@@ -55,23 +58,23 @@
 }
 
 .wavefront img.model-loading {
-	padding: 10px;
+    padding: 10px;
 }
 
 .wavefront div.model-management {
-	display: flex;
+    display: flex;
 }
 
 .wavefront div.ar input[type=submit],
 .wavefront div.model-management input[type=submit] {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 body#page-mod-wavefront-ar,
 body#page-mod-wavefront-ar div#page,
 body#page-mod-wavefront-ar div#page div.ar-stage {
-	margin: 0;
-	background: #000;
+    margin: 0;
+    background: #000;
 }
 
 @media (max-width: 767px) {

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Shows a list of available models
  *
@@ -32,9 +31,11 @@ $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 $context = context_course::instance($course->id);
 require_course_login($course);
 
-$event = \mod_wavefront\event\course_module_instance_list_viewed::create(array(
+$event = \mod_wavefront\event\course_module_instance_list_viewed::create(
+    array(
     'context' => $context
-));
+    )
+);
 $event->add_record_snapshot('course', $course);
 $event->trigger();
 
@@ -51,7 +52,7 @@ echo $OUTPUT->header();
 
 $usesections = course_format_uses_sections($course->format);
 
-/// Print the list of instances (your module will probably extend this)
+// Print the list of instances (your module will probably extend this).
 
 $timenow = time();
 $strname = get_string("name");
@@ -67,10 +68,12 @@ if ($usesections) {
 // TODO: Put this in a renderer.
 foreach ($models as $model) {
     $attribs = array('class' => 'wavefront-view-link');
-    
-    $captiondiv = html_writer::tag('div', format_text($model->intro, FORMAT_MOODLE), array('class' => "wavefront-description-caption"));
-    $link = html_writer::link(new moodle_url('/mod/wavefront/view.php', array('id' => $model->coursemodule)), get_string('viewgallery', 'mod_wavefront'), $attribs);
-       
+
+    $captiondiv = html_writer::tag('div', format_text($model->intro, FORMAT_MOODLE),
+                                    array('class' => "wavefront-description-caption"));
+    $link = html_writer::link(new moodle_url('/mod/wavefront/view.php',
+                                array('id' => $model->coursemodule)), get_string('viewgallery', 'mod_wavefront'), $attribs);
+
     if ($usesections) {
         $table->data[] = array(get_section_name($course, $model->section), $captiondiv . $link);
     } else {
@@ -79,7 +82,7 @@ foreach ($models as $model) {
 }
 
 echo html_writer::table($table);
-    
-/// Finish the page
+
+// Finish the page.
 echo $OUTPUT->footer();
 

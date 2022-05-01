@@ -17,15 +17,13 @@
 /**
  * The mod_wavefront viewed event.
  *
- * @package    mod_wavefront
- * @copyright  2017 Ian Wild
- * @author     Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @copyright 2017 Ian Wild
+ * @author    Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_wavefront\event;
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The mod_wavefront viewed event class.
@@ -36,11 +34,12 @@ defined('MOODLE_INTERNAL') || die();
  *      - int wavefrontid: the id of the wavefront activity.
  * }
  *
- * @package    mod_wavefront
- * @copyright  2017 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @copyright 2017 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_viewed extends \core\event\course_module_viewed {
+
 
     /**
      * Init method.

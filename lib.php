@@ -34,28 +34,35 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/filelib.php');
 require_once(dirname(__FILE__).'/locallib.php');
 
+define('WAVEFRONT_CAPTION_BOTTOM', 0);
+define('WAVEFRONT_CAPTION_TOP', 1);
+define('WAVEFRONT_CAPTION_HIDE', 2);
+
+define('WAVEFRONT_MODEL_WAVEFRONT', 'obj');
+define('WAVEFRONT_MODEL_COLLADA', 'dae');
+
 function wavefront_supports($feature) {
     switch($feature) {
         case FEATURE_MOD_ARCHETYPE:
-            return MOD_ARCHETYPE_RESOURCE;
+        return MOD_ARCHETYPE_RESOURCE;
         case FEATURE_GROUPS:
-            return false;
+        return false;
         case FEATURE_GROUPINGS:
-            return false;
+        return false;
         case FEATURE_MOD_INTRO:
-            return true;
+        return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return true;
+        return true;
         case FEATURE_GRADE_HAS_GRADE:
-            return false;
+        return false;
         case FEATURE_GRADE_OUTCOMES:
-            return false;
+        return false;
         case FEATURE_BACKUP_MOODLE2:
-            return true;
+        return true;
         case FEATURE_COMPLETION_HAS_RULES:
-            return true;
+        return true;
         default:
-            return null;
+        return null;
     }
 }
 
@@ -65,7 +72,7 @@ function wavefront_supports($feature) {
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param object $wavefront An object from the form in mod_form.php
+ * @param  object $wavefront An object from the form in mod_form.php
  * @return int The id of the newly inserted newmodule record
  */
 function wavefront_add_instance($wavefront) {
@@ -83,7 +90,7 @@ function wavefront_add_instance($wavefront) {
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param object $wavefront An object from the form in mod_form.php
+ * @param  object $wavefront An object from the form in mod_form.php
  * @return boolean Success/Fail
  */
 function wavefront_update_instance($wavefront) {
@@ -102,7 +109,7 @@ function wavefront_update_instance($wavefront) {
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @param int $id Id of the module instance
+ * @param  int $id Id of the module instance
  * @return boolean Success/Failure
  */
 function wavefront_delete_instance($id) {
@@ -119,7 +126,7 @@ function wavefront_delete_instance($id) {
     $fs->delete_area_files($context->id, 'mod_wavefront');
 
     // Delete all the records and models.
-    $DB->delete_records('wavefront_comments', array('wavefrontid' => $wavefront->id) );
+    $DB->delete_records('wavefront_comments', array('wavefrontid' => $wavefront->id));
     $DB->delete_records('wavefront_model', array('wavefrontid' => $wavefront->id));
 
     // Delete the instance itself.
@@ -131,7 +138,7 @@ function wavefront_delete_instance($id) {
 /**
  * Given a model object from mod_form, determine the autoresize and resize params.
  *
- * @param object $wavefront
+ * @param  object $wavefront
  * @return void
  */
 function wavefront_set_sizing($wavefront) {
@@ -146,7 +153,7 @@ function wavefront_set_sizing($wavefront) {
  * a given particular instance of this module, for user activity reports.
  *
  * @return boolean
- * @todo Finish documenting this function
+ * @todo   Finish documenting this function
  */
 function wavefront_user_complete($course, $user, $mod, $resource) {
     global $DB, $CFG;
@@ -263,7 +270,7 @@ function wavefront_print_recent_mod_activity($activity, $courseid, $detail, $mod
  * Return true if there was output, or false is there was none.
  *
  * @return boolean
- * @todo Finish documenting this function
+ * @todo   Finish documenting this function
  */
 function wavefront_print_recent_activity($course, $viewfullnames, $timestart) {
     global $DB, $CFG, $OUTPUT;
@@ -311,16 +318,18 @@ function wavefront_print_recent_activity($course, $viewfullnames, $timestart) {
  * objects must contain at least id property.
  * See other modules as example.
  *
- * @param int $newmoduleid ID of an instance of this module
+ * @param  int $newmoduleid ID of an instance of this module
  * @return boolean|array false if no participants, array of objects otherwise
  */
 function wavefront_get_participants($wavefrontid) {
     global $DB, $CFG;
 
-    return $DB->get_records_sql("SELECT DISTINCT u.id, u.id
+    return $DB->get_records_sql(
+        "SELECT DISTINCT u.id, u.id
                                    FROM {user} u,
                                         {model_comments} c
-                                  WHERE c.wavefrontid = $wavefrontid AND u.id = c.userid");
+                                  WHERE c.wavefrontid = $wavefrontid AND u.id = c.userid"
+    );
 }
 
 function wavefront_get_view_actions() {
@@ -334,24 +343,24 @@ function wavefront_get_post_actions() {
 /**
  * Serves model files.
  *
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param  object $course
+ * @param  object $cm
+ * @param  object $context
+ * @param  string $filearea
+ * @param  array  $args
+ * @param  bool   $forcedownload
  * @return bool false if file not found, does not return if found - just send the file
  */
 function wavefront_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
     global $CFG, $DB, $USER;
 
-    require_once($CFG->libdir.'/filelib.php');
+    include_once($CFG->libdir.'/filelib.php');
 
     $wavefront = $DB->get_record('wavefront', array('id' => $cm->instance));
     if (!$wavefront->ispublic) {
         require_login($course, false, $cm);
     }
-    
+
     $relativepath = implode('/', $args);
     $fullpath = '/'.$context->id.'/mod_wavefront/'.$filearea.'/'.$relativepath;
 
@@ -369,29 +378,31 @@ function wavefront_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
 
 /**
  * Lists all browsable file areas
- * @param object $course
- * @param object $cm
- * @param object $context
+ *
+ * @param  object $course
+ * @param  object $cm
+ * @param  object $context
  * @return array
  */
 function wavefront_get_file_areas($course, $cm, $context) {
     $areas = array();
-    $areas['wavefront_files'] = get_string('modelfiles', 'model');
+    $areas['wavefront_files'] = 'model';
 
     return $areas;
 }
 
 /**
  * File browsing support for model module content area.
- * @param object $browser
- * @param object $areas
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
+ *
+ * @param  object $browser
+ * @param  object $areas
+ * @param  object $course
+ * @param  object $cm
+ * @param  object $context
+ * @param  string $filearea
+ * @param  int    $itemid
+ * @param  string $filepath
+ * @param  string $filename
  * @return object file_info instance or null if not found
  */
 function wavefront_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
@@ -411,11 +422,13 @@ function wavefront_get_file_info($browser, $areas, $course, $cm, $context, $file
             }
         }
 
-        require_once("$CFG->dirroot/mod/model/locallib.php");
+        include_once("$CFG->dirroot/mod/model/locallib.php");
         $urlbase = $CFG->wwwroot.'/pluginfile.php';
 
-        return new wavefront_content_file_info($browser, $context, $storedfile, $urlbase, $areas[$filearea],
-                                                        true, true, false, false);
+        return new wavefront_content_file_info(
+            $browser, $context, $storedfile, $urlbase, $areas[$filearea],
+            true, true, false, false
+        );
     }
 
     return null;
@@ -423,8 +436,9 @@ function wavefront_get_file_info($browser, $areas, $course, $cm, $context, $file
 
 /**
  * Trim inputted text to the given maximum length.
- * @param string $text
- * @param int $length
+ *
+ * @param  string $text
+ * @param  int    $length
  * @return string The trimmed string with a '...' appended for display.
  */
 function wavefront_resize_text($text, $length) {
@@ -433,6 +447,7 @@ function wavefront_resize_text($text, $length) {
 
 /**
  * Output the HTML for a comment in the given context.
+ *
  * @param object $comment The comment record to output
  * @param object $context The context from which this is being displayed
  */
@@ -468,32 +483,32 @@ function wavefront_print_comment($comment, $context) {
  * Given a course_module object, this function returns any "extra" information that may be needed
  * when printing this activity in a course listing.  See get_array_of_activities() in course/lib.php.
  *
- * @param stdClass $coursemodule The coursemodule object (record).
+ * @param  stdClass $coursemodule The coursemodule object (record).
  * @return cached_cm_info An object on information that the courses
  *                        will know about (most noticeably, an icon).
  */
 function wavefront_get_coursemodule_info($coursemodule) {
     global $DB;
-    
+
     $dbparams = ['id' => $coursemodule->instance];
     $fields = 'id, name, intro, introformat, completioncomments';
     if (!$wavefront = $DB->get_record('wavefront', $dbparams, $fields)) {
         return false;
     }
-    
+
     $result = new cached_cm_info();
     $result->name = $wavefront->name;
-    
+
     if ($coursemodule->showdescription) {
         // Convert intro to html. Do not filter cached version, filters run at display time.
         $result->content = format_module_intro('wavefront', $wavefront, $coursemodule->id, false);
     }
-    
+
     // Populate the custom completion rules as key => value pairs, but only if the completion mode is 'automatic'.
     if ($coursemodule->completion == COMPLETION_TRACKING_AUTOMATIC) {
         $result->customdata['customcompletionrules']['completioncomments'] = $wavefront->completioncomments;
     }
-    
+
     return $result;
 }
 
@@ -501,59 +516,60 @@ function wavefront_get_coursemodule_info($coursemodule) {
  * Obtains the automatic completion state for this wavefront gallery based on any conditions
  * in gallery settings.
  *
- * @param object $course Course
- * @param object $cm Course-module
- * @param int $userid User ID
- * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @param  object $course Course
+ * @param  object $cm     Course-module
+ * @param  int    $userid User ID
+ * @param  bool   $type   Type of comparison (or/and; can be used as return value if no conditions)
  * @return bool True if completed, false if not, $type if conditions not set.
  */
-function wavefront_get_completion_state($course,$cm,$userid,$type) {
+function wavefront_get_completion_state($course, $cm, $userid, $type) {
     global $DB;
-    
-    // Get wavefront details
-    if (!($wavefront=$DB->get_record('wavefront',array('id'=>$cm->instance)))) {
+
+    // Get wavefront details.
+    if (!($wavefront = $DB->get_record('wavefront', array('id' => $cm->instance)))) {
         throw new Exception("Can't find wavefront gallery {$cm->instance}");
     }
-    
-    $result=$type; // Default return value
-    
+
+    $result = $type; // Default return value.
+
     if ($wavefront->completioncomments) {
         $value = $wavefront->completioncomments <=
-        $DB->count_records('wavefront_comments',array('wavefrontid'=>$wavefront->id,'userid'=>$userid));
+        $DB->count_records('wavefront_comments', array('wavefrontid' => $wavefront->id, 'userid' => $userid));
         if ($type == COMPLETION_AND) {
             $result = $result && $value;
         } else {
             $result = $result || $value;
         }
     }
-    
+
     return $result;
 }
 
 /**
  * Callback which returns human-readable strings describing the active completion custom rules for the module instance.
  *
- * @param cm_info|stdClass $cm object with fields ->completion and ->customdata['customcompletionrules']
+ * @param  cm_info|stdClass $cm object with fields ->completion and ->customdata['customcompletionrules']
  * @return array $descriptions the array of descriptions for the custom rules.
  */
 function mod_wavefront_get_completion_active_rule_descriptions($cm) {
     // Values will be present in cm_info, and we assume these are up to date.
     if (empty($cm->customdata['customcompletionrules'])
-        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
+        || $cm->completion != COMPLETION_TRACKING_AUTOMATIC
+    ) {
             return [];
-        }
-        
+    }
+
         $descriptions = [];
-        foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
-            switch ($key) {
-                case 'completioncomments':
-                    if (!empty($val)) {
-                        $descriptions[] = get_string('completioncommentsdesc', 'mod_wavefront', $val);
-                    }
-                    break;
-                default:
-                    break;
-            }
+    foreach ($cm->customdata['customcompletionrules'] as $key => $val) {
+        switch ($key) {
+            case 'completioncomments':
+                if (!empty($val)) {
+                    $descriptions[] = get_string('completioncommentsdesc', 'mod_wavefront', $val);
+                }
+            break;
+            default:
+            break;
         }
+    }
         return $descriptions;
 }

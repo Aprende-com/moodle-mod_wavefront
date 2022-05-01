@@ -17,13 +17,12 @@
 /**
  * The mod_wavefront model created event.
  *
- * @package    mod_wavefront
- * @copyright  2017 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @copyright 2017 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_wavefront\event;
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The mod_wavefront model created event class.
@@ -34,12 +33,13 @@ defined('MOODLE_INTERNAL') || die();
  *      - string concept: (optional) the concept of created entry.
  * }
  *
- * @package    mod_wavefront
- * @since      Moodle 2.7
- * @copyright  2017 Ian Wild
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_wavefront
+ * @since     Moodle 2.7
+ * @copyright 2017 Ian Wild
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class model_created extends \core\event\base {
+
     /**
      * Init method
      */
@@ -74,10 +74,12 @@ class model_created extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url("/mod/wavefront/view.php",
-                array('id' => $this->contextinstanceid,
+        return new \moodle_url(
+            "/mod/wavefront/view.php",
+            array('id' => $this->contextinstanceid,
                     'mode' => 'entry',
-                    'hook' => $this->objectid));
+            'hook' => $this->objectid)
+        );
     }
 
     /**

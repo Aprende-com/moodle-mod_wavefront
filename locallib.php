@@ -37,16 +37,16 @@ define('WAVEFRONT_MAX_COMMENT_PREVIEW', 20);
 /**
  * Checks for ZIP files to unpack.
  *
- * @param context $context
- * @param cm_info $cm
- * @param $model
+ * @param  context $context
+ * @param  cm_info $cm
+ * @param  $model
  * @return void
  */
 function wavefront_check_for_zips($context, $cm, $model) {
     $fs = get_file_storage();
 
     $files = $fs->get_area_files($context->id, 'mod_wavefront', 'model', $model->id, "itemid, filepath, filename", false);
-    
+
     foreach ($files as $storedfile) {
         if ($storedfile->get_mimetype() == 'application/zip') {
             // Unpack.
@@ -54,8 +54,8 @@ function wavefront_check_for_zips($context, $cm, $model) {
             $fs->delete_area_files($context->id, 'mod_wavefront', 'unpacktemp', 0);
             $storedfile->extract_to_storage($packer, $context->id, 'mod_wavefront', 'unpacktemp', 0, '/');
             $tempfiles = $fs->get_area_files($context->id, 'mod_wavefront', 'unpacktemp', 0,  "itemid, filepath, filename", false);
-            if(count($tempfiles) > 0) {
-                $storedfile->delete(); // delete the ZIP file.
+            if (count($tempfiles) > 0) {
+                $storedfile->delete(); // Delete the ZIP file.
                 foreach ($tempfiles as $storedfile) {
                     $filename = $storedfile->get_filename();
                     $fileinfo = array(
@@ -67,12 +67,12 @@ function wavefront_check_for_zips($context, $cm, $model) {
                             'filename'      => $filename
                     );
                     $storedfile = $fs->create_file_from_storedfile($fileinfo, $storedfile);
-                            
+
                 }
             }
             $fs->delete_area_files($context->id, 'mod_wavefront', 'unpacktemp', 0);
-            
-        } 
+
+        }
     }
 }
 
@@ -95,6 +95,7 @@ function wavefront_config_defaults() {
  * File browsing support class
  */
 class wavefront_content_file_info extends file_info_stored {
+
     public function get_parent() {
         if ($this->lf->get_filepath() === '/' and $this->lf->get_filename() === '.') {
             return $this->browser->get_file_info($this->context);

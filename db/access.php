@@ -83,7 +83,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    
+
     'mod/wavefront:edit' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',
@@ -93,7 +93,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    
+
     'mod/wavefront:delete' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',

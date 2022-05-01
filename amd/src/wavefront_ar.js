@@ -18,23 +18,20 @@
  *
  * Manages the UI while operations are occuring, including rendering and manipulating the model.
  *
- * @module     mod_wavefront/ar_renderer
- * @class      ar_renderer
+ * @module     mod_wavefront/wavefront_ar
+ * @class      wavefront_ar
  * @package    mod_wavefront
  * @copyright  2022 Ian Wild
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      3.9
  */
 
-import WebGL from 'mod_wavefront/WebGL';
 import * as THREE from 'mod_wavefront/three';
 import { MTLLoader } from 'mod_wavefront/MTLLoader';
 import { OBJLoader } from 'mod_wavefront/OBJLoader';
-import { OrbitControls } from 'mod_wavefront/OrbitControls';
 import { ARButton } from 'mod_wavefront/ARButton';
 import jQuery from 'jquery';
 
-let container;
 let camera, scene, renderer;
 let controller;
 
@@ -67,6 +64,8 @@ export const init = (stage, scale) => {
 	// Get camera attributes
 	var cameraangle = jQuery(container).attr("data-cameraangle");
     console.log(cameraangle);
+    var cameranear = jQuery(container).attr("data-cameranear");
+	console.log(cameranear);
 	var camerafar = jQuery(container).attr("data-camerafar");
 	console.log(camerafar);
 	var camerax = jQuery(container).attr("data-camerax");
@@ -78,7 +77,7 @@ export const init = (stage, scale) => {
 
 	scene = new THREE.Scene();
 
-	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = 0.1, FAR = Number(camerafar);
+	var VIEW_ANGLE = Number(cameraangle), ASPECT = window.innerWidth / window.innerHeight, NEAR = Number(cameranear), FAR = Number(camerafar);
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 	camera.position.set(Number(camerax),Number(cameray),Number(cameraz));	
 
@@ -102,6 +101,7 @@ export const init = (stage, scale) => {
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.xr.enabled = true;
+	renderer.xr.setReferenceSpaceType( 'local' );
 	container.appendChild( renderer.domElement );
 
     //
@@ -133,7 +133,7 @@ export const init = (stage, scale) => {
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (obj) {
 		            object = obj;
-		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
+		        	reticle.matrix.decompose( object.position,  object.quaternion, object.scale );
 		        	object.scale.set(objectscale,objectscale,objectscale);
 					scene.add( object );
 					controller.removeEventListener( 'select', onSelect );
