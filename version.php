@@ -29,4 +29,4 @@ $plugin->requires = 2016052300;  // Requires this Moodle version.
 $plugin->cron     = 0;           // Period for cron to check this plugin (secs).
 $plugin->component = 'mod_wavefront';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '0.0.0.8';
+$plugin->release = '0.0.1.0';
