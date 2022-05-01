@@ -101,7 +101,6 @@ export const init = (stage, scale) => {
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.xr.enabled = true;
-	renderer.xr.setReferenceSpaceType( 'local' );
 	container.appendChild( renderer.domElement );
 
     //
@@ -133,7 +132,8 @@ export const init = (stage, scale) => {
 		        objLoader.setMaterials(materials);
 		        objLoader.load(obj_file, function (obj) {
 		            object = obj;
-		        	reticle.matrix.decompose( object.position, object.quaternion, object.scale );
+		            var rotation = new THREE.Quaternion();
+		        	reticle.matrix.decompose( object.position, rotation, object.scale );
 		        	object.scale.set(objectscale,objectscale,objectscale);
 					scene.add( object );
 					controller.removeEventListener( 'select', onSelect );
