@@ -101,6 +101,7 @@ export const init = (stage, scale) => {
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.xr.enabled = true;
+	renderer.xr.setReferenceSpaceType( 'local' );
 	container.appendChild( renderer.domElement );
 
     //
