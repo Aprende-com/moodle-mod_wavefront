@@ -34,8 +34,8 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/filelib.php');
 require_once(dirname(__FILE__).'/locallib.php');
 
-define('WAVEFRONT_CAPTION_TOP', 0);
-define('WAVEFRONT_CAPTION_BOTTOM', 1);
+define('WAVEFRONT_CAPTION_BOTTOM', 0);
+define('WAVEFRONT_CAPTION_TOP', 1);
 define('WAVEFRONT_CAPTION_HIDE', 2);
 
 define('WAVEFRONT_MODEL_WAVEFRONT', 'obj');
