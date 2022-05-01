@@ -21,7 +21,7 @@
     color: #696969;
 }
 
-.wavefront .collada-model-container .collada-model-frame:hover
+.wavefront .collada-model-container .collada-model-frame:hover,
 .wavefront .wavefront-model-container .wavefront-model-frame:hover {
     transition: box-shadow 150ms, border-color 150ms;
     text-decoration: none;
@@ -32,13 +32,13 @@
     color: #333;
 }
 
-.wavefront .collada-model-container .collada-model-frame:active
+.wavefront .collada-model-container .collada-model-frame:active,
 .wavefront .wavefront-model-container .wavefront-model-frame:active {
     box-shadow: 0 0 15px #666;
     -webkit-box-shadow: 0 0 15px #666;
 }
 
-.wavefront .collada-model-caption
+.wavefront .collada-model-caption,
 .wavefront .wavefront-model-caption {
     font-family: 'Verdana', 'Lucida Grande', 'sans-serif';
     font-size: 11px;
@@ -48,7 +48,7 @@
     word-wrap: break-word;
 }
 
-.wavefront .collada-model-caption.top
+.wavefront .collada-model-caption.top,
 .wavefront .wavefront-model-caption.top {
     margin-bottom: -3px;
 }
