@@ -31,6 +31,7 @@ $string['wavefront:edit'] = 'Edit a model';
 $string['wavefront:delete'] = 'Delete a model';
 $string['wavefront:submit'] = 'Submit a model to the gallery';
 $string['wavefront:addcomment'] = 'Comment on a gallery';
+$string['wavefront:embed'] = 'Can embed a model (filter_wavefront plugin required)';
 
 $string['acceptablefiletypebriefing'] = 'If you wish to upload multiple files at a time, you can submit a zip file with images inside it and all valid images inside the zip archive will be added to the gallery.';
 $string['addcomment'] = 'Add comment';
