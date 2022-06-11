@@ -115,7 +115,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    
+
     'mod/wavefront:embed' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
