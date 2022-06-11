@@ -37,8 +37,6 @@ use renderable;
  */
 class model_controls implements templatable, renderable {
 
-
-
     /**
      * @var object The context in which the model is to be rendered.
      */
@@ -88,7 +86,9 @@ class model_controls implements templatable, renderable {
         $data['delurl'] = new moodle_url('/mod/wavefront/delete_model.php');
         $data['arenabled'] = $this->model->arenabled;
         $data['arurl'] = new moodle_url('/mod/wavefront/ar.php');
-        $data['canembed'] = has_capability('mod/wavefront:embed', $this->context);
+        $filters = \core_plugin_manager::instance()->get_enabled_plugins('filter');
+        $filterenabled = isset($filters['wavefront']);
+        $data['canembed'] = has_capability('mod/wavefront:embed', $this->context) && $filterenabled;
 
         return $data;
     }
