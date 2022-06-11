@@ -29,12 +29,19 @@
         "candelete": true,
         "delurl": "./mod/wavefront/delete_model.php",
         "arenabled": true,
-        "arurl": "./mod/wavefront/ar.php"
+        "arurl": "./mod/wavefront/ar.php",
+        "canembed": true
     }
 }}
 
 {{#editing}}
-            
+
+{{#canembed}}
+    <div class="embed-shortcode">
+    	<span>[wavefront id="{{id}}"]</span>
+    </div>
+{{/canembed}}
+
 <div class='model-management'>
 	<form action="{{editurl}}">
     	<input type="hidden" name="id" value="{{id}}" />
@@ -49,6 +56,7 @@
         <input class="btn btn-secondary" type="submit" Value="{{#str}} deletemodel, mod_wavefront {{/str}}" />
     </form>
 {{/candelete}}
+
 </div>
 
 {{/editing}}

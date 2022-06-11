@@ -88,6 +88,7 @@ class model_controls implements templatable, renderable {
         $data['delurl'] = new moodle_url('/mod/wavefront/delete_model.php');
         $data['arenabled'] = $this->model->arenabled;
         $data['arurl'] = new moodle_url('/mod/wavefront/ar.php');
+        $data['canembed'] = has_capability('mod/wavefront:embed', $this->context);
 
         return $data;
     }
