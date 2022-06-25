@@ -70,6 +70,12 @@
     margin-left: 10px;
 }
 
+.wavefront div.embed-shortcode {
+    margin: 10px;
+    background-color: #e9ecef;
+    text-align: center;
+}
+
 body#page-mod-wavefront-ar,
 body#page-mod-wavefront-ar div#page,
 body#page-mod-wavefront-ar div#page div.ar-stage {
