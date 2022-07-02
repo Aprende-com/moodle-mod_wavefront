@@ -352,15 +352,12 @@ function wavefront_get_post_actions() {
  * @return bool false if file not found, does not return if found - just send the file
  */
 function wavefront_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-    global $CFG, $DB, $USER;
+    global $CFG, $DB;
 
     include_once($CFG->libdir.'/filelib.php');
 
-    $wavefront = $DB->get_record('wavefront', array('id' => $cm->instance));
-    if (!$wavefront->ispublic) {
-        require_login($course, false, $cm);
-    }
-
+    require_login($course, false, $cm);
+    
     $relativepath = implode('/', $args);
     $fullpath = '/'.$context->id.'/mod_wavefront/'.$filearea.'/'.$relativepath;
 

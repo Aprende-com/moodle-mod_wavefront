@@ -39,12 +39,7 @@ if (!$wavefront = $DB->get_record('wavefront', array('id' => $w))) {
 }
 list($course, $cm) = get_course_and_cm_from_instance($wavefront, 'wavefront');
 
-if ($wavefront->ispublic) {
-    $PAGE->set_cm($cm, $course);
-    $PAGE->set_pagelayout('incourse');
-} else {
-    require_login($course, true, $cm);
-}
+require_login($course, true, $cm);
 
 $context = context_module::instance($cm->id);
 
@@ -54,8 +49,8 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
 
 wavefront_config_defaults();
 
-
-$PAGE->set_cm($cm);
+$PAGE->set_cm($cm, $course);
+$PAGE->set_pagelayout('incourse');
 $PAGE->set_url('/mod/wavefront/ar.php', array('id' => $cm->id));
 $PAGE->set_title($wavefront->name);
 $PAGE->set_pagelayout('popup');
