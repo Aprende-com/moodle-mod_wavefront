@@ -38,7 +38,7 @@ class backup_wavefront_activity_structure_step extends backup_activity_structure
         // Define each element separated.
         $wavefront = new backup_nested_element('wavefront', array('id'), array(
             'course', 'folder', 'name', 'comments',
-            'timemodified', 'ispublic',
+            'timemodified',
             'intro', 'introformat', 'completioncomments'
         ));
 

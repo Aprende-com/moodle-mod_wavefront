@@ -61,7 +61,6 @@ $string['eventviewed'] = 'Wavefront model viewed';
 $string['invalidwavefrontid'] = 'Invalid wavefront ID';
 $string['wavefrontrenderer'] = 'Wavefront Renderer';
 
-$string['makepublic'] = 'Make public';
 $string['modulename'] = 'Wavefront Renderer';
 $string['modulename_help'] = 'The Wavefront 3D Renderer resource module enables participants to view a Wavefront .OBJ file format compliant 3D model.
 

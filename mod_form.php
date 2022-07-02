@@ -59,9 +59,6 @@ class mod_wavefront_mod_form extends moodleform_mod {
         $mform->addElement('select', 'comments', get_string('allowcomments', 'wavefront'), $yesno);
         $mform->setType('comments', PARAM_INT);
 
-        $mform->addElement('select', 'ispublic', get_string('makepublic', 'wavefront'), $yesno);
-        $mform->setType('ispublic', PARAM_INT);
-
         // Module options.
         $features = array('groups' => false, 'groupings' => false, 'groupmembersonly' => false,
                           'outcomes' => false, 'gradecat' => false, 'idnumber' => false);
