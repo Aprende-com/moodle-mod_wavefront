@@ -101,11 +101,6 @@ echo $output->heading($heading);
 
 echo $output->header();
 
-// Display activity intro if there is one.
-if ($wavefront->intro && (strlen($wavefront->intro) > 0) ) {
-    echo $output->box(format_module_intro('wavefront', $wavefront, $cm->id, 'generalbox wavefront intro'));
-}
-
 echo html_writer::start_div('wavefront-gallery row');
 // Get all models associated with this gallery.
 if ($models = $DB->get_records('wavefront_model', array('wavefrontid' => $wavefront->id))) {
