@@ -48,11 +48,8 @@ if ($id) {
 }
 
 
-if ($wavefront->ispublic) {
-    $PAGE->set_cm($cm, $course);
-} else {
-    require_login($course, true, $cm);
-}
+require_login($course, true, $cm);
+
 $PAGE->set_pagelayout('incourse');
 
 $context = context_module::instance($cm->id);
@@ -81,7 +78,7 @@ $event->trigger();
 $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
-$PAGE->set_cm($cm);
+$PAGE->set_cm($cm, $course, $wavefront);
 $PAGE->set_url('/mod/wavefront/view.php', array('id' => $cm->id));
 $PAGE->set_title($wavefront->name);
 $PAGE->set_heading($course->shortname);
